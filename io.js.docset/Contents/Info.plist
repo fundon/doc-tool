@@ -2,7 +2,7 @@
 <plist version="1.0">
 <dict>
 <key>CFBundleIdentifier</key>
-<string>iojs</string>
+<string>io.js</string>
 <key>CFBundleName</key>
 <string>io.js</string>
 <key>DocSetPlatformFamily</key>

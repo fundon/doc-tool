@@ -1,3 +1,4 @@
+#!/usr/bin/env iojs
 /*!
  * Dash docset generator
  *
@@ -8,8 +9,8 @@
  * usage:
  *
  *  $ iojs dash.js $(find out/doc/api/*.json)
- *  $ cp -R  io.js/out/doc/api/* iojs.docset/Contents/Resources/Documents/iojs.org/api
- *  $ tar --exclude='.DS_Store' -cvzf iojs.tgz iojs.docset
+ *  $ cp -R  io.js/out/doc/api/* io.js.docset/Contents/Resources/Documents/iojs.org/api
+ *  $ tar --exclude='.DS_Store' -cvzf io.js.tgz io.js.docset
  */
 
 var Readable = require('stream').Readable;
@@ -24,7 +25,7 @@ var docSet = [
 ];
 var INSERT_TPL = 'INSERT OR IGNORE INTO searchIndex(name, type, path) VALUES ("{name}", "{type}", "{path}");';
 
-var DB_FILE = 'iojs.docset/Contents/Resources/docSet.dsidx';
+var DB_FILE = 'io.js.docset/Contents/Resources/docSet.dsidx';
 
 var blacklist = ['*.json', '_toc.json', 'index.json', 'all.json'];
 // node types
@@ -133,7 +134,11 @@ function insert(fn, name, type, anchor) {
 }
 
 function output() {
-  fs.unlinkSync(DB_FILE);
+  // cd tools/doc
+  process.chdir(__dirname);
+  try {
+    fs.unlinkSync(DB_FILE);
+  } catch(e) {}
   var sqlite3  = spawn('sqlite3', [DB_FILE], { stdin: 'pipe' });
   var reader = new Readable;
   docSet.forEach(function (row) {
