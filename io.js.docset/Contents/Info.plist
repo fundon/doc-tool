@@ -6,8 +6,12 @@
 <key>CFBundleName</key>
 <string>io.js</string>
 <key>DocSetPlatformFamily</key>
-<string>iojs</string><key>dashIndexFilePath</key><string>iojs.org/api/index.html</string>
+<string>iojs</string>
 <key>isDashDocset</key><true/>
-
+<key>isJavaScriptEnabled</key><true/>
+<key>dashIndexFilePath</key>
+<string>iojs.org/api/index.html</string>
+<key>DashDocSetFamily</key>
+<string>dashtoc</string>
 </dict>
 </plist>

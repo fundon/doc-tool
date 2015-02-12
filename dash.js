@@ -8,8 +8,8 @@
  *
  * usage:
  *
- *  $ iojs dash.js $(find out/doc/api/*.json)
  *  $ cp -R  io.js/out/doc/api/* io.js.docset/Contents/Resources/Documents/iojs.org/api
+ *  $ iojs dash.js $(find out/doc/api/*.json)
  *  $ tar --exclude='.DS_Store' -cvzf io.js.tgz io.js.docset
  */
 
