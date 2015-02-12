@@ -6,7 +6,7 @@
 # change to io.js project
 $ cd io.js
 
-$ git clone git@github.com:fundon/doc-tool.git dash
+$ git clone git@github.com:fundon/iojs-docset.git dash
 $ cp dash/template.html doc/template.html
 
 # generate io.js API docs
