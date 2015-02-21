@@ -27,7 +27,7 @@
           "textRaw": "Event: 'beforeExit'",
           "type": "event",
           "name": "beforeExit",
-          "desc": "<p>This event is emitted when io.js empties it&#39;s event loop and has nothing else to\nschedule. Normally, io.js exits when there is no work scheduled, but a listener\nfor &#39;beforeExit&#39; can make asynchronous calls, and cause io.js to continue.\n\n</p>\n<p>&#39;beforeExit&#39; is not emitted for conditions causing explicit termination, such as\n<code>process.exit()</code> or uncaught exceptions, and should not be used as an\nalternative to the &#39;exit&#39; event unless the intention is to schedule more work.\n\n\n</p>\n",
+          "desc": "<p>This event is emitted when io.js empties its event loop and has nothing else to\nschedule. Normally, io.js exits when there is no work scheduled, but a listener\nfor &#39;beforeExit&#39; can make asynchronous calls, and cause io.js to continue.\n\n</p>\n<p>&#39;beforeExit&#39; is not emitted for conditions causing explicit termination, such as\n<code>process.exit()</code> or uncaught exceptions, and should not be used as an\nalternative to the &#39;exit&#39; event unless the intention is to schedule more work.\n\n\n</p>\n",
           "params": []
         },
         {

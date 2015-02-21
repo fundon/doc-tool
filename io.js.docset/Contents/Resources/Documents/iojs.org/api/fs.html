@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>File System io.js v1.2.0 Manual &amp; Documentation</title>
+  <title>File System io.js v1.3.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="fs" class="interior">
       <header>
-        <h1>io.js v1.2.0 Documentation</h1>
+        <h1>io.js v1.3.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -213,7 +213,7 @@ fs.unlink(&#39;/tmp/hello&#39;, function (err) {
 </p>
 <pre><code>var fs = require(&#39;fs&#39;);
 
-fs.unlinkSync(&#39;/tmp/hello&#39;)
+fs.unlinkSync(&#39;/tmp/hello&#39;);
 console.log(&#39;successfully deleted /tmp/hello&#39;);</code></pre>
 <p>With the asynchronous methods there is no guaranteed ordering. So the
 following is prone to error:
@@ -732,7 +732,7 @@ to <code>&#39;utf8&#39;</code>.
 </li>
 <li><code>callback</code> <span class="type">Function</span></li>
 </div></ul>
-<p>Asynchronously append data to a file, creating the file if it not yet exists.
+<p>Asynchronously append data to a file, creating the file if it does not yet exist.
 <code>data</code> can be a string or a buffer.
 
 </p>

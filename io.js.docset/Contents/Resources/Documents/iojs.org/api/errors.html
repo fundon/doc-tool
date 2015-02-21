@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Errors io.js v1.2.0 Manual &amp; Documentation</title>
+  <title>Errors io.js v1.3.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="errors" class="interior">
       <header>
-        <h1>io.js v1.2.0 Documentation</h1>
+        <h1>io.js v1.3.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -297,7 +297,7 @@ new MyError().stack</code></pre>
 
 </p>
 <p>The initial value is <code>10</code>. It may be set to any valid JavaScript number, which
-will effect any stack trace captured <em>after</em> the value has been changed. If set
+will affect any stack trace captured <em>after</em> the value has been changed. If set
 to a non-number value, stack traces will not capture any frames and will report
 <code>undefined</code> on access.
 
@@ -379,8 +379,8 @@ down the process. These are usually failed <code>assert()</code> checks or <code
 <p>System errors are generated in response to a program&#39;s runtime environment.
 Ideally, they represent operational errors that the program needs to be able to
 react to. They are generated at the syscall level: an exhaustive list of error
-codes and their meanings is available by running <code>man 2 intro</code> on most Unices;
-or <a href="http://man7.org/linux/man-pages/man2/intro.2.html">online</a>.
+codes and their meanings is available by running <code>man 2 intro</code> or <code>man 3 errno</code>
+on most Unices; or <a href="http://man7.org/linux/man-pages/man3/errno.3.html">online</a>.
 
 </p>
 <p>In io.js, system errors are represented as augmented Error objects -- not full
@@ -400,7 +400,7 @@ letters, and may be referenced in <code>man 2 intro</code>.
 </p>
 <h3>Common System Errors<span><a class="mark" href="#errors_common_system_errors" id="errors_common_system_errors">#</a></span></h3>
 <p>This list is <strong>not exhaustive</strong>, but enumerates many of the common system errors when
-writing a io.js program. An exhaustive list may be found <a href="http://man7.org/linux/man-pages/man2/intro.2.html">here</a>.
+writing a io.js program. An exhaustive list may be found <a href="http://man7.org/linux/man-pages/man3/errno.3.html">here</a>.
 
 </p>
 <h4>EPERM: Operation not permitted<span><a class="mark" href="#errors_eperm_operation_not_permitted" id="errors_eperm_operation_not_permitted">#</a></span></h4>

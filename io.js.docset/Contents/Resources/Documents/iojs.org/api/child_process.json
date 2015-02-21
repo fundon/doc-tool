@@ -77,10 +77,10 @@
               "desc": "<p>The PID of the child process.\n\n</p>\n<p>Example:\n\n</p>\n<pre><code>var spawn = require(&#39;child_process&#39;).spawn,\n    grep  = spawn(&#39;grep&#39;, [&#39;ssh&#39;]);\n\nconsole.log(&#39;Spawned child pid: &#39; + grep.pid);\ngrep.stdin.end();</code></pre>\n"
             },
             {
-              "textRaw": "`connected` {Boolean} Set to false after `.disconnect' is called ",
+              "textRaw": "`connected` {Boolean} Set to false after `.disconnect` is called ",
               "name": "connected",
               "desc": "<p>If <code>.connected</code> is false, it is no longer possible to send messages.\n\n</p>\n",
-              "shortDesc": "Set to false after `.disconnect' is called"
+              "shortDesc": "Set to false after `.disconnect` is called"
             }
           ],
           "methods": [

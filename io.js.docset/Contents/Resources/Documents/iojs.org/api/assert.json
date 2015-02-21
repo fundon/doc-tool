@@ -33,7 +33,7 @@
           ]
         },
         {
-          "textRaw": "assert(value, message), assert.ok(value[, message])",
+          "textRaw": "assert(value[, message]), assert.ok(value[, message])",
           "type": "method",
           "name": "ok",
           "desc": "<p>Tests if value is truthy, it is equivalent to <code>assert.equal(true, !!value, message);</code>\n\n</p>\n",
@@ -44,7 +44,7 @@
                   "name": "value"
                 },
                 {
-                  "name": "message)"
+                  "name": "message])"
                 },
                 {
                   "name": "assert.ok(value"

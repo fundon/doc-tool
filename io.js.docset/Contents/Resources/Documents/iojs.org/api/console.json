@@ -112,7 +112,7 @@
           "textRaw": "console.time(label)",
           "type": "method",
           "name": "time",
-          "desc": "<p>Used to calculate the duration of a specific operation. To start a timer, call\nthe <code>console.time()</code> method, giving it a name as only parameter. To stop the\ntimer, and to get the elapsed time in miliseconds, just call the\n<a href=\"#console_console_timeend_label\"><code>console.timeEnd()</code></a> method, again passing the\ntimer&#39;s name as the parameter.\n\n</p>\n",
+          "desc": "<p>Used to calculate the duration of a specific operation. To start a timer, call\nthe <code>console.time()</code> method, giving it a name as only parameter. To stop the\ntimer, and to get the elapsed time in milliseconds, just call the\n<a href=\"#console_console_timeend_label\"><code>console.timeEnd()</code></a> method, again passing the\ntimer&#39;s name as the parameter.\n\n</p>\n",
           "signatures": [
             {
               "params": [

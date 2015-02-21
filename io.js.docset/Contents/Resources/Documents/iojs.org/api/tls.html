@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>TLS (SSL) io.js v1.2.0 Manual &amp; Documentation</title>
+  <title>TLS (SSL) io.js v1.3.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="tls" class="interior">
       <header>
-        <h1>io.js v1.2.0 Documentation</h1>
+        <h1>io.js v1.3.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -164,10 +164,11 @@ file. This is done with:
 <p>Alternatively you can send the CSR to a Certificate Authority for signing.
 
 </p>
-<p>(TODO: docs on creating a CA, for now interested users should just look at
-<code>test/fixtures/keys/Makefile</code> in the Node source code)
+<p>For Perfect Forward Secrecy, it is required to generate Diffie-Hellman
+parameters:
 
 </p>
+<pre><code>openssl dhparam -outform PEM -out dhparam.pem 2048</code></pre>
 <p>To create .pfx or .p12, do this:
 
 </p>
@@ -285,26 +286,18 @@ like VeriSign. These are used to authorize connections.</p>
 <li><p><code>crl</code> : Either a string or list of strings of PEM encoded CRLs (Certificate
 Revocation List)</p>
 </li>
-<li><p><code>ciphers</code>: A string describing the ciphers to use or exclude.</p>
-<p>To mitigate <a href="http://blog.ivanristic.com/2011/10/mitigating-the-beast-attack-on-tls.html">BEAST attacks</a> it is recommended that you use this option in
-conjunction with the <code>honorCipherOrder</code> option described below to
-prioritize the non-CBC cipher.</p>
-<p>Defaults to
-<code>ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:AES128-GCM-SHA256:RC4:HIGH:!MD5:!aNULL</code>.
-Consult the <a href="http://www.openssl.org/docs/apps/ciphers.html#CIPHER_LIST_FORMAT">OpenSSL cipher list format documentation</a> for details
-on the format.</p>
-<p><code>ECDHE-RSA-AES128-SHA256</code>, <code>DHE-RSA-AES128-SHA256</code> and
-<code>AES128-GCM-SHA256</code> are TLS v1.2 ciphers and used when io.js is
-linked against OpenSSL 1.0.1 or newer, such as the bundled version
-of OpenSSL.  Note that it is still possible for a TLS v1.2 client
-to negotiate a weaker cipher unless <code>honorCipherOrder</code> is enabled.</p>
-<p><code>RC4</code> is used as a fallback for clients that speak on older version of
-the TLS protocol.  <code>RC4</code> has in recent years come under suspicion and
-should be considered compromised for anything that is truly sensitive.
-It is speculated that state-level actors possess the ability to break it.</p>
-<p><strong>NOTE</strong>: Previous revisions of this section suggested <code>AES256-SHA</code> as an
-acceptable cipher. Unfortunately, <code>AES256-SHA</code> is a CBC cipher and therefore
-susceptible to <a href="http://blog.ivanristic.com/2011/10/mitigating-the-beast-attack-on-tls.html">BEAST attacks</a>. Do <em>not</em> use it.</p>
+<li><p><code>ciphers</code>: A string describing the ciphers to use or exclude, seperated by
+<code>:</code>. The default cipher suite is:</p>
+<pre><code>ECDHE-RSA-AES256-SHA384:DHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:
+DHE-RSA-AES256-SHA256:ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:
+HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA</code></pre>
+<p>The default cipher suite prefers ECDHE and DHE ciphers for Perfect Forward
+secrecy, while offering <em>some</em> backward compatibiltity. Old clients which
+rely on insecure and deprecated RC4 or DES-based ciphers (like Internet
+Explorer 6) aren&#39;t able to complete the handshake with the default
+configuration. If you absolutely must support these clients, the
+<a href="https://wiki.mozilla.org/Security/Server_Side_TLS">TLS recommendations</a> may offer a compatible cipher suite. For more details
+on the format, see the <a href="http://www.openssl.org/docs/apps/ciphers.html#CIPHER_LIST_FORMAT">OpenSSL cipher list format documentation</a>.</p>
 </li>
 <li><p><code>ecdhCurve</code>: A string describing a named curve to use for ECDH key agreement
 or false to disable ECDH.</p>
@@ -320,10 +313,7 @@ finish in this many milliseconds. The default is 120 seconds.</p>
 times out.</p>
 </li>
 <li><p><code>honorCipherOrder</code> : When choosing a cipher, use the server&#39;s preferences
-instead of the client preferences.</p>
-<p>Although, this option is disabled by default, it is <em>recommended</em> that you
-use this option in conjunction with the <code>ciphers</code> option to mitigate
-BEAST attacks.</p>
+instead of the client preferences. Default: <code>true</code>.</p>
 </li>
 <li><p><code>requestCert</code>: If <code>true</code> the server will request a certificate from
 clients that connect and attempt to verify that certificate. Default:
@@ -455,6 +445,9 @@ PEM format. (Could be an array of certs).</p>
 <li><p><code>ca</code>: An array of strings or <code>Buffer</code>s of trusted certificates in PEM
 format. If this is omitted several well known &quot;root&quot; CAs will be used,
 like VeriSign. These are used to authorize connections.</p>
+</li>
+<li><p><code>ciphers</code>: A string describing the ciphers to use or exclude, separated by
+<code>:</code>. Uses the same default cipher suite as <code>tls.createServer</code>.</p>
 </li>
 <li><p><code>rejectUnauthorized</code>: If <code>true</code>, the server certificate is verified against
 the list of supplied CAs. An <code>&#39;error&#39;</code> event is emitted if verification
