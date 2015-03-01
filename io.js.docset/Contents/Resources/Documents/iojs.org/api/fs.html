@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>File System io.js v1.3.0 Manual &amp; Documentation</title>
+  <title>File System io.js v1.4.2 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="fs" class="interior">
       <header>
-        <h1>io.js v1.3.0 Documentation</h1>
+        <h1>io.js v1.4.2 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -182,7 +182,7 @@
 
       <div id="apicontent">
         <h1>File System<span><a class="mark" href="#fs_file_system" id="fs_file_system">#</a></span></h1>
-<pre class="api_stability_3">Stability: 3 - Stable</pre><!--name=fs-->
+<pre class="api_stability_2">Stability: 2 - Stable</pre><!--name=fs-->
 
 <p>File I/O is provided by simple wrappers around standard POSIX functions.  To
 use this module do <code>require(&#39;fs&#39;)</code>. All the methods have asynchronous and
@@ -289,7 +289,8 @@ given to the completion callback.
 </p>
 <h2>fs.truncate(path, len, callback)<span><a class="mark" href="#fs_fs_truncate_path_len_callback" id="fs_fs_truncate_path_len_callback">#</a></span></h2>
 <p>Asynchronous truncate(2). No arguments other than a possible exception are
-given to the completion callback.
+given to the completion callback. A file descriptor can also be passed as the
+first argument. In this case, <code>fs.ftruncate()</code> is called.
 
 </p>
 <h2>fs.truncateSync(path, len)<span><a class="mark" href="#fs_fs_truncatesync_path_len" id="fs_fs_truncatesync_path_len">#</a></span></h2>

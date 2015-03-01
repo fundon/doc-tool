@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Cluster io.js v1.3.0 Manual &amp; Documentation</title>
+  <title>Cluster io.js v1.4.2 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="cluster" class="interior">
       <header>
-        <h1>io.js v1.3.0 Documentation</h1>
+        <h1>io.js v1.4.2 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -118,7 +118,7 @@
 
       <div id="apicontent">
         <h1>Cluster<span><a class="mark" href="#cluster_cluster" id="cluster_cluster">#</a></span></h1>
-<pre class="api_stability_2">Stability: 2 - Unstable</pre><p>A single instance of io.js runs in a single thread. To take advantage of
+<pre class="api_stability_2">Stability: 2 - Stable</pre><p>A single instance of io.js runs in a single thread. To take advantage of
 multi-core systems the user will sometimes want to launch a cluster of io.js
 processes to handle the load.
 
@@ -583,12 +583,15 @@ worker.kill();</code></pre>
 <li><code>message</code> <span class="type">Object</span></li>
 <li><code>sendHandle</code> <span class="type">Handle object</span></li>
 </div></ul>
-<p>This function is equal to the send methods provided by
-<code>child_process.fork()</code>.  In the master you should use this function to
-send a message to a specific worker.
+<p>Send a message to a worker or master, optionally with a handle.
 
 </p>
-<p>In a worker you can also use <code>process.send(message)</code>, it is the same function.
+<p>In the master this sends a message to a specific worker. It is identical to
+<a href="child_process.html#child_process_child_send_message_sendhandle">child.send()</a>.
+
+</p>
+<p>In a worker this sends a message to the master. It is identical to
+<code>process.send()</code>.
 
 </p>
 <p>This example will echo back all messages from the master:

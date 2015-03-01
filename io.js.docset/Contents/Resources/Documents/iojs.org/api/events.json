@@ -4,8 +4,8 @@
     {
       "textRaw": "Events",
       "name": "Events",
-      "stability": 4,
-      "stabilityText": "API Frozen",
+      "stability": 2,
+      "stabilityText": "Stable",
       "type": "module",
       "desc": "<p>Many objects in io.js emit events: a <code>net.Server</code> emits an event each time\na peer connects to it, a <code>fs.readStream</code> emits an event when the file is\nopened. All objects which emit events are instances of <code>events.EventEmitter</code>.\nYou can access this module by doing: <code>require(&quot;events&quot;);</code>\n\n</p>\n<p>Typically, event names are represented by a camel-cased string, however,\nthere aren&#39;t any strict restrictions on that, as any string will be accepted.\n\n</p>\n<p>Functions can then be attached to objects, to be executed when an event\nis emitted. These functions are called <em>listeners</em>. Inside a listener\nfunction, <code>this</code> refers to the <code>EventEmitter</code> that the listener was\nattached to.\n\n\n</p>\n",
       "classes": [

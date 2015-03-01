@@ -5,7 +5,7 @@
       "textRaw": "TTY",
       "name": "tty",
       "stability": 2,
-      "stabilityText": "Unstable",
+      "stabilityText": "Stable",
       "desc": "<p>The <code>tty</code> module houses the <code>tty.ReadStream</code> and <code>tty.WriteStream</code> classes. In\nmost cases, you will not need to use this module directly.\n\n</p>\n<p>When io.js detects that it is being run inside a TTY context, then <code>process.stdin</code>\nwill be a <code>tty.ReadStream</code> instance and <code>process.stdout</code> will be\na <code>tty.WriteStream</code> instance. The preferred way to check if io.js is being run\nin a TTY context is to check <code>process.stdout.isTTY</code>:\n\n</p>\n<pre><code>$ iojs -p -e &quot;Boolean(process.stdout.isTTY)&quot;\ntrue\n$ iojs -p -e &quot;Boolean(process.stdout.isTTY)&quot; | cat\nfalse</code></pre>\n",
       "methods": [
         {

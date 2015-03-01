@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Stream io.js v1.3.0 Manual &amp; Documentation</title>
+  <title>Stream io.js v1.4.2 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="stream" class="interior">
       <header>
-        <h1>io.js v1.3.0 Documentation</h1>
+        <h1>io.js v1.4.2 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -124,9 +124,9 @@
 <li><a href="#stream_class_stream_writable_1">Class: stream.Writable</a><ul>
 <li><a href="#stream_new_stream_writable_options">new stream.Writable([options])</a></li>
 <li><a href="#stream_writable_write_chunk_encoding_callback_1">writable._write(chunk, encoding, callback)</a></li>
+<li><a href="#stream_writable_writev_chunks_callback">writable._writev(chunks, callback)</a></li>
 </ul>
 </li>
-<li><a href="#stream_writable_writev_chunks_callback">writable._writev(chunks, callback)</a></li>
 <li><a href="#stream_class_stream_duplex_1">Class: stream.Duplex</a><ul>
 <li><a href="#stream_new_stream_duplex_options">new stream.Duplex(options)</a></li>
 </ul>
@@ -165,7 +165,7 @@
 
       <div id="apicontent">
         <h1>Stream<span><a class="mark" href="#stream_stream" id="stream_stream">#</a></span></h1>
-<pre class="api_stability_2">Stability: 2 - Unstable</pre><p>A stream is an abstract interface implemented by various objects in
+<pre class="api_stability_2">Stability: 2 - Stable</pre><p>A stream is an abstract interface implemented by various objects in
 io.js.  For example a <a href="http.html#http_http_incomingmessage">request to an HTTP
 server</a> is a stream, as is
 <a href="process.html#process_process_stdout">stdout</a>. Streams are readable, writable, or both. All streams are
@@ -1251,7 +1251,7 @@ programs.  However, you <strong>are</strong> expected to override this method in
 your own extension classes.
 
 </p>
-<h3>writable._writev(chunks, callback)<span><a class="mark" href="#stream_writable_writev_chunks_callback" id="stream_writable_writev_chunks_callback">#</a></span></h3>
+<h4>writable._writev(chunks, callback)<span><a class="mark" href="#stream_writable_writev_chunks_callback" id="stream_writable_writev_chunks_callback">#</a></span></h4>
 <div class="signature"><ul>
 <li><code>chunks</code> <span class="type">Array</span> The chunks to be written.  Each chunk has following
 format: <code>{ chunk: ..., encoding: ... }</code>.</li>

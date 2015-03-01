@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>TLS (SSL) io.js v1.3.0 Manual &amp; Documentation</title>
+  <title>TLS (SSL) io.js v1.4.2 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="tls" class="interior">
       <header>
-        <h1>io.js v1.3.0 Documentation</h1>
+        <h1>io.js v1.4.2 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -138,7 +138,7 @@
 
       <div id="apicontent">
         <h1>TLS (SSL)<span><a class="mark" href="#tls_tls_ssl" id="tls_tls_ssl">#</a></span></h1>
-<pre class="api_stability_3">Stability: 3 - Stable</pre><p>Use <code>require(&#39;tls&#39;)</code> to access this module.
+<pre class="api_stability_2">Stability: 2 - Stable</pre><p>Use <code>require(&#39;tls&#39;)</code> to access this module.
 
 </p>
 <p>The <code>tls</code> module uses OpenSSL to provide Transport Layer Security and/or
@@ -303,9 +303,10 @@ on the format, see the <a href="http://www.openssl.org/docs/apps/ciphers.html#CI
 or false to disable ECDH.</p>
 <p>Defaults to <code>prime256v1</code>. Consult <a href="http://www.rfc-editor.org/rfc/rfc4492.txt">RFC 4492</a> for more details.</p>
 </li>
-<li><p><code>dhparam</code>: DH parameter file to use for DHE key agreement. Use
-<code>openssl dhparam</code> command to create it. If the file is invalid to
-load, it is silently discarded.</p>
+<li><p><code>dhparam</code>: A string or <code>Buffer</code> containing Diffie Hellman parameters,
+required for Perfect Forward Secrecy. Use <code>openssl dhparam</code> to create it.
+If omitted or invalid, it is silently discarded and DHE ciphers won&#39;t be
+available.</p>
 </li>
 <li><p><code>handshakeTimeout</code>: Abort the connection if the SSL/TLS handshake does not
 finish in this many milliseconds. The default is 120 seconds.</p>

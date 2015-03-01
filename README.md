@@ -3,10 +3,14 @@
 ## Generate io.js docset
 
 ```sh
+$ git clone git@github.com:iojs/io.js.git
+$ git clone git@github.com:fundon/iojs-docset.git
+
+
 # change to io.js project
 $ cd io.js
+$ ln -sf ../iojs-docset dash
 
-$ git clone git@github.com:fundon/iojs-docset.git dash
 $ cp dash/template.html doc/template.html
 
 # generate io.js API docs

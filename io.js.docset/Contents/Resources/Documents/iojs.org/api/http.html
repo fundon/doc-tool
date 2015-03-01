@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>HTTP io.js v1.3.0 Manual &amp; Documentation</title>
+  <title>HTTP io.js v1.4.2 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="http" class="interior">
       <header>
-        <h1>io.js v1.3.0 Documentation</h1>
+        <h1>io.js v1.4.2 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -136,6 +136,7 @@
 <li><a href="#http_event_connect_1">Event: &#39;connect&#39;</a></li>
 <li><a href="#http_event_upgrade_1">Event: &#39;upgrade&#39;</a></li>
 <li><a href="#http_event_continue">Event: &#39;continue&#39;</a></li>
+<li><a href="#http_event_abort">Event: &#39;abort&#39;</a></li>
 <li><a href="#http_request_flush">request.flush()</a></li>
 <li><a href="#http_request_write_chunk_encoding_callback">request.write(chunk[, encoding][, callback])</a></li>
 <li><a href="#http_request_end_data_encoding_callback">request.end([data][, encoding][, callback])</a></li>
@@ -168,7 +169,7 @@
 
       <div id="apicontent">
         <h1>HTTP<span><a class="mark" href="#http_http" id="http_http">#</a></span></h1>
-<pre class="api_stability_3">Stability: 3 - Stable</pre><p>To use the HTTP server and client one must <code>require(&#39;http&#39;)</code>.
+<pre class="api_stability_2">Stability: 2 - Stable</pre><p>To use the HTTP server and client one must <code>require(&#39;http&#39;)</code>.
 
 </p>
 <p>The HTTP interfaces in io.js are designed to support many features
@@ -1104,6 +1105,14 @@ srv.listen(1337, &#39;127.0.0.1&#39;, function() {
 <p>Emitted when the server sends a &#39;100 Continue&#39; HTTP response, usually because
 the request contained &#39;Expect: 100-continue&#39;. This is an instruction that
 the client should send the request body.
+
+</p>
+<h3>Event: &#39;abort&#39;<span><a class="mark" href="#http_event_abort" id="http_event_abort">#</a></span></h3>
+<p><code>function () { }</code>
+
+</p>
+<p>Emitted when the request has been aborted by the client. This event is only
+emitted on the first call to <code>abort()</code>.
 
 </p>
 <h3>request.flush()<span><a class="mark" href="#http_request_flush" id="http_request_flush">#</a></span></h3>

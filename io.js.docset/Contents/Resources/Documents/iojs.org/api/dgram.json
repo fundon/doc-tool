@@ -4,7 +4,7 @@
     {
       "textRaw": "UDP / Datagram Sockets",
       "name": "dgram",
-      "stability": 3,
+      "stability": 2,
       "stabilityText": "Stable",
       "desc": "<p>Datagram sockets are available through <code>require(&#39;dgram&#39;)</code>.\n\n</p>\n<p>Important note: the behavior of <code>dgram.Socket#bind()</code> has changed in v0.10\nand is always asynchronous now.  If you have code that looks like this:\n\n</p>\n<pre><code>var s = dgram.createSocket(&#39;udp4&#39;);\ns.bind(1234);\ns.addMembership(&#39;224.0.0.114&#39;);</code></pre>\n<p>You have to change it to this:\n\n</p>\n<pre><code>var s = dgram.createSocket(&#39;udp4&#39;);\ns.bind(1234, function() {\n  s.addMembership(&#39;224.0.0.114&#39;);\n});</code></pre>\n",
       "methods": [

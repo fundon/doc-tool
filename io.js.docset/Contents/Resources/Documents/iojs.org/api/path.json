@@ -4,7 +4,7 @@
     {
       "textRaw": "Path",
       "name": "path",
-      "stability": 3,
+      "stability": 2,
       "stabilityText": "Stable",
       "desc": "<p>This module contains utilities for handling and transforming file\npaths.  Almost all these methods perform only string transformations.\nThe file system is not consulted to check whether paths are valid.\n\n</p>\n<p>Use <code>require(&#39;path&#39;)</code> to use this module.  The following methods are provided:\n\n</p>\n",
       "methods": [

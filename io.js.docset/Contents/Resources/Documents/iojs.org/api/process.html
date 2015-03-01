@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>process io.js v1.3.0 Manual &amp; Documentation</title>
+  <title>process io.js v1.4.2 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="process" class="interior">
       <header>
-        <h1>io.js v1.3.0 Documentation</h1>
+        <h1>io.js v1.4.2 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -81,6 +81,8 @@
 <li><a href="#process_event_exit">Event: &#39;exit&#39;</a></li>
 <li><a href="#process_event_beforeexit">Event: &#39;beforeExit&#39;</a></li>
 <li><a href="#process_event_uncaughtexception">Event: &#39;uncaughtException&#39;</a></li>
+<li><a href="#process_event_unhandledrejection">Event: &#39;unhandledRejection&#39;</a></li>
+<li><a href="#process_event_rejectionhandled">Event: &#39;rejectionHandled&#39;</a></li>
 <li><a href="#process_signal_events">Signal Events</a></li>
 <li><a href="#process_process_stdout">process.stdout</a></li>
 <li><a href="#process_process_stderr">process.stderr</a></li>
@@ -246,6 +248,72 @@ Nine out of ten times nothing happens - but the 10th time, your system is bust.
 <p>You have been warned.
 
 </p>
+<h2>Event: &#39;unhandledRejection&#39;<span><a class="mark" href="#process_event_unhandledrejection" id="process_event_unhandledrejection">#</a></span></h2>
+<p>Emitted whenever a <code>Promise</code> is rejected and no error handler is attached to
+the promise within a turn of the event loop. When programming with promises
+exceptions are encapsulated as rejected promises. Such promises can be caught
+and handled using <code>promise.catch(...)</code> and rejections are propagated through
+a promise chain. This event is useful for detecting and keeping track of
+promises that were rejected whose rejections were not handled yet. This event
+is emitted with the following arguments:
+
+</p>
+<ul>
+<li><code>reason</code> the object with which the promise was rejected (usually an <code>Error</code>
+instance).</li>
+<li><code>p</code> the promise that was rejected.</li>
+</ul>
+<p>Here is an example that logs every unhandled rejection to the console
+
+</p>
+<pre><code>process.on(&#39;unhandledRejection&#39;, function(reason, p) {
+    console.log(&quot;Unhandled Rejection at: Promise &quot;, p, &quot; reason: &quot;, reason);
+    // application specific logging, throwing an error, or other logic here
+});</code></pre>
+<p>For example, here is a rejection that will trigger the <code>&#39;unhandledRejection&#39;</code>
+event:
+
+</p>
+<pre><code>somePromise.then(function(res) {
+  return reportToUser(JSON.pasre(res)); // note the typo
+}); // no `.catch` or `.then`</code></pre>
+<h2>Event: &#39;rejectionHandled&#39;<span><a class="mark" href="#process_event_rejectionhandled" id="process_event_rejectionhandled">#</a></span></h2>
+<p>Emitted whenever a Promise was rejected and an error handler was attached to it
+(for example with <code>.catch()</code>) later than after an event loop turn. This event
+is emitted with the following arguments:
+
+</p>
+<ul>
+<li><code>p</code> the promise that was previously emitted in an &#39;unhandledRejection&#39;
+event, but which has now gained a rejection handler.</li>
+</ul>
+<p>There is no notion of a top level for a promise chain at which rejections can
+always be handled. Being inherently asynchronous in nature, a promise rejection
+can be be handled at a future point in time — possibly much later than the
+event loop turn it takes for the &#39;unhandledRejection&#39; event to be emitted.
+
+</p>
+<p>Another way of stating this is that, unlike in synchronous code where there is
+an ever-growing list of unhandled exceptions, with promises there is a
+growing-and-shrinking list of unhandled rejections. In synchronous code, the
+&#39;uncaughtException&#39; event tells you when the list of unhandled exceptions
+grows. And in asynchronous code, the &#39;unhandledRejection&#39; event tells you
+when the list of unhandled rejections grows, while the &#39;rejectionHandled&#39;
+event tells you when the list of unhandled rejections shrinks.
+
+</p>
+<p>For example using the rejection detection hooks in order to keep a list of all
+the rejected promises at a given time:
+
+</p>
+<pre><code>var unhandledRejections = [];
+process.on(&#39;unhandledRejection&#39;, function(reason, p) {
+    unhandledRejections.push(p);
+});
+process.on(&#39;rejectionHandled&#39;, function(p) {
+    var index = unhandledRejections.indexOf(p);
+    unhandledRejections.splice(index, 1);
+});</code></pre>
 <h2>Signal Events<span><a class="mark" href="#process_signal_events" id="process_signal_events">#</a></span></h2>
 <!--type=event-->
 <!--name=SIGINT, SIGHUP, etc.-->
@@ -308,11 +376,11 @@ emulation with <code>process.kill()</code>, and <code>child_process.kill()</code
 <p>A <code>Writable Stream</code> to <code>stdout</code> (on fd <code>1</code>).
 
 </p>
-<p>Example: the definition of <code>console.log</code>
+<p>For example, a <code>console.log</code> equivalent could look like this:
 
 </p>
-<pre><code>console.log = function(d) {
-  process.stdout.write(d + &#39;\n&#39;);
+<pre><code>console.log = function(msg) {
+  process.stdout.write(msg + &#39;\n&#39;);
 };</code></pre>
 <p><code>process.stderr</code> and <code>process.stdout</code> are unlike other streams in io.js in
 that they cannot be closed (<code>end()</code> will throw), they never emit the <code>finish</code>

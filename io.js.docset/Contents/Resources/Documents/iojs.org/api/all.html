@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>About this Documentation io.js v1.3.0 Manual &amp; Documentation</title>
+  <title>About this Documentation io.js v1.4.2 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="all" class="interior">
       <header>
-        <h1>io.js v1.3.0 Documentation</h1>
+        <h1>io.js v1.4.2 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -694,6 +694,7 @@
 <li><a href="#all_event_connect_1">Event: &#39;connect&#39;</a></li>
 <li><a href="#all_event_upgrade_1">Event: &#39;upgrade&#39;</a></li>
 <li><a href="#all_event_continue">Event: &#39;continue&#39;</a></li>
+<li><a href="#all_event_abort">Event: &#39;abort&#39;</a></li>
 <li><a href="#all_request_flush">request.flush()</a></li>
 <li><a href="#all_request_write_chunk_encoding_callback">request.write(chunk[, encoding][, callback])</a></li>
 <li><a href="#all_request_end_data_encoding_callback">request.end([data][, encoding][, callback])</a></li>
@@ -833,7 +834,7 @@
 <li><a href="#all_net_isipv6_input">net.isIPv6(input)</a></li>
 </ul>
 </li>
-<li><a href="#all_os">os</a><ul>
+<li><a href="#all_os">OS</a><ul>
 <li><a href="#all_os_tmpdir">os.tmpdir()</a></li>
 <li><a href="#all_os_endianness">os.endianness()</a></li>
 <li><a href="#all_os_hostname">os.hostname()</a></li>
@@ -872,6 +873,8 @@
 <li><a href="#all_event_exit_3">Event: &#39;exit&#39;</a></li>
 <li><a href="#all_event_beforeexit">Event: &#39;beforeExit&#39;</a></li>
 <li><a href="#all_event_uncaughtexception">Event: &#39;uncaughtException&#39;</a></li>
+<li><a href="#all_event_unhandledrejection">Event: &#39;unhandledRejection&#39;</a></li>
+<li><a href="#all_event_rejectionhandled">Event: &#39;rejectionHandled&#39;</a></li>
 <li><a href="#all_signal_events">Signal Events</a></li>
 <li><a href="#all_process_stdout">process.stdout</a></li>
 <li><a href="#all_process_stderr">process.stderr</a></li>
@@ -1026,9 +1029,9 @@
 <li><a href="#all_class_stream_writable_1">Class: stream.Writable</a><ul>
 <li><a href="#all_new_stream_writable_options">new stream.Writable([options])</a></li>
 <li><a href="#all_writable_write_chunk_encoding_callback_1">writable._write(chunk, encoding, callback)</a></li>
+<li><a href="#all_writable_writev_chunks_callback">writable._writev(chunks, callback)</a></li>
 </ul>
 </li>
-<li><a href="#all_writable_writev_chunks_callback">writable._writev(chunks, callback)</a></li>
 <li><a href="#all_class_stream_duplex_1">Class: stream.Duplex</a><ul>
 <li><a href="#all_new_stream_duplex_options">new stream.Duplex(options)</a></li>
 </ul>
@@ -1279,7 +1282,7 @@ wish to do programmatic things with the documentation.
 
 </p>
 <p>Every <code>.html</code> and <code>.json</code> file is generated based on the corresponding
-<code>.markdown</code> file in the <code>doc/api/</code> folder in node&#39;s source tree.  The
+<code>.markdown</code> file in the <code>doc/api/</code> folder in io.js&#39;s source tree.  The
 documentation is generated using the <code>tools/doc/generate.js</code> program.
 The HTML template is located at <code>doc/template.html</code>.
 
@@ -1302,23 +1305,17 @@ and in the process of being redesigned.
 This feature is known to be problematic, and changes are
 planned.  Do not rely on it.  Use of the feature may cause warnings.  Backwards
 compatibility should not be expected.</pre><pre class="api_stability_1">Stability: 1 - Experimental
-This feature was introduced recently, and may change
-or be removed in future versions.  Please try it out and provide feedback.
-If it addresses a use-case that is important to you, tell the node core team.</pre><pre class="api_stability_2">Stability: 2 - Unstable
-The API is in the process of settling, but has not yet had
-sufficient real-world testing to be considered stable. Backwards-compatibility
-will be maintained if reasonable.</pre><pre class="api_stability_3">Stability: 3 - Stable
-The API has proven satisfactory, but cleanup in the underlying
-code may cause minor changes.  Backwards-compatibility is guaranteed.</pre><pre class="api_stability_4">Stability: 4 - API Frozen
-This API has been tested extensively in production and is
-unlikely to ever have to change.</pre><pre class="api_stability_5">Stability: 5 - Locked
-Unless serious bugs are found, this code will not ever
-change.  Please do not suggest changes in this area; they will be refused.</pre><h2>JSON Output<span><a class="mark" href="#all_json_output" id="all_json_output">#</a></span></h2>
+This feature is subject to change, and is gated by a command line flag.
+It may change or be removed in future versions.</pre><pre class="api_stability_2">Stability: 2 - Stable
+The API has proven satisfactory. Compatibility with the npm ecosystem
+is a high priority, and will not be broken unless absolutely necessary.</pre><pre class="api_stability_3">Stability: 3 - Locked
+Only fixes related to security, performance, or bug fixes will be accepted.
+Please do not suggest API changes in this area; they will be refused.</pre><h2>JSON Output<span><a class="mark" href="#all_json_output" id="all_json_output">#</a></span></h2>
 <pre class="api_stability_1">Stability: 1 - Experimental</pre><p>Every HTML file in the markdown has a corresponding JSON file with the
 same data.
 
 </p>
-<p>This feature is new as of node v0.6.12.  It is experimental.
+<p>This feature was added in node v0.6.12.  It is experimental.
 
 </p>
 <h1>Synopsis<span><a class="mark" href="#all_synopsis" id="all_synopsis">#</a></span></h1>
@@ -2045,7 +2042,7 @@ var result = addon.add(obj1, obj2);
 
 console.log(result); // 30</code></pre>
 <h1>Assert<span><a class="mark" href="#all_assert" id="all_assert">#</a></span></h1>
-<pre class="api_stability_5">Stability: 5 - Locked</pre><p>This module is used for writing unit tests for your applications, you can
+<pre class="api_stability_2">Stability: 2 - Stable</pre><p>This module is used for writing unit tests for your applications, you can
 access it with <code>require(&#39;assert&#39;)</code>.
 
 </p>
@@ -2139,7 +2136,7 @@ testing the first argument, <code>error</code> in callbacks.
 
 </p>
 <h1>Buffer<span><a class="mark" href="#all_buffer" id="all_buffer">#</a></span></h1>
-<pre class="api_stability_3">Stability: 3 - Stable</pre><p>Pure JavaScript is Unicode friendly but not nice to binary data.  When
+<pre class="api_stability_2">Stability: 2 - Stable</pre><p>Pure JavaScript is Unicode friendly but not nice to binary data.  When
 dealing with TCP streams or the file system, it&#39;s necessary to handle octet
 streams. io.js has several strategies for manipulating, creating, and
 consuming octet streams.
@@ -3073,7 +3070,7 @@ has actively observed undue memory retention in their applications.
 
 </p>
 <h1>Child Process<span><a class="mark" href="#all_child_process" id="all_child_process">#</a></span></h1>
-<pre class="api_stability_3">Stability: 3 - Stable</pre><p>io.js provides a tri-directional <code>popen(3)</code> facility through the
+<pre class="api_stability_2">Stability: 2 - Stable</pre><p>io.js provides a tri-directional <code>popen(3)</code> facility through the
 <code>child_process</code> module.
 
 </p>
@@ -3905,7 +3902,7 @@ throw.  The <code>Error</code> object will contain the entire result from
 
 </p>
 <h1>Cluster<span><a class="mark" href="#all_cluster" id="all_cluster">#</a></span></h1>
-<pre class="api_stability_2">Stability: 2 - Unstable</pre><p>A single instance of io.js runs in a single thread. To take advantage of
+<pre class="api_stability_2">Stability: 2 - Stable</pre><p>A single instance of io.js runs in a single thread. To take advantage of
 multi-core systems the user will sometimes want to launch a cluster of io.js
 processes to handle the load.
 
@@ -4370,12 +4367,15 @@ worker.kill();</code></pre>
 <li><code>message</code> <span class="type">Object</span></li>
 <li><code>sendHandle</code> <span class="type">Handle object</span></li>
 </div></ul>
-<p>This function is equal to the send methods provided by
-<code>child_process.fork()</code>.  In the master you should use this function to
-send a message to a specific worker.
+<p>Send a message to a worker or master, optionally with a handle.
 
 </p>
-<p>In a worker you can also use <code>process.send(message)</code>, it is the same function.
+<p>In the master this sends a message to a specific worker. It is identical to
+<a href="child_process.html#child_process_child_send_message_sendhandle">child.send()</a>.
+
+</p>
+<p>In a worker this sends a message to the master. It is identical to
+<code>process.send()</code>.
 
 </p>
 <p>This example will echo back all messages from the master:
@@ -4595,7 +4595,7 @@ worker.on(&#39;exit&#39;, function(code, signal) {
 
 </p>
 <h1>console<span><a class="mark" href="#all_console" id="all_console">#</a></span></h1>
-<pre class="api_stability_4">Stability: 4 - API Frozen</pre><div class="signature"><ul>
+<pre class="api_stability_2">Stability: 2 - Stable</pre><div class="signature"><ul>
 <li><span class="type">Object</span></li>
 </div></ul>
 <!--type=global-->
@@ -4695,8 +4695,7 @@ to the current position.
 
 </p>
 <h1>Crypto<span><a class="mark" href="#all_crypto" id="all_crypto">#</a></span></h1>
-<pre class="api_stability_2">Stability: 2 - Unstable; API changes are being discussed for
-future versions.  Breaking changes will be minimized.  See below.</pre><p>Use <code>require(&#39;crypto&#39;)</code> to access this module.
+<pre class="api_stability_2">Stability: 2 - Stable</pre><p>Use <code>require(&#39;crypto&#39;)</code> to access this module.
 
 </p>
 <p>The crypto module offers a way of encapsulating secure credentials to be
@@ -5523,7 +5522,7 @@ temporary measure.
 
 </p>
 <h1>Debugger<span><a class="mark" href="#all_debugger" id="all_debugger">#</a></span></h1>
-<pre class="api_stability_3">Stability: 3 - Stable</pre><!-- type=misc -->
+<pre class="api_stability_2">Stability: 2 - Stable</pre><!-- type=misc -->
 
 <p>V8 comes with an extensive debugger which is accessible out-of-process via a
 simple <a href="http://code.google.com/p/v8/wiki/DebuggerProtocol">TCP protocol</a>.
@@ -5694,7 +5693,7 @@ The syntax is:
 <li><code>iojs debug &lt;URI&gt;</code> - Connects to the process via the URI such as localhost:5858</li>
 </ul>
 <h1>UDP / Datagram Sockets<span><a class="mark" href="#all_udp_datagram_sockets" id="all_udp_datagram_sockets">#</a></span></h1>
-<pre class="api_stability_3">Stability: 3 - Stable</pre><!-- name=dgram -->
+<pre class="api_stability_2">Stability: 2 - Stable</pre><!-- name=dgram -->
 
 <p>Datagram sockets are available through <code>require(&#39;dgram&#39;)</code>.
 
@@ -6037,7 +6036,7 @@ the socket is <code>ref</code>d calling <code>ref</code> again will have no effe
 
 </p>
 <h1>DNS<span><a class="mark" href="#all_dns" id="all_dns">#</a></span></h1>
-<pre class="api_stability_3">Stability: 3 - Stable</pre><p>Use <code>require(&#39;dns&#39;)</code> to access this module.
+<pre class="api_stability_2">Stability: 2 - Stable</pre><p>Use <code>require(&#39;dns&#39;)</code> to access this module.
 
 </p>
 <p>This module contains functions that belong to two different categories:
@@ -6372,7 +6371,7 @@ uses. For instance, <em>they do not use the configuration from <code>/etc/hosts<
 
 </p>
 <h1>Domain<span><a class="mark" href="#all_domain" id="all_domain">#</a></span></h1>
-<pre class="api_stability_2">Stability: 2 - Unstable</pre><p><strong>This module is pending deprecation</strong>. Once a replacement API has been
+<pre class="api_stability_0">Stability: 0 - Deprecated</pre><p><strong>This module is pending deprecation</strong>. Once a replacement API has been
 finalized, this module will be fully deprecated. Most end users should
 <strong>not</strong> have cause to use this module. Users who absolutely must have
 the functionality that domains provide may rely on it for the time being
@@ -7283,7 +7282,7 @@ exited.
 
 </p>
 <h1>Events<span><a class="mark" href="#all_events" id="all_events">#</a></span></h1>
-<pre class="api_stability_4">Stability: 4 - API Frozen</pre><!--type=module-->
+<pre class="api_stability_2">Stability: 2 - Stable</pre><!--type=module-->
 
 <p>Many objects in io.js emit events: a <code>net.Server</code> emits an event each time
 a peer connects to it, a <code>fs.readStream</code> emits an event when the file is
@@ -7451,7 +7450,7 @@ triggered, the listener has been removed from the array of listeners for the
 
 </p>
 <h1>File System<span><a class="mark" href="#all_file_system" id="all_file_system">#</a></span></h1>
-<pre class="api_stability_3">Stability: 3 - Stable</pre><!--name=fs-->
+<pre class="api_stability_2">Stability: 2 - Stable</pre><!--name=fs-->
 
 <p>File I/O is provided by simple wrappers around standard POSIX functions.  To
 use this module do <code>require(&#39;fs&#39;)</code>. All the methods have asynchronous and
@@ -7558,7 +7557,8 @@ given to the completion callback.
 </p>
 <h2>fs.truncate(path, len, callback)<span><a class="mark" href="#all_fs_truncate_path_len_callback" id="all_fs_truncate_path_len_callback">#</a></span></h2>
 <p>Asynchronous truncate(2). No arguments other than a possible exception are
-given to the completion callback.
+given to the completion callback. A file descriptor can also be passed as the
+first argument. In this case, <code>fs.ftruncate()</code> is called.
 
 </p>
 <h2>fs.truncateSync(path, len)<span><a class="mark" href="#all_fs_truncatesync_path_len" id="all_fs_truncatesync_path_len">#</a></span></h2>
@@ -8570,7 +8570,7 @@ will not execute.
 
 </p>
 <h1>HTTP<span><a class="mark" href="#all_http" id="all_http">#</a></span></h1>
-<pre class="api_stability_3">Stability: 3 - Stable</pre><p>To use the HTTP server and client one must <code>require(&#39;http&#39;)</code>.
+<pre class="api_stability_2">Stability: 2 - Stable</pre><p>To use the HTTP server and client one must <code>require(&#39;http&#39;)</code>.
 
 </p>
 <p>The HTTP interfaces in io.js are designed to support many features
@@ -9508,6 +9508,14 @@ the request contained &#39;Expect: 100-continue&#39;. This is an instruction tha
 the client should send the request body.
 
 </p>
+<h3>Event: &#39;abort&#39;<span><a class="mark" href="#all_event_abort" id="all_event_abort">#</a></span></h3>
+<p><code>function () { }</code>
+
+</p>
+<p>Emitted when the request has been aborted by the client. This event is only
+emitted on the first call to <code>abort()</code>.
+
+</p>
 <h3>request.flush()<span><a class="mark" href="#all_request_flush" id="all_request_flush">#</a></span></h3>
 <p>Flush the request headers.
 
@@ -9725,7 +9733,7 @@ authentication details.
 
 </p>
 <h1>HTTPS<span><a class="mark" href="#all_https" id="all_https">#</a></span></h1>
-<pre class="api_stability_3">Stability: 3 - Stable</pre><p>HTTPS is the HTTP protocol over TLS/SSL. In io.js this is implemented as a
+<pre class="api_stability_2">Stability: 2 - Stable</pre><p>HTTPS is the HTTP protocol over TLS/SSL. In io.js this is implemented as a
 separate module.
 
 </p>
@@ -9942,7 +9950,7 @@ for more information.
 
 </p>
 <h1>Modules<span><a class="mark" href="#all_modules" id="all_modules">#</a></span></h1>
-<pre class="api_stability_5">Stability: 5 - Locked</pre><!--name=module-->
+<pre class="api_stability_3">Stability: 3 - Locked</pre><!--name=module-->
 
 <p>io.js has a simple module loading system.  In io.js, files and modules are in
 one-to-one correspondence.  As an example, <code>foo.js</code> loads the module
@@ -10504,7 +10512,7 @@ relative, and based on the real path of the files making the calls to
 
 </p>
 <h1>net<span><a class="mark" href="#all_net" id="all_net">#</a></span></h1>
-<pre class="api_stability_3">Stability: 3 - Stable</pre><p>The <code>net</code> module provides you with an asynchronous network wrapper. It contains
+<pre class="api_stability_2">Stability: 2 - Stable</pre><p>The <code>net</code> module provides you with an asynchronous network wrapper. It contains
 methods for creating both servers and clients (called streams). You can include
 this module with <code>require(&#39;net&#39;);</code>
 
@@ -11162,19 +11170,20 @@ returns 4 for IP version 4 addresses, and returns 6 for IP version 6 addresses.
 <p>Returns true if input is a version 6 IP address, otherwise returns false.
 
 </p>
-<h1>os<span><a class="mark" href="#all_os" id="all_os">#</a></span></h1>
-<pre class="api_stability_4">Stability: 4 - API Frozen</pre><p>Provides a few basic operating-system related utility functions.
+<h1>OS<span><a class="mark" href="#all_os" id="all_os">#</a></span></h1>
+<pre class="api_stability_2">Stability: 2 - Stable</pre><p>Provides a few basic operating-system related utility functions.
 
 </p>
 <p>Use <code>require(&#39;os&#39;)</code> to access this module.
 
 </p>
 <h2>os.tmpdir()<span><a class="mark" href="#all_os_tmpdir" id="all_os_tmpdir">#</a></span></h2>
-<p>Returns the operating system&#39;s default directory for temp files.
+<p>Returns the operating system&#39;s default directory for temporary files.
 
 </p>
 <h2>os.endianness()<span><a class="mark" href="#all_os_endianness" id="all_os_endianness">#</a></span></h2>
-<p>Returns the endianness of the CPU. Possible values are <code>&quot;BE&quot;</code> or <code>&quot;LE&quot;</code>.
+<p>Returns the endianness of the CPU. Possible values are <code>&#39;BE&#39;</code> for big endian
+or <code>&#39;LE&#39;</code> for little endian.
 
 </p>
 <h2>os.hostname()<span><a class="mark" href="#all_os_hostname" id="all_os_hostname">#</a></span></h2>
@@ -11182,16 +11191,19 @@ returns 4 for IP version 4 addresses, and returns 6 for IP version 6 addresses.
 
 </p>
 <h2>os.type()<span><a class="mark" href="#all_os_type" id="all_os_type">#</a></span></h2>
-<p>Returns the operating system name.
+<p>Returns the operating system name. For example <code>&#39;Linux&#39;</code> on Linux, <code>&#39;Darwin&#39;</code>
+on OS X and <code>&#39;Windows_NT&#39;</code> on Windows.
 
 </p>
 <h2>os.platform()<span><a class="mark" href="#all_os_platform" id="all_os_platform">#</a></span></h2>
-<p>Returns the operating system platform.
+<p>Returns the operating system platform. Possible values are <code>&#39;darwin&#39;</code>,
+<code>&#39;freebsd&#39;</code>, <code>&#39;linux&#39;</code>, <code>&#39;sunos&#39;</code> or <code>&#39;win32&#39;</code>. Returns the value of
+<code>process.platform</code>.
 
 </p>
 <h2>os.arch()<span><a class="mark" href="#all_os_arch" id="all_os_arch">#</a></span></h2>
-<p>Returns the operating system CPU architecture. Possible values are <code>&quot;x64&quot;</code>,
-<code>&quot;arm&quot;</code> and <code>&quot;ia32&quot;</code>.
+<p>Returns the operating system CPU architecture. Possible values are <code>&#39;x64&#39;</code>,
+<code>&#39;arm&#39;</code> and <code>&#39;ia32&#39;</code>. Returns the value of <code>process.arch</code>.
 
 </p>
 <h2>os.release()<span><a class="mark" href="#all_os_release" id="all_os_release">#</a></span></h2>
@@ -11297,6 +11309,10 @@ milliseconds the CPU/core spent in: user, nice, sys, idle, and irq).
        sys: 34920,
        idle: 1072572010,
        irq: 30 } } ]</code></pre>
+<p>Note that since <code>nice</code> values are UNIX centric in Windows the <code>nice</code> values of
+all processors are always 0.
+
+</p>
 <h2>os.networkInterfaces()<span><a class="mark" href="#all_os_networkinterfaces" id="all_os_networkinterfaces">#</a></span></h2>
 <p>Get a list of network interfaces:
 
@@ -11328,11 +11344,12 @@ interfaces that have been assigned an address.
 
 </p>
 <h2>os.EOL<span><a class="mark" href="#all_os_eol" id="all_os_eol">#</a></span></h2>
-<p>A constant defining the appropriate End-of-line marker for the operating system.
+<p>A constant defining the appropriate End-of-line marker for the operating
+system.
 
 </p>
 <h1>Path<span><a class="mark" href="#all_path" id="all_path">#</a></span></h1>
-<pre class="api_stability_3">Stability: 3 - Stable</pre><p>This module contains utilities for handling and transforming file
+<pre class="api_stability_2">Stability: 2 - Stable</pre><p>This module contains utilities for handling and transforming file
 paths.  Almost all these methods perform only string transformations.
 The file system is not consulted to check whether paths are valid.
 
@@ -11712,6 +11729,72 @@ Nine out of ten times nothing happens - but the 10th time, your system is bust.
 <p>You have been warned.
 
 </p>
+<h2>Event: &#39;unhandledRejection&#39;<span><a class="mark" href="#all_event_unhandledrejection" id="all_event_unhandledrejection">#</a></span></h2>
+<p>Emitted whenever a <code>Promise</code> is rejected and no error handler is attached to
+the promise within a turn of the event loop. When programming with promises
+exceptions are encapsulated as rejected promises. Such promises can be caught
+and handled using <code>promise.catch(...)</code> and rejections are propagated through
+a promise chain. This event is useful for detecting and keeping track of
+promises that were rejected whose rejections were not handled yet. This event
+is emitted with the following arguments:
+
+</p>
+<ul>
+<li><code>reason</code> the object with which the promise was rejected (usually an <code>Error</code>
+instance).</li>
+<li><code>p</code> the promise that was rejected.</li>
+</ul>
+<p>Here is an example that logs every unhandled rejection to the console
+
+</p>
+<pre><code>process.on(&#39;unhandledRejection&#39;, function(reason, p) {
+    console.log(&quot;Unhandled Rejection at: Promise &quot;, p, &quot; reason: &quot;, reason);
+    // application specific logging, throwing an error, or other logic here
+});</code></pre>
+<p>For example, here is a rejection that will trigger the <code>&#39;unhandledRejection&#39;</code>
+event:
+
+</p>
+<pre><code>somePromise.then(function(res) {
+  return reportToUser(JSON.pasre(res)); // note the typo
+}); // no `.catch` or `.then`</code></pre>
+<h2>Event: &#39;rejectionHandled&#39;<span><a class="mark" href="#all_event_rejectionhandled" id="all_event_rejectionhandled">#</a></span></h2>
+<p>Emitted whenever a Promise was rejected and an error handler was attached to it
+(for example with <code>.catch()</code>) later than after an event loop turn. This event
+is emitted with the following arguments:
+
+</p>
+<ul>
+<li><code>p</code> the promise that was previously emitted in an &#39;unhandledRejection&#39;
+event, but which has now gained a rejection handler.</li>
+</ul>
+<p>There is no notion of a top level for a promise chain at which rejections can
+always be handled. Being inherently asynchronous in nature, a promise rejection
+can be be handled at a future point in time — possibly much later than the
+event loop turn it takes for the &#39;unhandledRejection&#39; event to be emitted.
+
+</p>
+<p>Another way of stating this is that, unlike in synchronous code where there is
+an ever-growing list of unhandled exceptions, with promises there is a
+growing-and-shrinking list of unhandled rejections. In synchronous code, the
+&#39;uncaughtException&#39; event tells you when the list of unhandled exceptions
+grows. And in asynchronous code, the &#39;unhandledRejection&#39; event tells you
+when the list of unhandled rejections grows, while the &#39;rejectionHandled&#39;
+event tells you when the list of unhandled rejections shrinks.
+
+</p>
+<p>For example using the rejection detection hooks in order to keep a list of all
+the rejected promises at a given time:
+
+</p>
+<pre><code>var unhandledRejections = [];
+process.on(&#39;unhandledRejection&#39;, function(reason, p) {
+    unhandledRejections.push(p);
+});
+process.on(&#39;rejectionHandled&#39;, function(p) {
+    var index = unhandledRejections.indexOf(p);
+    unhandledRejections.splice(index, 1);
+});</code></pre>
 <h2>Signal Events<span><a class="mark" href="#all_signal_events" id="all_signal_events">#</a></span></h2>
 <!--type=event-->
 <!--name=SIGINT, SIGHUP, etc.-->
@@ -11774,11 +11857,11 @@ emulation with <code>process.kill()</code>, and <code>child_process.kill()</code
 <p>A <code>Writable Stream</code> to <code>stdout</code> (on fd <code>1</code>).
 
 </p>
-<p>Example: the definition of <code>console.log</code>
+<p>For example, a <code>console.log</code> equivalent could look like this:
 
 </p>
-<pre><code>console.log = function(d) {
-  process.stdout.write(d + &#39;\n&#39;);
+<pre><code>console.log = function(msg) {
+  process.stdout.write(msg + &#39;\n&#39;);
 };</code></pre>
 <p><code>process.stderr</code> and <code>process.stdout</code> are unlike other streams in io.js in
 that they cannot be closed (<code>end()</code> will throw), they never emit the <code>finish</code>
@@ -12356,7 +12439,7 @@ to the same module.
 
 </p>
 <h1>punycode<span><a class="mark" href="#all_punycode" id="all_punycode">#</a></span></h1>
-<pre class="api_stability_3">Stability: 3 - Stable</pre><p><a href="https://mths.be/punycode">Punycode.js</a> is bundled with io.js v1.0.0+ and
+<pre class="api_stability_2">Stability: 2 - Stable</pre><p><a href="https://mths.be/punycode">Punycode.js</a> is bundled with io.js v1.0.0+ and
 Node.js v0.6.2+. Use <code>require(&#39;punycode&#39;)</code> to access it. (To use it with
 other io.js versions, use npm to install the <code>punycode</code> module first.)
 
@@ -12416,7 +12499,7 @@ punycode.ucs2.encode([0x1D306]); // &#39;\uD834\uDF06&#39;</code></pre>
 
 </p>
 <h1>Query String<span><a class="mark" href="#all_query_string" id="all_query_string">#</a></span></h1>
-<pre class="api_stability_3">Stability: 3 - Stable</pre><!--name=querystring-->
+<pre class="api_stability_2">Stability: 2 - Stable</pre><!--name=querystring-->
 
 <p>This module provides utilities for dealing with query strings.
 It provides the following methods:
@@ -12487,7 +12570,7 @@ provided so that it could be overridden if necessary.
 
 </p>
 <h1>Readline<span><a class="mark" href="#all_readline" id="all_readline">#</a></span></h1>
-<pre class="api_stability_2">Stability: 2 - Unstable</pre><p>To use this module, do <code>require(&#39;readline&#39;)</code>. Readline allows reading of a
+<pre class="api_stability_2">Stability: 2 - Stable</pre><p>To use this module, do <code>require(&#39;readline&#39;)</code>. Readline allows reading of a
 stream (such as <code>process.stdin</code>) on a line-by-line basis.
 
 </p>
@@ -12824,7 +12907,7 @@ rl.on(&#39;line&#39;, function(line) {
 
 </p>
 <h1>REPL<span><a class="mark" href="#all_repl" id="all_repl">#</a></span></h1>
-<pre class="api_stability_3">Stability: 3 - Stable</pre><p>A Read-Eval-Print-Loop (REPL) is available both as a standalone program and
+<pre class="api_stability_2">Stability: 2 - Stable</pre><p>A Read-Eval-Print-Loop (REPL) is available both as a standalone program and
 easily includable in other programs. The REPL provides a way to interactively
 run JavaScript and see the results.  It can be used for debugging, testing, or
 just trying things out.
@@ -13049,7 +13132,7 @@ command.  Press twice on a blank line to forcibly exit.</li>
 <li><code>&lt;ctrl&gt;D</code> - Similar to the <code>.exit</code> keyword.</li>
 </ul>
 <h1>Smalloc<span><a class="mark" href="#all_smalloc" id="all_smalloc">#</a></span></h1>
-<pre class="api_stability_1">Stability: 1 - Experimental</pre><h2>Class: smalloc<span><a class="mark" href="#all_class_smalloc" id="all_class_smalloc">#</a></span></h2>
+<pre class="api_stability_2">Stability: 2 - Stable</pre><h2>Class: smalloc<span><a class="mark" href="#all_class_smalloc" id="all_class_smalloc">#</a></span></h2>
 <p>Buffers are backed by a simple allocator that only handles the assignation of
 external raw memory. Smalloc exposes that functionality.
 
@@ -13194,7 +13277,7 @@ example <code>smalloc.hasExternalData()</code> returns <code>true</code>.
 <li><code>Uint8Clamped</code></li>
 </ul>
 <h1>Stream<span><a class="mark" href="#all_stream" id="all_stream">#</a></span></h1>
-<pre class="api_stability_2">Stability: 2 - Unstable</pre><p>A stream is an abstract interface implemented by various objects in
+<pre class="api_stability_2">Stability: 2 - Stable</pre><p>A stream is an abstract interface implemented by various objects in
 io.js.  For example a <a href="http.html#http_http_incomingmessage">request to an HTTP
 server</a> is a stream, as is
 <a href="process.html#process_process_stdout">stdout</a>. Streams are readable, writable, or both. All streams are
@@ -14280,7 +14363,7 @@ programs.  However, you <strong>are</strong> expected to override this method in
 your own extension classes.
 
 </p>
-<h3>writable._writev(chunks, callback)<span><a class="mark" href="#all_writable_writev_chunks_callback" id="all_writable_writev_chunks_callback">#</a></span></h3>
+<h4>writable._writev(chunks, callback)<span><a class="mark" href="#all_writable_writev_chunks_callback" id="all_writable_writev_chunks_callback">#</a></span></h4>
 <div class="signature"><ul>
 <li><code>chunks</code> <span class="type">Array</span> The chunks to be written.  Each chunk has following
 format: <code>{ chunk: ..., encoding: ... }</code>.</li>
@@ -14835,7 +14918,7 @@ JSONParseStream.prototype._flush = function(cb) {
   cb();
 };</code></pre>
 <h1>StringDecoder<span><a class="mark" href="#all_stringdecoder" id="all_stringdecoder">#</a></span></h1>
-<pre class="api_stability_3">Stability: 3 - Stable</pre><p>To use this module, do <code>require(&#39;string_decoder&#39;)</code>. StringDecoder decodes a
+<pre class="api_stability_2">Stability: 2 - Stable</pre><p>To use this module, do <code>require(&#39;string_decoder&#39;)</code>. StringDecoder decodes a
 buffer to a string. It is a simple interface to <code>buffer.toString()</code> but provides
 additional support for utf8.
 
@@ -14861,7 +14944,7 @@ console.log(decoder.write(euro));</code></pre>
 
 </p>
 <h1>Timers<span><a class="mark" href="#all_timers" id="all_timers">#</a></span></h1>
-<pre class="api_stability_5">Stability: 5 - Locked</pre><p>All of the timer functions are globals.  You do not need to <code>require()</code>
+<pre class="api_stability_3">Stability: 3 - Locked</pre><p>All of the timer functions are globals.  You do not need to <code>require()</code>
 this module in order to use them.
 
 </p>
@@ -14927,7 +15010,7 @@ until the next event loop iteration.
 
 </p>
 <h1>TLS (SSL)<span><a class="mark" href="#all_tls_ssl" id="all_tls_ssl">#</a></span></h1>
-<pre class="api_stability_3">Stability: 3 - Stable</pre><p>Use <code>require(&#39;tls&#39;)</code> to access this module.
+<pre class="api_stability_2">Stability: 2 - Stable</pre><p>Use <code>require(&#39;tls&#39;)</code> to access this module.
 
 </p>
 <p>The <code>tls</code> module uses OpenSSL to provide Transport Layer Security and/or
@@ -15092,9 +15175,10 @@ on the format, see the <a href="http://www.openssl.org/docs/apps/ciphers.html#CI
 or false to disable ECDH.</p>
 <p>Defaults to <code>prime256v1</code>. Consult <a href="http://www.rfc-editor.org/rfc/rfc4492.txt">RFC 4492</a> for more details.</p>
 </li>
-<li><p><code>dhparam</code>: DH parameter file to use for DHE key agreement. Use
-<code>openssl dhparam</code> command to create it. If the file is invalid to
-load, it is silently discarded.</p>
+<li><p><code>dhparam</code>: A string or <code>Buffer</code> containing Diffie Hellman parameters,
+required for Perfect Forward Secrecy. Use <code>openssl dhparam</code> to create it.
+If omitted or invalid, it is silently discarded and DHE ciphers won&#39;t be
+available.</p>
 </li>
 <li><p><code>handshakeTimeout</code>: Abort the connection if the SSL/TLS handshake does not
 finish in this many milliseconds. The default is 120 seconds.</p>
@@ -15758,7 +15842,7 @@ object with three properties, e.g.
 
 </p>
 <h1>TTY<span><a class="mark" href="#all_tty" id="all_tty">#</a></span></h1>
-<pre class="api_stability_2">Stability: 2 - Unstable</pre><p>The <code>tty</code> module houses the <code>tty.ReadStream</code> and <code>tty.WriteStream</code> classes. In
+<pre class="api_stability_2">Stability: 2 - Stable</pre><p>The <code>tty</code> module houses the <code>tty.ReadStream</code> and <code>tty.WriteStream</code> classes. In
 most cases, you will not need to use this module directly.
 
 </p>
@@ -15831,7 +15915,7 @@ has changed.
   console.log(process.stdout.columns + &#39;x&#39; + process.stdout.rows);
 });</code></pre>
 <h1>URL<span><a class="mark" href="#all_url" id="all_url">#</a></span></h1>
-<pre class="api_stability_3">Stability: 3 - Stable</pre><p>This module has utilities for URL resolution and parsing.
+<pre class="api_stability_2">Stability: 2 - Stable</pre><p>This module has utilities for URL resolution and parsing.
 Call <code>require(&#39;url&#39;)</code> to use it.
 
 </p>
@@ -15945,7 +16029,7 @@ an anchor tag.  Examples:
 url.resolve(&#39;http://example.com/&#39;, &#39;/one&#39;)    // &#39;http://example.com/one&#39;
 url.resolve(&#39;http://example.com/one&#39;, &#39;/two&#39;) // &#39;http://example.com/two&#39;</code></pre>
 <h1>util<span><a class="mark" href="#all_util" id="all_util">#</a></span></h1>
-<pre class="api_stability_4">Stability: 4 - API Frozen</pre><p>These functions are in the module <code>&#39;util&#39;</code>. Use <code>require(&#39;util&#39;)</code> to
+<pre class="api_stability_2">Stability: 2 - Stable</pre><p>These functions are in the module <code>&#39;util&#39;</code>. Use <code>require(&#39;util&#39;)</code> to
 access them.
 
 </p>
@@ -16403,7 +16487,7 @@ when the deprecated API is used.  Configurable at run-time through the
 
 </p>
 <h1>V8<span><a class="mark" href="#all_v8" id="all_v8">#</a></span></h1>
-<pre class="api_stability_1">Stability: 1 - Experimental</pre><p>This module exposes events and interfaces specific to the version of <a href="https://code.google.com/p/v8/">V8</a>
+<pre class="api_stability_2">Stability: 2 - Stable</pre><p>This module exposes events and interfaces specific to the version of <a href="https://code.google.com/p/v8/">V8</a>
 built with io.js.  These interfaces are subject to change by upstream and are
 therefore not covered under the stability index.
 
@@ -16439,7 +16523,7 @@ var v8 = require(&#39;v8&#39;);
 v8.setFlagsFromString(&#39;--trace_gc&#39;);
 setTimeout(function() { v8.setFlagsFromString(&#39;--notrace_gc&#39;); }, 60e3);</code></pre>
 <h1>Executing JavaScript<span><a class="mark" href="#all_executing_javascript" id="all_executing_javascript">#</a></span></h1>
-<pre class="api_stability_3">Stability: 3 - Stable</pre><!--name=vm-->
+<pre class="api_stability_2">Stability: 2 - Stable</pre><!--name=vm-->
 
 <p>You can access this module with:
 
@@ -16720,7 +16804,7 @@ requires a separate process.
 
 </p>
 <h1>Zlib<span><a class="mark" href="#all_zlib" id="all_zlib">#</a></span></h1>
-<pre class="api_stability_3">Stability: 3 - Stable</pre><p>You can access this module with:
+<pre class="api_stability_2">Stability: 2 - Stable</pre><p>You can access this module with:
 
 </p>
 <pre><code>var zlib = require(&#39;zlib&#39;);</code></pre>

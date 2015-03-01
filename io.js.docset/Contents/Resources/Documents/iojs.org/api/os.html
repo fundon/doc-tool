@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>os io.js v1.3.0 Manual &amp; Documentation</title>
+  <title>OS io.js v1.4.2 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="os" class="interior">
       <header>
-        <h1>io.js v1.3.0 Documentation</h1>
+        <h1>io.js v1.4.2 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -76,7 +76,7 @@
       <div id="toc">
         <h2>Table of Contents</h2>
         <ul>
-<li><a href="#os_os">os</a><ul>
+<li><a href="#os_os">OS</a><ul>
 <li><a href="#os_os_tmpdir">os.tmpdir()</a></li>
 <li><a href="#os_os_endianness">os.endianness()</a></li>
 <li><a href="#os_os_hostname">os.hostname()</a></li>
@@ -98,19 +98,20 @@
       </div>
 
       <div id="apicontent">
-        <h1>os<span><a class="mark" href="#os_os" id="os_os">#</a></span></h1>
-<pre class="api_stability_4">Stability: 4 - API Frozen</pre><p>Provides a few basic operating-system related utility functions.
+        <h1>OS<span><a class="mark" href="#os_os" id="os_os">#</a></span></h1>
+<pre class="api_stability_2">Stability: 2 - Stable</pre><p>Provides a few basic operating-system related utility functions.
 
 </p>
 <p>Use <code>require(&#39;os&#39;)</code> to access this module.
 
 </p>
 <h2>os.tmpdir()<span><a class="mark" href="#os_os_tmpdir" id="os_os_tmpdir">#</a></span></h2>
-<p>Returns the operating system&#39;s default directory for temp files.
+<p>Returns the operating system&#39;s default directory for temporary files.
 
 </p>
 <h2>os.endianness()<span><a class="mark" href="#os_os_endianness" id="os_os_endianness">#</a></span></h2>
-<p>Returns the endianness of the CPU. Possible values are <code>&quot;BE&quot;</code> or <code>&quot;LE&quot;</code>.
+<p>Returns the endianness of the CPU. Possible values are <code>&#39;BE&#39;</code> for big endian
+or <code>&#39;LE&#39;</code> for little endian.
 
 </p>
 <h2>os.hostname()<span><a class="mark" href="#os_os_hostname" id="os_os_hostname">#</a></span></h2>
@@ -118,16 +119,19 @@
 
 </p>
 <h2>os.type()<span><a class="mark" href="#os_os_type" id="os_os_type">#</a></span></h2>
-<p>Returns the operating system name.
+<p>Returns the operating system name. For example <code>&#39;Linux&#39;</code> on Linux, <code>&#39;Darwin&#39;</code>
+on OS X and <code>&#39;Windows_NT&#39;</code> on Windows.
 
 </p>
 <h2>os.platform()<span><a class="mark" href="#os_os_platform" id="os_os_platform">#</a></span></h2>
-<p>Returns the operating system platform.
+<p>Returns the operating system platform. Possible values are <code>&#39;darwin&#39;</code>,
+<code>&#39;freebsd&#39;</code>, <code>&#39;linux&#39;</code>, <code>&#39;sunos&#39;</code> or <code>&#39;win32&#39;</code>. Returns the value of
+<code>process.platform</code>.
 
 </p>
 <h2>os.arch()<span><a class="mark" href="#os_os_arch" id="os_os_arch">#</a></span></h2>
-<p>Returns the operating system CPU architecture. Possible values are <code>&quot;x64&quot;</code>,
-<code>&quot;arm&quot;</code> and <code>&quot;ia32&quot;</code>.
+<p>Returns the operating system CPU architecture. Possible values are <code>&#39;x64&#39;</code>,
+<code>&#39;arm&#39;</code> and <code>&#39;ia32&#39;</code>. Returns the value of <code>process.arch</code>.
 
 </p>
 <h2>os.release()<span><a class="mark" href="#os_os_release" id="os_os_release">#</a></span></h2>
@@ -233,6 +237,10 @@ milliseconds the CPU/core spent in: user, nice, sys, idle, and irq).
        sys: 34920,
        idle: 1072572010,
        irq: 30 } } ]</code></pre>
+<p>Note that since <code>nice</code> values are UNIX centric in Windows the <code>nice</code> values of
+all processors are always 0.
+
+</p>
 <h2>os.networkInterfaces()<span><a class="mark" href="#os_os_networkinterfaces" id="os_os_networkinterfaces">#</a></span></h2>
 <p>Get a list of network interfaces:
 
@@ -264,7 +272,8 @@ interfaces that have been assigned an address.
 
 </p>
 <h2>os.EOL<span><a class="mark" href="#os_os_eol" id="os_os_eol">#</a></span></h2>
-<p>A constant defining the appropriate End-of-line marker for the operating system.
+<p>A constant defining the appropriate End-of-line marker for the operating
+system.
 </p>
 
       </div>

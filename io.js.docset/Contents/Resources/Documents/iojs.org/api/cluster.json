@@ -5,7 +5,7 @@
       "textRaw": "Cluster",
       "name": "cluster",
       "stability": 2,
-      "stabilityText": "Unstable",
+      "stabilityText": "Stable",
       "desc": "<p>A single instance of io.js runs in a single thread. To take advantage of\nmulti-core systems the user will sometimes want to launch a cluster of io.js\nprocesses to handle the load.\n\n</p>\n<p>The cluster module allows you to easily create child processes that\nall share server ports.\n\n</p>\n<pre><code>var cluster = require(&#39;cluster&#39;);\nvar http = require(&#39;http&#39;);\nvar numCPUs = require(&#39;os&#39;).cpus().length;\n\nif (cluster.isMaster) {\n  // Fork workers.\n  for (var i = 0; i &lt; numCPUs; i++) {\n    cluster.fork();\n  }\n\n  cluster.on(&#39;exit&#39;, function(worker, code, signal) {\n    console.log(&#39;worker &#39; + worker.process.pid + &#39; died&#39;);\n  });\n} else {\n  // Workers can share any TCP connection\n  // In this case its a HTTP server\n  http.createServer(function(req, res) {\n    res.writeHead(200);\n    res.end(&quot;hello world\\n&quot;);\n  }).listen(8000);\n}</code></pre>\n<p>Running io.js will now share port 8000 between the workers:\n\n</p>\n<pre><code>% NODE_DEBUG=cluster iojs server.js\n23521,Master Worker 23524 online\n23521,Master Worker 23526 online\n23521,Master Worker 23523 online\n23521,Master Worker 23528 online</code></pre>\n<p>This feature was introduced recently, and may change in future versions.\nPlease try it out and provide feedback.\n\n</p>\n<p>Also note that, on Windows, it is not yet possible to set up a named pipe\nserver in a worker.\n\n</p>\n",
       "miscs": [
         {
@@ -299,7 +299,7 @@
                   ]
                 }
               ],
-              "desc": "<p>This function is equal to the send methods provided by\n<code>child_process.fork()</code>.  In the master you should use this function to\nsend a message to a specific worker.\n\n</p>\n<p>In a worker you can also use <code>process.send(message)</code>, it is the same function.\n\n</p>\n<p>This example will echo back all messages from the master:\n\n</p>\n<pre><code>if (cluster.isMaster) {\n  var worker = cluster.fork();\n  worker.send(&#39;hi there&#39;);\n\n} else if (cluster.isWorker) {\n  process.on(&#39;message&#39;, function(msg) {\n    process.send(msg);\n  });\n}</code></pre>\n"
+              "desc": "<p>Send a message to a worker or master, optionally with a handle.\n\n</p>\n<p>In the master this sends a message to a specific worker. It is identical to\n<a href=\"child_process.html#child_process_child_send_message_sendhandle\">child.send()</a>.\n\n</p>\n<p>In a worker this sends a message to the master. It is identical to\n<code>process.send()</code>.\n\n</p>\n<p>This example will echo back all messages from the master:\n\n</p>\n<pre><code>if (cluster.isMaster) {\n  var worker = cluster.fork();\n  worker.send(&#39;hi there&#39;);\n\n} else if (cluster.isWorker) {\n  process.on(&#39;message&#39;, function(msg) {\n    process.send(msg);\n  });\n}</code></pre>\n"
             },
             {
               "textRaw": "worker.kill([signal='SIGTERM'])",

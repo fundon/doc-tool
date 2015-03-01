@@ -2,17 +2,17 @@
   "source": "doc/api/os.markdown",
   "modules": [
     {
-      "textRaw": "os",
+      "textRaw": "OS",
       "name": "os",
-      "stability": 4,
-      "stabilityText": "API Frozen",
+      "stability": 2,
+      "stabilityText": "Stable",
       "desc": "<p>Provides a few basic operating-system related utility functions.\n\n</p>\n<p>Use <code>require(&#39;os&#39;)</code> to access this module.\n\n</p>\n",
       "methods": [
         {
           "textRaw": "os.tmpdir()",
           "type": "method",
           "name": "tmpdir",
-          "desc": "<p>Returns the operating system&#39;s default directory for temp files.\n\n</p>\n",
+          "desc": "<p>Returns the operating system&#39;s default directory for temporary files.\n\n</p>\n",
           "signatures": [
             {
               "params": []
@@ -23,7 +23,7 @@
           "textRaw": "os.endianness()",
           "type": "method",
           "name": "endianness",
-          "desc": "<p>Returns the endianness of the CPU. Possible values are <code>&quot;BE&quot;</code> or <code>&quot;LE&quot;</code>.\n\n</p>\n",
+          "desc": "<p>Returns the endianness of the CPU. Possible values are <code>&#39;BE&#39;</code> for big endian\nor <code>&#39;LE&#39;</code> for little endian.\n\n</p>\n",
           "signatures": [
             {
               "params": []
@@ -45,7 +45,7 @@
           "textRaw": "os.type()",
           "type": "method",
           "name": "type",
-          "desc": "<p>Returns the operating system name.\n\n</p>\n",
+          "desc": "<p>Returns the operating system name. For example <code>&#39;Linux&#39;</code> on Linux, <code>&#39;Darwin&#39;</code>\non OS X and <code>&#39;Windows_NT&#39;</code> on Windows.\n\n</p>\n",
           "signatures": [
             {
               "params": []
@@ -56,7 +56,7 @@
           "textRaw": "os.platform()",
           "type": "method",
           "name": "platform",
-          "desc": "<p>Returns the operating system platform.\n\n</p>\n",
+          "desc": "<p>Returns the operating system platform. Possible values are <code>&#39;darwin&#39;</code>,\n<code>&#39;freebsd&#39;</code>, <code>&#39;linux&#39;</code>, <code>&#39;sunos&#39;</code> or <code>&#39;win32&#39;</code>. Returns the value of\n<code>process.platform</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": []
@@ -67,7 +67,7 @@
           "textRaw": "os.arch()",
           "type": "method",
           "name": "arch",
-          "desc": "<p>Returns the operating system CPU architecture. Possible values are <code>&quot;x64&quot;</code>,\n<code>&quot;arm&quot;</code> and <code>&quot;ia32&quot;</code>.\n\n</p>\n",
+          "desc": "<p>Returns the operating system CPU architecture. Possible values are <code>&#39;x64&#39;</code>,\n<code>&#39;arm&#39;</code> and <code>&#39;ia32&#39;</code>. Returns the value of <code>process.arch</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": []
@@ -133,7 +133,7 @@
           "textRaw": "os.cpus()",
           "type": "method",
           "name": "cpus",
-          "desc": "<p>Returns an array of objects containing information about each CPU/core\ninstalled: model, speed (in MHz), and times (an object containing the number of\nmilliseconds the CPU/core spent in: user, nice, sys, idle, and irq).\n\n</p>\n<p>Example inspection of os.cpus:\n\n</p>\n<pre><code>[ { model: &#39;Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz&#39;,\n    speed: 2926,\n    times:\n     { user: 252020,\n       nice: 0,\n       sys: 30340,\n       idle: 1070356870,\n       irq: 0 } },\n  { model: &#39;Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz&#39;,\n    speed: 2926,\n    times:\n     { user: 306960,\n       nice: 0,\n       sys: 26980,\n       idle: 1071569080,\n       irq: 0 } },\n  { model: &#39;Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz&#39;,\n    speed: 2926,\n    times:\n     { user: 248450,\n       nice: 0,\n       sys: 21750,\n       idle: 1070919370,\n       irq: 0 } },\n  { model: &#39;Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz&#39;,\n    speed: 2926,\n    times:\n     { user: 256880,\n       nice: 0,\n       sys: 19430,\n       idle: 1070905480,\n       irq: 20 } },\n  { model: &#39;Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz&#39;,\n    speed: 2926,\n    times:\n     { user: 511580,\n       nice: 20,\n       sys: 40900,\n       idle: 1070842510,\n       irq: 0 } },\n  { model: &#39;Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz&#39;,\n    speed: 2926,\n    times:\n     { user: 291660,\n       nice: 0,\n       sys: 34360,\n       idle: 1070888000,\n       irq: 10 } },\n  { model: &#39;Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz&#39;,\n    speed: 2926,\n    times:\n     { user: 308260,\n       nice: 0,\n       sys: 55410,\n       idle: 1071129970,\n       irq: 880 } },\n  { model: &#39;Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz&#39;,\n    speed: 2926,\n    times:\n     { user: 266450,\n       nice: 1480,\n       sys: 34920,\n       idle: 1072572010,\n       irq: 30 } } ]</code></pre>\n",
+          "desc": "<p>Returns an array of objects containing information about each CPU/core\ninstalled: model, speed (in MHz), and times (an object containing the number of\nmilliseconds the CPU/core spent in: user, nice, sys, idle, and irq).\n\n</p>\n<p>Example inspection of os.cpus:\n\n</p>\n<pre><code>[ { model: &#39;Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz&#39;,\n    speed: 2926,\n    times:\n     { user: 252020,\n       nice: 0,\n       sys: 30340,\n       idle: 1070356870,\n       irq: 0 } },\n  { model: &#39;Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz&#39;,\n    speed: 2926,\n    times:\n     { user: 306960,\n       nice: 0,\n       sys: 26980,\n       idle: 1071569080,\n       irq: 0 } },\n  { model: &#39;Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz&#39;,\n    speed: 2926,\n    times:\n     { user: 248450,\n       nice: 0,\n       sys: 21750,\n       idle: 1070919370,\n       irq: 0 } },\n  { model: &#39;Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz&#39;,\n    speed: 2926,\n    times:\n     { user: 256880,\n       nice: 0,\n       sys: 19430,\n       idle: 1070905480,\n       irq: 20 } },\n  { model: &#39;Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz&#39;,\n    speed: 2926,\n    times:\n     { user: 511580,\n       nice: 20,\n       sys: 40900,\n       idle: 1070842510,\n       irq: 0 } },\n  { model: &#39;Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz&#39;,\n    speed: 2926,\n    times:\n     { user: 291660,\n       nice: 0,\n       sys: 34360,\n       idle: 1070888000,\n       irq: 10 } },\n  { model: &#39;Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz&#39;,\n    speed: 2926,\n    times:\n     { user: 308260,\n       nice: 0,\n       sys: 55410,\n       idle: 1071129970,\n       irq: 880 } },\n  { model: &#39;Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz&#39;,\n    speed: 2926,\n    times:\n     { user: 266450,\n       nice: 1480,\n       sys: 34920,\n       idle: 1072572010,\n       irq: 30 } } ]</code></pre>\n<p>Note that since <code>nice</code> values are UNIX centric in Windows the <code>nice</code> values of\nall processors are always 0.\n\n</p>\n",
           "signatures": [
             {
               "params": []
@@ -156,11 +156,11 @@
         {
           "textRaw": "os.EOL",
           "name": "EOL",
-          "desc": "<p>A constant defining the appropriate End-of-line marker for the operating system.\n</p>\n"
+          "desc": "<p>A constant defining the appropriate End-of-line marker for the operating\nsystem.\n</p>\n"
         }
       ],
       "type": "module",
-      "displayName": "os"
+      "displayName": "OS"
     }
   ]
 }

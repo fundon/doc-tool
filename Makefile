@@ -3,7 +3,13 @@ FONTS_CSS = $(DOCSET_DIR)/fonts.googleapis.com/css*
 IOJS_DIR = $(DOCSET_DIR)/iojs.org
 API_DIR = $(IOJS_DIR)/api
 
-all: fonts docset pack
+all: fonts clean copy docset pack
+
+clean:
+	@rm -rf $(API_DIR)/*
+
+copy:
+	@cp -R ../io.js/out/doc/api/* $(API_DIR)/
 
 fonts:
 	@if [ ! -f $(FONTS_CSS) ]; then \

@@ -4,7 +4,7 @@
     {
       "textRaw": "HTTP",
       "name": "http",
-      "stability": 3,
+      "stability": 2,
       "stabilityText": "Stable",
       "desc": "<p>To use the HTTP server and client one must <code>require(&#39;http&#39;)</code>.\n\n</p>\n<p>The HTTP interfaces in io.js are designed to support many features\nof the protocol which have been traditionally difficult to use.\nIn particular, large, possibly chunk-encoded, messages. The interface is\ncareful to never buffer entire requests or responses--the\nuser is able to stream data.\n\n</p>\n<p>HTTP message headers are represented by an object like this:\n\n</p>\n<pre><code>{ &#39;content-length&#39;: &#39;123&#39;,\n  &#39;content-type&#39;: &#39;text/plain&#39;,\n  &#39;connection&#39;: &#39;keep-alive&#39;,\n  &#39;host&#39;: &#39;mysite.com&#39;,\n  &#39;accept&#39;: &#39;*/*&#39; }</code></pre>\n<p>Keys are lowercased. Values are not modified.\n\n</p>\n<p>In order to support the full spectrum of possible HTTP applications, io.js&#39;s\nHTTP API is very low-level. It deals with stream handling and message\nparsing only. It parses a message into headers and body but it does not\nparse the actual headers or the body.\n\n</p>\n<p>Defined headers that allow multiple values are concatenated with a <code>,</code>\ncharacter, except for the <code>set-cookie</code> and <code>cookie</code> headers which are\nrepresented as an array of values.  Headers such as <code>content-length</code>\nwhich can only have a single value are parsed accordingly, and only a\nsingle value is represented on the parsed object.\n\n</p>\n<p>The raw headers as they were received are retained in the <code>rawHeaders</code>\nproperty, which is an array of <code>[key, value, key2, value2, ...]</code>.  For\nexample, the previous message header object might have a <code>rawHeaders</code>\nlist like the following:\n\n</p>\n<pre><code>[ &#39;ConTent-Length&#39;, &#39;123456&#39;,\n  &#39;content-LENGTH&#39;, &#39;123&#39;,\n  &#39;content-type&#39;, &#39;text/plain&#39;,\n  &#39;CONNECTION&#39;, &#39;keep-alive&#39;,\n  &#39;Host&#39;, &#39;mysite.com&#39;,\n  &#39;accepT&#39;, &#39;*/*&#39; ]</code></pre>\n",
       "properties": [
@@ -772,6 +772,13 @@
               "type": "event",
               "name": "continue",
               "desc": "<p><code>function () { }</code>\n\n</p>\n<p>Emitted when the server sends a &#39;100 Continue&#39; HTTP response, usually because\nthe request contained &#39;Expect: 100-continue&#39;. This is an instruction that\nthe client should send the request body.\n\n</p>\n",
+              "params": []
+            },
+            {
+              "textRaw": "Event: 'abort'",
+              "type": "event",
+              "name": "abort",
+              "desc": "<p><code>function () { }</code>\n\n</p>\n<p>Emitted when the request has been aborted by the client. This event is only\nemitted on the first call to <code>abort()</code>.\n\n</p>\n",
               "params": []
             }
           ],

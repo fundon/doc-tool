@@ -5,7 +5,7 @@
       "textRaw": "Stream",
       "name": "stream",
       "stability": 2,
-      "stabilityText": "Unstable",
+      "stabilityText": "Stable",
       "desc": "<p>A stream is an abstract interface implemented by various objects in\nio.js.  For example a <a href=\"http.html#http_http_incomingmessage\">request to an HTTP\nserver</a> is a stream, as is\n[stdout][]. Streams are readable, writable, or both. All streams are\ninstances of [EventEmitter][]\n\n</p>\n<p>You can load the Stream base classes by doing <code>require(&#39;stream&#39;)</code>.\nThere are base classes provided for [Readable][] streams, [Writable][]\nstreams, [Duplex][] streams, and [Transform][] streams.\n\n</p>\n<p>This document is split up into 3 sections.  The first explains the\nparts of the API that you need to be aware of to use streams in your\nprograms.  If you never implement a streaming API yourself, you can\nstop there.\n\n</p>\n<p>The second section explains the parts of the API that you need to use\nif you implement your own custom streams yourself.  The API is\ndesigned to make this easy for you to do.\n\n</p>\n<p>The third section goes into more depth about how streams work,\nincluding some of the internal mechanisms and functions that you\nshould probably not modify unless you definitely know what you are\ndoing.\n\n\n</p>\n",
       "classes": [
         {
@@ -1223,6 +1223,40 @@
                     }
                   ],
                   "desc": "<p>All Writable stream implementations must provide a [<code>_write()</code>][]\nmethod to send data to the underlying resource.\n\n</p>\n<p>Note: <strong>This function MUST NOT be called directly.</strong>  It should be\nimplemented by child classes, and called by the internal Writable\nclass methods only.\n\n</p>\n<p>Call the callback using the standard <code>callback(error)</code> pattern to\nsignal that the write completed successfully or with an error.\n\n</p>\n<p>If the <code>decodeStrings</code> flag is set in the constructor options, then\n<code>chunk</code> may be a string rather than a Buffer, and <code>encoding</code> will\nindicate the sort of string that it is.  This is to support\nimplementations that have an optimized handling for certain string\ndata encodings.  If you do not explicitly set the <code>decodeStrings</code>\noption to <code>false</code>, then you can safely ignore the <code>encoding</code> argument,\nand assume that <code>chunk</code> will always be a Buffer.\n\n</p>\n<p>This method is prefixed with an underscore because it is internal to\nthe class that defines it, and should not be called directly by user\nprograms.  However, you <strong>are</strong> expected to override this method in\nyour own extension classes.\n\n</p>\n"
+                },
+                {
+                  "textRaw": "writable.\\_writev(chunks, callback)",
+                  "type": "method",
+                  "name": "\\_writev",
+                  "signatures": [
+                    {
+                      "params": [
+                        {
+                          "textRaw": "`chunks` {Array} The chunks to be written.  Each chunk has following format: `{ chunk: ..., encoding: ... }`. ",
+                          "name": "chunks",
+                          "type": "Array",
+                          "desc": "The chunks to be written.  Each chunk has following format: `{ chunk: ..., encoding: ... }`."
+                        },
+                        {
+                          "textRaw": "`callback` {Function} Call this function (optionally with an error argument) when you are done processing the supplied chunks. ",
+                          "name": "callback",
+                          "type": "Function",
+                          "desc": "Call this function (optionally with an error argument) when you are done processing the supplied chunks."
+                        }
+                      ]
+                    },
+                    {
+                      "params": [
+                        {
+                          "name": "chunks"
+                        },
+                        {
+                          "name": "callback"
+                        }
+                      ]
+                    }
+                  ],
+                  "desc": "<p>Note: <strong>This function MUST NOT be called directly.</strong>  It may be\nimplemented by child classes, and called by the internal Writable\nclass methods only.\n\n</p>\n<p>This function is completely optional to implement. In most cases it is\nunnecessary.  If implemented, it will be called with all the chunks\nthat are buffered in the write queue.\n\n\n</p>\n"
                 }
               ]
             },
@@ -1396,42 +1430,6 @@
               "type": "class",
               "name": "stream.PassThrough",
               "desc": "<p>This is a trivial implementation of a [Transform][] stream that simply\npasses the input bytes across to the output.  Its purpose is mainly\nfor examples and testing, but there are occasionally use cases where\nit can come in handy as a building block for novel sorts of streams.\n\n\n</p>\n"
-            }
-          ],
-          "methods": [
-            {
-              "textRaw": "writable.\\_writev(chunks, callback)",
-              "type": "method",
-              "name": "\\_writev",
-              "signatures": [
-                {
-                  "params": [
-                    {
-                      "textRaw": "`chunks` {Array} The chunks to be written.  Each chunk has following format: `{ chunk: ..., encoding: ... }`. ",
-                      "name": "chunks",
-                      "type": "Array",
-                      "desc": "The chunks to be written.  Each chunk has following format: `{ chunk: ..., encoding: ... }`."
-                    },
-                    {
-                      "textRaw": "`callback` {Function} Call this function (optionally with an error argument) when you are done processing the supplied chunks. ",
-                      "name": "callback",
-                      "type": "Function",
-                      "desc": "Call this function (optionally with an error argument) when you are done processing the supplied chunks."
-                    }
-                  ]
-                },
-                {
-                  "params": [
-                    {
-                      "name": "chunks"
-                    },
-                    {
-                      "name": "callback"
-                    }
-                  ]
-                }
-              ],
-              "desc": "<p>Note: <strong>This function MUST NOT be called directly.</strong>  It may be\nimplemented by child classes, and called by the internal Writable\nclass methods only.\n\n</p>\n<p>This function is completely optional to implement. In most cases it is\nunnecessary.  If implemented, it will be called with all the chunks\nthat are buffered in the write queue.\n\n\n</p>\n"
             }
           ]
         },
@@ -1632,42 +1630,6 @@
               "desc": "<p>Note: <strong>This function should be called by Readable implementors, NOT\nby consumers of Readable streams.</strong>\n\n</p>\n<p>The <code>_read()</code> function will not be called again until at least one\n<code>push(chunk)</code> call is made.\n\n</p>\n<p>The <code>Readable</code> class works by putting data into a read queue to be\npulled out later by calling the <code>read()</code> method when the <code>&#39;readable&#39;</code>\nevent fires.\n\n</p>\n<p>The <code>push()</code> method will explicitly insert some data into the read\nqueue.  If it is called with <code>null</code> then it will signal the end of the\ndata (EOF).\n\n</p>\n<p>This API is designed to be as flexible as possible.  For example,\nyou may be wrapping a lower-level source which has some sort of\npause/resume mechanism, and a data callback.  In those cases, you\ncould wrap the low-level source object by doing something like this:\n\n</p>\n<pre><code class=\"javascript\">// source is an object with readStop() and readStart() methods,\n// and an `ondata` member that gets called when it has data, and\n// an `onend` member that gets called when the data is over.\n\nutil.inherits(SourceWrapper, Readable);\n\nfunction SourceWrapper(options) {\n  Readable.call(this, options);\n\n  this._source = getLowlevelSourceObject();\n  var self = this;\n\n  // Every time there&#39;s data, we push it into the internal buffer.\n  this._source.ondata = function(chunk) {\n    // if push() returns false, then we need to stop reading from source\n    if (!self.push(chunk))\n      self._source.readStop();\n  };\n\n  // When the source ends, we push the EOF-signaling `null` chunk\n  this._source.onend = function() {\n    self.push(null);\n  };\n}\n\n// _read will be called when the stream wants to pull more data in\n// the advisory size argument is ignored in this case.\nSourceWrapper.prototype._read = function(size) {\n  this._source.readStart();\n};</code></pre>\n"
             }
           ]
-        }
-      ],
-      "methods": [
-        {
-          "textRaw": "writable.\\_writev(chunks, callback)",
-          "type": "method",
-          "name": "\\_writev",
-          "signatures": [
-            {
-              "params": [
-                {
-                  "textRaw": "`chunks` {Array} The chunks to be written.  Each chunk has following format: `{ chunk: ..., encoding: ... }`. ",
-                  "name": "chunks",
-                  "type": "Array",
-                  "desc": "The chunks to be written.  Each chunk has following format: `{ chunk: ..., encoding: ... }`."
-                },
-                {
-                  "textRaw": "`callback` {Function} Call this function (optionally with an error argument) when you are done processing the supplied chunks. ",
-                  "name": "callback",
-                  "type": "Function",
-                  "desc": "Call this function (optionally with an error argument) when you are done processing the supplied chunks."
-                }
-              ]
-            },
-            {
-              "params": [
-                {
-                  "name": "chunks"
-                },
-                {
-                  "name": "callback"
-                }
-              ]
-            }
-          ],
-          "desc": "<p>Note: <strong>This function MUST NOT be called directly.</strong>  It may be\nimplemented by child classes, and called by the internal Writable\nclass methods only.\n\n</p>\n<p>This function is completely optional to implement. In most cases it is\nunnecessary.  If implemented, it will be called with all the chunks\nthat are buffered in the write queue.\n\n\n</p>\n"
         }
       ],
       "type": "module",

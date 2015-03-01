@@ -4,7 +4,7 @@
     {
       "textRaw": "Child Process",
       "name": "child_process",
-      "stability": 3,
+      "stability": 2,
       "stabilityText": "Stable",
       "desc": "<p>io.js provides a tri-directional <code>popen(3)</code> facility through the\n<code>child_process</code> module.\n\n</p>\n<p>It is possible to stream data through a child&#39;s <code>stdin</code>, <code>stdout</code>, and\n<code>stderr</code> in a fully non-blocking way.  (Note that some programs use\nline-buffered I/O internally.  That doesn&#39;t affect io.js but it means\ndata you send to the child process may not be immediately consumed.)\n\n</p>\n<p>To create a child process use <code>require(&#39;child_process&#39;).spawn()</code> or\n<code>require(&#39;child_process&#39;).fork()</code>.  The semantics of each are slightly\ndifferent, and explained <a href=\"#child_process_asynchronous_process_creation\">below</a>.\n\n</p>\n<p>For scripting purposes you may find the\n<a href=\"#child_process_synchronous_process_creation\">synchronous counterparts</a> more\nconvenient.\n\n</p>\n",
       "classes": [

@@ -4,8 +4,8 @@
     {
       "textRaw": "Smalloc",
       "name": "smalloc",
-      "stability": 1,
-      "stabilityText": "Experimental",
+      "stability": 2,
+      "stabilityText": "Stable",
       "classes": [
         {
           "textRaw": "Class: smalloc",

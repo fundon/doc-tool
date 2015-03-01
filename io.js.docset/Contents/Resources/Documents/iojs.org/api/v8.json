@@ -4,8 +4,8 @@
     {
       "textRaw": "V8",
       "name": "v8",
-      "stability": 1,
-      "stabilityText": "Experimental",
+      "stability": 2,
+      "stabilityText": "Stable",
       "desc": "<p>This module exposes events and interfaces specific to the version of [V8][]\nbuilt with io.js.  These interfaces are subject to change by upstream and are\ntherefore not covered under the stability index.\n\n</p>\n",
       "methods": [
         {

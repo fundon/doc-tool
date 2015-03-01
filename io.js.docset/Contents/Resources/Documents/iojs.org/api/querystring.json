@@ -4,7 +4,7 @@
     {
       "textRaw": "Query String",
       "name": "querystring",
-      "stability": 3,
+      "stability": 2,
       "stabilityText": "Stable",
       "desc": "<p>This module provides utilities for dealing with query strings.\nIt provides the following methods:\n\n</p>\n",
       "methods": [

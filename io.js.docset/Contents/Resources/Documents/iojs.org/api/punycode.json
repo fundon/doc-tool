@@ -4,7 +4,7 @@
     {
       "textRaw": "punycode",
       "name": "punycode",
-      "stability": 3,
+      "stability": 2,
       "stabilityText": "Stable",
       "desc": "<p><a href=\"https://mths.be/punycode\">Punycode.js</a> is bundled with io.js v1.0.0+ and\nNode.js v0.6.2+. Use <code>require(&#39;punycode&#39;)</code> to access it. (To use it with\nother io.js versions, use npm to install the <code>punycode</code> module first.)\n\n</p>\n",
       "methods": [

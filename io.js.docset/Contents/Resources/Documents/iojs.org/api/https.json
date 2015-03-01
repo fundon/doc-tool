@@ -4,7 +4,7 @@
     {
       "textRaw": "HTTPS",
       "name": "https",
-      "stability": 3,
+      "stability": 2,
       "stabilityText": "Stable",
       "desc": "<p>HTTPS is the HTTP protocol over TLS/SSL. In io.js this is implemented as a\nseparate module.\n\n</p>\n",
       "classes": [

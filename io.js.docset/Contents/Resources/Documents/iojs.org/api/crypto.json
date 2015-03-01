@@ -4,7 +4,9 @@
     {
       "textRaw": "Crypto",
       "name": "crypto",
-      "desc": "<pre><code>Stability: 2 - Unstable; API changes are being discussed for\nfuture versions.  Breaking changes will be minimized.  See below.</code></pre>\n<p>Use <code>require(&#39;crypto&#39;)</code> to access this module.\n\n</p>\n<p>The crypto module offers a way of encapsulating secure credentials to be\nused as part of a secure HTTPS net or http connection.\n\n</p>\n<p>It also offers a set of wrappers for OpenSSL&#39;s hash, hmac, cipher,\ndecipher, sign and verify methods.\n\n\n</p>\n",
+      "stability": 2,
+      "stabilityText": "Stable",
+      "desc": "<p>Use <code>require(&#39;crypto&#39;)</code> to access this module.\n\n</p>\n<p>The crypto module offers a way of encapsulating secure credentials to be\nused as part of a secure HTTPS net or http connection.\n\n</p>\n<p>It also offers a set of wrappers for OpenSSL&#39;s hash, hmac, cipher,\ndecipher, sign and verify methods.\n\n\n</p>\n",
       "methods": [
         {
           "textRaw": "crypto.setEngine(engine[, flags])",

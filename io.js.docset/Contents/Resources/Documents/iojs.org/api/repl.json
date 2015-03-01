@@ -4,7 +4,7 @@
     {
       "textRaw": "REPL",
       "name": "repl",
-      "stability": 3,
+      "stability": 2,
       "stabilityText": "Stable",
       "desc": "<p>A Read-Eval-Print-Loop (REPL) is available both as a standalone program and\neasily includable in other programs. The REPL provides a way to interactively\nrun JavaScript and see the results.  It can be used for debugging, testing, or\njust trying things out.\n\n</p>\n<p>By executing <code>iojs</code> without any arguments from the command-line you will be\ndropped into the REPL. It has simplistic emacs line-editing.\n\n</p>\n<pre><code>mjr:~$ iojs\nType &#39;.help&#39; for options.\n&gt; a = [ 1, 2, 3];\n[ 1, 2, 3 ]\n&gt; a.forEach(function (v) {\n...   console.log(v);\n...   });\n1\n2\n3</code></pre>\n<p>For advanced line-editors, start io.js with the environmental variable\n<code>NODE_NO_READLINE=1</code>. This will start the main and debugger REPL in canonical\nterminal settings which will allow you to use with <code>rlwrap</code>.\n\n</p>\n<p>For example, you could add this to your bashrc file:\n\n</p>\n<pre><code>alias iojs=&quot;env NODE_NO_READLINE=1 rlwrap iojs&quot;</code></pre>\n",
       "methods": [

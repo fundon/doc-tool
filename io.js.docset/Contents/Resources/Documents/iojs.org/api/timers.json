@@ -4,7 +4,7 @@
     {
       "textRaw": "Timers",
       "name": "timers",
-      "stability": 5,
+      "stability": 3,
       "stabilityText": "Locked",
       "desc": "<p>All of the timer functions are globals.  You do not need to <code>require()</code>\nthis module in order to use them.\n\n</p>\n",
       "methods": [

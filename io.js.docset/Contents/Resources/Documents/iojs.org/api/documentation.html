@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>About this Documentation io.js v1.3.0 Manual &amp; Documentation</title>
+  <title>About this Documentation io.js v1.4.2 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="documentation" class="interior">
       <header>
-        <h1>io.js v1.3.0 Documentation</h1>
+        <h1>io.js v1.4.2 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -106,7 +106,7 @@ wish to do programmatic things with the documentation.
 
 </p>
 <p>Every <code>.html</code> and <code>.json</code> file is generated based on the corresponding
-<code>.markdown</code> file in the <code>doc/api/</code> folder in node&#39;s source tree.  The
+<code>.markdown</code> file in the <code>doc/api/</code> folder in io.js&#39;s source tree.  The
 documentation is generated using the <code>tools/doc/generate.js</code> program.
 The HTML template is located at <code>doc/template.html</code>.
 
@@ -129,23 +129,17 @@ and in the process of being redesigned.
 This feature is known to be problematic, and changes are
 planned.  Do not rely on it.  Use of the feature may cause warnings.  Backwards
 compatibility should not be expected.</pre><pre class="api_stability_1">Stability: 1 - Experimental
-This feature was introduced recently, and may change
-or be removed in future versions.  Please try it out and provide feedback.
-If it addresses a use-case that is important to you, tell the node core team.</pre><pre class="api_stability_2">Stability: 2 - Unstable
-The API is in the process of settling, but has not yet had
-sufficient real-world testing to be considered stable. Backwards-compatibility
-will be maintained if reasonable.</pre><pre class="api_stability_3">Stability: 3 - Stable
-The API has proven satisfactory, but cleanup in the underlying
-code may cause minor changes.  Backwards-compatibility is guaranteed.</pre><pre class="api_stability_4">Stability: 4 - API Frozen
-This API has been tested extensively in production and is
-unlikely to ever have to change.</pre><pre class="api_stability_5">Stability: 5 - Locked
-Unless serious bugs are found, this code will not ever
-change.  Please do not suggest changes in this area; they will be refused.</pre><h2>JSON Output<span><a class="mark" href="#documentation_json_output" id="documentation_json_output">#</a></span></h2>
+This feature is subject to change, and is gated by a command line flag.
+It may change or be removed in future versions.</pre><pre class="api_stability_2">Stability: 2 - Stable
+The API has proven satisfactory. Compatibility with the npm ecosystem
+is a high priority, and will not be broken unless absolutely necessary.</pre><pre class="api_stability_3">Stability: 3 - Locked
+Only fixes related to security, performance, or bug fixes will be accepted.
+Please do not suggest API changes in this area; they will be refused.</pre><h2>JSON Output<span><a class="mark" href="#documentation_json_output" id="documentation_json_output">#</a></span></h2>
 <pre class="api_stability_1">Stability: 1 - Experimental</pre><p>Every HTML file in the markdown has a corresponding JSON file with the
 same data.
 
 </p>
-<p>This feature is new as of node v0.6.12.  It is experimental.
+<p>This feature was added in node v0.6.12.  It is experimental.
 </p>
 
       </div>

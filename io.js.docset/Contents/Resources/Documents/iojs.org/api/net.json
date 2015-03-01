@@ -4,7 +4,7 @@
     {
       "textRaw": "net",
       "name": "net",
-      "stability": 3,
+      "stability": 2,
       "stabilityText": "Stable",
       "desc": "<p>The <code>net</code> module provides you with an asynchronous network wrapper. It contains\nmethods for creating both servers and clients (called streams). You can include\nthis module with <code>require(&#39;net&#39;);</code>\n\n</p>\n",
       "methods": [

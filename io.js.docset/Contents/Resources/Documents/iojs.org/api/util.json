@@ -4,8 +4,8 @@
     {
       "textRaw": "util",
       "name": "util",
-      "stability": 4,
-      "stabilityText": "API Frozen",
+      "stability": 2,
+      "stabilityText": "Stable",
       "desc": "<p>These functions are in the module <code>&#39;util&#39;</code>. Use <code>require(&#39;util&#39;)</code> to\naccess them.\n\n</p>\n<p>The <code>util</code> module is primarily designed to support the needs of io.js&#39;s\ninternal APIs.  Many of these utilities are useful for your own\nprograms.  If you find that these functions are lacking for your\npurposes, however, you are encouraged to write your own utilities.  We\nare not interested in any future additions to the <code>util</code> module that\nare unnecessary for io.js&#39;s internal functionality.\n\n</p>\n",
       "methods": [
         {

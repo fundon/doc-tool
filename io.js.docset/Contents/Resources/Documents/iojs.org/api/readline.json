@@ -5,7 +5,7 @@
       "textRaw": "Readline",
       "name": "readline",
       "stability": 2,
-      "stabilityText": "Unstable",
+      "stabilityText": "Stable",
       "desc": "<p>To use this module, do <code>require(&#39;readline&#39;)</code>. Readline allows reading of a\nstream (such as <code>process.stdin</code>) on a line-by-line basis.\n\n</p>\n<p>Note that once you&#39;ve invoked this module, your io.js program will not\nterminate until you&#39;ve closed the interface. Here&#39;s how to allow your\nprogram to gracefully exit:\n\n</p>\n<pre><code>var readline = require(&#39;readline&#39;);\n\nvar rl = readline.createInterface({\n  input: process.stdin,\n  output: process.stdout\n});\n\nrl.question(&quot;What do you think of io.js? &quot;, function(answer) {\n  // TODO: Log the answer in a database\n  console.log(&quot;Thank you for your valuable feedback:&quot;, answer);\n\n  rl.close();\n});</code></pre>\n",
       "methods": [
         {
