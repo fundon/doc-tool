@@ -1550,6 +1550,45 @@
               "desc": "<p>Returns a new buffer which references the same memory as the old, but offset\nand cropped by the <code>start</code> (defaults to <code>0</code>) and <code>end</code> (defaults to\n<code>buffer.length</code>) indexes.  Negative indexes start from the end of the buffer.\n\n</p>\n<p><strong>Modifying the new buffer slice will modify memory in the original buffer!</strong>\n\n</p>\n<p>Example: build a Buffer with the ASCII alphabet, take a slice, then modify one\nbyte from the original Buffer.\n\n</p>\n<pre><code>var buf1 = new Buffer(26);\n\nfor (var i = 0 ; i &lt; 26 ; i++) {\n  buf1[i] = i + 97; // 97 is ASCII a\n}\n\nvar buf2 = buf1.slice(0, 3);\nconsole.log(buf2.toString(&#39;ascii&#39;, 0, buf2.length));\nbuf1[0] = 33;\nconsole.log(buf2.toString(&#39;ascii&#39;, 0, buf2.length));\n\n// abc\n// !bc</code></pre>\n"
             },
             {
+              "textRaw": "buf.indexOf(value[, byteOffset])",
+              "type": "method",
+              "name": "indexOf",
+              "signatures": [
+                {
+                  "return": {
+                    "textRaw": "Return: Number ",
+                    "name": "return",
+                    "desc": "Number"
+                  },
+                  "params": [
+                    {
+                      "textRaw": "`value` String, Buffer or Number ",
+                      "name": "value",
+                      "desc": "String, Buffer or Number"
+                    },
+                    {
+                      "textRaw": "`byteOffset` Number, Optional, Default: 0 ",
+                      "name": "byteOffset",
+                      "desc": "Number, Optional, Default: 0",
+                      "optional": true
+                    }
+                  ]
+                },
+                {
+                  "params": [
+                    {
+                      "name": "value"
+                    },
+                    {
+                      "name": "byteOffset",
+                      "optional": true
+                    }
+                  ]
+                }
+              ],
+              "desc": "<p>Operates similar to\n<a href=\"https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf\">Array#indexOf()</a>.\nAccepts a String, Buffer or Number. Strings are interpreted as UTF8. Buffers\nwill use the entire buffer. So in order to compare a partial Buffer use\n<code>Buffer#slice()</code>. Numbers can range from 0 to 255.\n\n</p>\n"
+            },
+            {
               "textRaw": "buf.readUInt8(offset[, noAssert])",
               "type": "method",
               "name": "readUInt8",
@@ -3272,7 +3311,19 @@
                   ]
                 }
               ],
-              "desc": "<p>Launches a new process with the given <code>command</code>, with  command line arguments in <code>args</code>.\nIf omitted, <code>args</code> defaults to an empty Array.\n\n</p>\n<p>The third argument is used to specify additional options, with these defaults:\n\n</p>\n<pre><code>{ cwd: undefined,\n  env: process.env\n}</code></pre>\n<p>Use <code>cwd</code> to specify the working directory from which the process is spawned.\nIf not given, the default is to inherit the current working directory.\n\n</p>\n<p>Use <code>env</code> to specify environment variables that will be visible to the new\nprocess, the default is <code>process.env</code>.\n\n</p>\n<p>Example of running <code>ls -lh /usr</code>, capturing <code>stdout</code>, <code>stderr</code>, and the exit code:\n\n</p>\n<pre><code>var spawn = require(&#39;child_process&#39;).spawn,\n    ls    = spawn(&#39;ls&#39;, [&#39;-lh&#39;, &#39;/usr&#39;]);\n\nls.stdout.on(&#39;data&#39;, function (data) {\n  console.log(&#39;stdout: &#39; + data);\n});\n\nls.stderr.on(&#39;data&#39;, function (data) {\n  console.log(&#39;stderr: &#39; + data);\n});\n\nls.on(&#39;close&#39;, function (code) {\n  console.log(&#39;child process exited with code &#39; + code);\n});</code></pre>\n<p>Example: A very elaborate way to run &#39;ps ax | grep ssh&#39;\n\n</p>\n<pre><code>var spawn = require(&#39;child_process&#39;).spawn,\n    ps    = spawn(&#39;ps&#39;, [&#39;ax&#39;]),\n    grep  = spawn(&#39;grep&#39;, [&#39;ssh&#39;]);\n\nps.stdout.on(&#39;data&#39;, function (data) {\n  grep.stdin.write(data);\n});\n\nps.stderr.on(&#39;data&#39;, function (data) {\n  console.log(&#39;ps stderr: &#39; + data);\n});\n\nps.on(&#39;close&#39;, function (code) {\n  if (code !== 0) {\n    console.log(&#39;ps process exited with code &#39; + code);\n  }\n  grep.stdin.end();\n});\n\ngrep.stdout.on(&#39;data&#39;, function (data) {\n  console.log(&#39;&#39; + data);\n});\n\ngrep.stderr.on(&#39;data&#39;, function (data) {\n  console.log(&#39;grep stderr: &#39; + data);\n});\n\ngrep.on(&#39;close&#39;, function (code) {\n  if (code !== 0) {\n    console.log(&#39;grep process exited with code &#39; + code);\n  }\n});</code></pre>\n<p>Example of checking for failed exec:\n\n</p>\n<pre><code>var spawn = require(&#39;child_process&#39;).spawn,\n    child = spawn(&#39;bad_command&#39;);\n\nchild.on(&#39;error&#39;, function (err) {\n  console.log(&#39;Failed to start child process.&#39;);\n});</code></pre>\n"
+              "desc": "<p>Launches a new process with the given <code>command</code>, with  command line arguments in <code>args</code>.\nIf omitted, <code>args</code> defaults to an empty Array.\n\n</p>\n<p>The third argument is used to specify additional options, with these defaults:\n\n</p>\n<pre><code>{ cwd: undefined,\n  env: process.env\n}</code></pre>\n<p>Use <code>cwd</code> to specify the working directory from which the process is spawned.\nIf not given, the default is to inherit the current working directory.\n\n</p>\n<p>Use <code>env</code> to specify environment variables that will be visible to the new\nprocess, the default is <code>process.env</code>.\n\n</p>\n<p>Example of running <code>ls -lh /usr</code>, capturing <code>stdout</code>, <code>stderr</code>, and the exit code:\n\n</p>\n<pre><code>var spawn = require(&#39;child_process&#39;).spawn,\n    ls    = spawn(&#39;ls&#39;, [&#39;-lh&#39;, &#39;/usr&#39;]);\n\nls.stdout.on(&#39;data&#39;, function (data) {\n  console.log(&#39;stdout: &#39; + data);\n});\n\nls.stderr.on(&#39;data&#39;, function (data) {\n  console.log(&#39;stderr: &#39; + data);\n});\n\nls.on(&#39;close&#39;, function (code) {\n  console.log(&#39;child process exited with code &#39; + code);\n});</code></pre>\n<p>Example: A very elaborate way to run &#39;ps ax | grep ssh&#39;\n\n</p>\n<pre><code>var spawn = require(&#39;child_process&#39;).spawn,\n    ps    = spawn(&#39;ps&#39;, [&#39;ax&#39;]),\n    grep  = spawn(&#39;grep&#39;, [&#39;ssh&#39;]);\n\nps.stdout.on(&#39;data&#39;, function (data) {\n  grep.stdin.write(data);\n});\n\nps.stderr.on(&#39;data&#39;, function (data) {\n  console.log(&#39;ps stderr: &#39; + data);\n});\n\nps.on(&#39;close&#39;, function (code) {\n  if (code !== 0) {\n    console.log(&#39;ps process exited with code &#39; + code);\n  }\n  grep.stdin.end();\n});\n\ngrep.stdout.on(&#39;data&#39;, function (data) {\n  console.log(&#39;&#39; + data);\n});\n\ngrep.stderr.on(&#39;data&#39;, function (data) {\n  console.log(&#39;grep stderr: &#39; + data);\n});\n\ngrep.on(&#39;close&#39;, function (code) {\n  if (code !== 0) {\n    console.log(&#39;grep process exited with code &#39; + code);\n  }\n});</code></pre>\n<p>Example of checking for failed exec:\n\n</p>\n<pre><code>var spawn = require(&#39;child_process&#39;).spawn,\n    child = spawn(&#39;bad_command&#39;);\n\nchild.on(&#39;error&#39;, function (err) {\n  console.log(&#39;Failed to start child process.&#39;);\n});</code></pre>\n",
+              "properties": [
+                {
+                  "textRaw": "options.stdio",
+                  "name": "stdio",
+                  "desc": "<p>As a shorthand, the <code>stdio</code> argument may be one of the following strings:\n\n</p>\n<ul>\n<li><code>&#39;pipe&#39;</code> - <code>[&#39;pipe&#39;, &#39;pipe&#39;, &#39;pipe&#39;]</code>, this is the default value</li>\n<li><code>&#39;ignore&#39;</code> - <code>[&#39;ignore&#39;, &#39;ignore&#39;, &#39;ignore&#39;]</code></li>\n<li><code>&#39;inherit&#39;</code> - <code>[process.stdin, process.stdout, process.stderr]</code> or <code>[0,1,2]</code></li>\n</ul>\n<p>Otherwise, the &#39;stdio&#39; option to <code>child_process.spawn()</code> is an array where each\nindex corresponds to a fd in the child.  The value is one of the following:\n\n</p>\n<ol>\n<li><code>&#39;pipe&#39;</code> - Create a pipe between the child process and the parent process.\nThe parent end of the pipe is exposed to the parent as a property on the\n<code>child_process</code> object as <code>ChildProcess.stdio[fd]</code>. Pipes created for\nfds 0 - 2 are also available as ChildProcess.stdin, ChildProcess.stdout\nand ChildProcess.stderr, respectively.</li>\n<li><code>&#39;ipc&#39;</code> - Create an IPC channel for passing messages/file descriptors\nbetween parent and child. A ChildProcess may have at most <em>one</em> IPC stdio\nfile descriptor. Setting this option enables the ChildProcess.send() method.\nIf the child writes JSON messages to this file descriptor, then this will\ntrigger ChildProcess.on(&#39;message&#39;).  If the child is an io.js program, then\nthe presence of an IPC channel will enable process.send() and\nprocess.on(&#39;message&#39;).</li>\n<li><code>&#39;ignore&#39;</code> - Do not set this file descriptor in the child. Note that io.js\nwill always open fd 0 - 2 for the processes it spawns. When any of these is\nignored io.js will open <code>/dev/null</code> and attach it to the child&#39;s fd.</li>\n<li><code>Stream</code> object - Share a readable or writable stream that refers to a tty,\nfile, socket, or a pipe with the child process. The stream&#39;s underlying\nfile descriptor is duplicated in the child process to the fd that \ncorresponds to the index in the <code>stdio</code> array. Note that the stream must\nhave an underlying descriptor (file streams do not until the <code>&#39;open&#39;</code>\nevent has occurred).</li>\n<li>Positive integer - The integer value is interpreted as a file descriptor \nthat is is currently open in the parent process. It is shared with the child\nprocess, similar to how <code>Stream</code> objects can be shared.</li>\n<li><code>null</code>, <code>undefined</code> - Use default value. For stdio fds 0, 1 and 2 (in other\nwords, stdin, stdout, and stderr) a pipe is created. For fd 3 and up, the\ndefault is <code>&#39;ignore&#39;</code>.</li>\n</ol>\n<p>Example:\n\n</p>\n<pre><code>var spawn = require(&#39;child_process&#39;).spawn;\n\n// Child will use parent&#39;s stdios\nspawn(&#39;prg&#39;, [], { stdio: &#39;inherit&#39; });\n\n// Spawn child sharing only stderr\nspawn(&#39;prg&#39;, [], { stdio: [&#39;pipe&#39;, &#39;pipe&#39;, process.stderr] });\n\n// Open an extra fd=4, to interact with programs present a\n// startd-style interface.\nspawn(&#39;prg&#39;, [], { stdio: [&#39;pipe&#39;, null, null, null, &#39;pipe&#39;] });</code></pre>\n"
+                },
+                {
+                  "textRaw": "options.detached",
+                  "name": "detached",
+                  "desc": "<p>If the <code>detached</code> option is set, the child process will be made the leader of a\nnew process group.  This makes it possible for the child to continue running \nafter the parent exits.\n\n</p>\n<p>By default, the parent will wait for the detached child to exit.  To prevent\nthe parent from waiting for a given <code>child</code>, use the <code>child.unref()</code> method,\nand the parent&#39;s event loop will not include the child in its reference count.\n\n</p>\n<p>Example of detaching a long-running process and redirecting its output to a\nfile:\n\n</p>\n<pre><code> var fs = require(&#39;fs&#39;),\n     spawn = require(&#39;child_process&#39;).spawn,\n     out = fs.openSync(&#39;./out.log&#39;, &#39;a&#39;),\n     err = fs.openSync(&#39;./out.log&#39;, &#39;a&#39;);\n\n var child = spawn(&#39;prg&#39;, [], {\n   detached: true,\n   stdio: [ &#39;ignore&#39;, out, err ]\n });\n\n child.unref();</code></pre>\n<p>When using the <code>detached</code> option to start a long-running process, the process\nwill not stay running in the background unless it is provided with a <code>stdio</code>\nconfiguration that is not connected to the parent.  If the parent&#39;s <code>stdio</code> is\ninherited, the child will remain attached to the controlling terminal.\n\n</p>\n<p>See also: <code>child_process.exec()</code> and <code>child_process.fork()</code>\n\n</p>\n"
+                }
+              ]
             },
             {
               "textRaw": "child_process.exec(command[, options], callback)",
@@ -3622,18 +3673,6 @@
                 }
               ],
               "desc": "<p>This is a special case of the <code>spawn()</code> functionality for spawning io.js\nprocesses. In addition to having all the methods in a normal ChildProcess\ninstance, the returned object has a communication channel built-in. See\n<code>child.send(message, [sendHandle])</code> for details.\n\n</p>\n<p>These child io.js processes are still whole new instances of V8. Assume at\nleast 30ms startup and 10mb memory for each new io.js. That is, you cannot\ncreate many thousands of them.\n\n</p>\n<p>The <code>execPath</code> property in the <code>options</code> object allows for a process to be\ncreated for the child rather than the current <code>iojs</code> executable. This should be\ndone with care and by default will talk over the fd represented an\nenvironmental variable <code>NODE_CHANNEL_FD</code> on the child process. The input and\noutput on this fd is expected to be line delimited JSON objects.\n\n</p>\n"
-            }
-          ],
-          "properties": [
-            {
-              "textRaw": "options.stdio",
-              "name": "stdio",
-              "desc": "<p>As a shorthand, the <code>stdio</code> argument may be one of the following strings:\n\n</p>\n<ul>\n<li><code>&#39;pipe&#39;</code> - <code>[&#39;pipe&#39;, &#39;pipe&#39;, &#39;pipe&#39;]</code>, this is the default value</li>\n<li><code>&#39;ignore&#39;</code> - <code>[&#39;ignore&#39;, &#39;ignore&#39;, &#39;ignore&#39;]</code></li>\n<li><code>&#39;inherit&#39;</code> - <code>[process.stdin, process.stdout, process.stderr]</code> or <code>[0,1,2]</code></li>\n</ul>\n<p>Otherwise, the &#39;stdio&#39; option to <code>child_process.spawn()</code> is an array where each\nindex corresponds to a fd in the child.  The value is one of the following:\n\n</p>\n<ol>\n<li><code>&#39;pipe&#39;</code> - Create a pipe between the child process and the parent process.\nThe parent end of the pipe is exposed to the parent as a property on the\n<code>child_process</code> object as <code>ChildProcess.stdio[fd]</code>. Pipes created for\nfds 0 - 2 are also available as ChildProcess.stdin, ChildProcess.stdout\nand ChildProcess.stderr, respectively.</li>\n<li><code>&#39;ipc&#39;</code> - Create an IPC channel for passing messages/file descriptors\nbetween parent and child. A ChildProcess may have at most <em>one</em> IPC stdio\nfile descriptor. Setting this option enables the ChildProcess.send() method.\nIf the child writes JSON messages to this file descriptor, then this will\ntrigger ChildProcess.on(&#39;message&#39;).  If the child is an io.js program, then\nthe presence of an IPC channel will enable process.send() and\nprocess.on(&#39;message&#39;).</li>\n<li><code>&#39;ignore&#39;</code> - Do not set this file descriptor in the child. Note that io.js\nwill always open fd 0 - 2 for the processes it spawns. When any of these is\nignored io.js will open <code>/dev/null</code> and attach it to the child&#39;s fd.</li>\n<li><code>Stream</code> object - Share a readable or writable stream that refers to a tty,\nfile, socket, or a pipe with the child process. The stream&#39;s underlying\nfile descriptor is duplicated in the child process to the fd that \ncorresponds to the index in the <code>stdio</code> array. Note that the stream must\nhave an underlying descriptor (file streams do not until the <code>&#39;open&#39;</code>\nevent has occurred).</li>\n<li>Positive integer - The integer value is interpreted as a file descriptor \nthat is is currently open in the parent process. It is shared with the child\nprocess, similar to how <code>Stream</code> objects can be shared.</li>\n<li><code>null</code>, <code>undefined</code> - Use default value. For stdio fds 0, 1 and 2 (in other\nwords, stdin, stdout, and stderr) a pipe is created. For fd 3 and up, the\ndefault is <code>&#39;ignore&#39;</code>.</li>\n</ol>\n<p>Example:\n\n</p>\n<pre><code>var spawn = require(&#39;child_process&#39;).spawn;\n\n// Child will use parent&#39;s stdios\nspawn(&#39;prg&#39;, [], { stdio: &#39;inherit&#39; });\n\n// Spawn child sharing only stderr\nspawn(&#39;prg&#39;, [], { stdio: [&#39;pipe&#39;, &#39;pipe&#39;, process.stderr] });\n\n// Open an extra fd=4, to interact with programs present a\n// startd-style interface.\nspawn(&#39;prg&#39;, [], { stdio: [&#39;pipe&#39;, null, null, null, &#39;pipe&#39;] });</code></pre>\n"
-            },
-            {
-              "textRaw": "options.detached",
-              "name": "detached",
-              "desc": "<p>If the <code>detached</code> option is set, the child process will be made the leader of a\nnew process group.  This makes it possible for the child to continue running \nafter the parent exits.\n\n</p>\n<p>By default, the parent will wait for the detached child to exit.  To prevent\nthe parent from waiting for a given <code>child</code>, use the <code>child.unref()</code> method,\nand the parent&#39;s event loop will not include the child in its reference count.\n\n</p>\n<p>Example of detaching a long-running process and redirecting its output to a\nfile:\n\n</p>\n<pre><code> var fs = require(&#39;fs&#39;),\n     spawn = require(&#39;child_process&#39;).spawn,\n     out = fs.openSync(&#39;./out.log&#39;, &#39;a&#39;),\n     err = fs.openSync(&#39;./out.log&#39;, &#39;a&#39;);\n\n var child = spawn(&#39;prg&#39;, [], {\n   detached: true,\n   stdio: [ &#39;ignore&#39;, out, err ]\n });\n\n child.unref();</code></pre>\n<p>When using the <code>detached</code> option to start a long-running process, the process\nwill not stay running in the background unless it is provided with a <code>stdio</code>\nconfiguration that is not connected to the parent.  If the parent&#39;s <code>stdio</code> is\ninherited, the child will remain attached to the controlling terminal.\n\n</p>\n<p>See also: <code>child_process.exec()</code> and <code>child_process.fork()</code>\n\n</p>\n"
             }
           ],
           "type": "module",
@@ -8462,7 +8501,7 @@
           "textRaw": "fs.exists(path, callback)",
           "type": "method",
           "name": "exists",
-          "desc": "<p>Test whether or not the given path exists by checking with the file system.\nThen call the <code>callback</code> argument with either true or false.  Example:\n\n</p>\n<pre><code>fs.exists(&#39;/etc/passwd&#39;, function (exists) {\n  util.debug(exists ? &quot;it&#39;s there&quot; : &quot;no passwd!&quot;);\n});</code></pre>\n<p><code>fs.exists()</code> is an anachronism and exists only for historical reasons.\nThere should almost never be a reason to use it in your own code.\n\n</p>\n<p>In particular, checking if a file exists before opening it is an anti-pattern\nthat leaves you vulnerable to race conditions: another process may remove the\nfile between the calls to <code>fs.exists()</code> and <code>fs.open()</code>.  Just open the file\nand handle the error when it&#39;s not there.\n\n</p>\n<p><code>fs.exists()</code> is <strong>deprecated</strong>.\n\n</p>\n",
+          "desc": "<p><code>fs.exists()</code> is <strong>deprecated</strong>. For supported alternatives please check out\n<a href=\"fs.html#fs_fs_stat_path_callback\"><code>fs.stat</code></a> or\n<a href=\"fs.html#fs_fs_access_path_mode_callback\"><code>fs.access</code></a>.\n\n</p>\n<p>Test whether or not the given path exists by checking with the file system.\nThen call the <code>callback</code> argument with either true or false.  Example:\n\n</p>\n<pre><code>fs.exists(&#39;/etc/passwd&#39;, function (exists) {\n  util.debug(exists ? &quot;it&#39;s there&quot; : &quot;no passwd!&quot;);\n});</code></pre>\n<p><code>fs.exists()</code> is an anachronism and exists only for historical reasons.\nThere should almost never be a reason to use it in your own code.\n\n</p>\n<p>In particular, checking if a file exists before opening it is an anti-pattern\nthat leaves you vulnerable to race conditions: another process may remove the\nfile between the calls to <code>fs.exists()</code> and <code>fs.open()</code>.  Just open the file\nand handle the error when it&#39;s not there.\n\n\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -8480,7 +8519,7 @@
           "textRaw": "fs.existsSync(path)",
           "type": "method",
           "name": "existsSync",
-          "desc": "<p>Synchronous version of <code>fs.exists</code>.\n\n</p>\n<p><code>fs.existsSync()</code> is <strong>deprecated</strong>.\n\n</p>\n",
+          "desc": "<p>Synchronous version of <a href=\"fs.html#fs_fs_exists_path_callback\"><code>fs.exists</code></a>.\n\n</p>\n<p><code>fs.existsSync()</code> is <strong>deprecated</strong>. For supported alternatives please check\nout <a href=\"fs.html#fs_fs_statsync_path\"><code>fs.statSync</code></a> or\n<a href=\"fs.html#fs_fs_accesssync_path_mode\"><code>fs.accessSync</code></a>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -9921,7 +9960,7 @@
       "name": "net",
       "stability": 2,
       "stabilityText": "Stable",
-      "desc": "<p>The <code>net</code> module provides you with an asynchronous network wrapper. It contains\nmethods for creating both servers and clients (called streams). You can include\nthis module with <code>require(&#39;net&#39;);</code>\n\n</p>\n",
+      "desc": "<p>The <code>net</code> module provides you with an asynchronous network wrapper. It contains\nfunctions for creating both servers and clients (called streams). You can include\nthis module with <code>require(&#39;net&#39;);</code>.\n\n</p>\n",
       "methods": [
         {
           "textRaw": "net.createServer([options][, connectionListener])",
@@ -9947,7 +9986,7 @@
           "textRaw": "net.connect(options[, connectionListener])",
           "type": "method",
           "name": "connect",
-          "desc": "<p>A factory method, which returns a new <a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a>\nand connects to the supplied address and port.\n\n</p>\n<p>When the socket is established, the [&#39;connect&#39;][] event will be emitted.\n\n</p>\n<p>Has the same events as <a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a>.\n\n</p>\n<p>For TCP sockets, <code>options</code> argument should be an object which specifies:\n\n</p>\n<ul>\n<li><p><code>port</code>: Port the client should connect to (Required).</p>\n</li>\n<li><p><code>host</code>: Host the client should connect to. Defaults to <code>&#39;localhost&#39;</code>.</p>\n</li>\n<li><p><code>localAddress</code>: Local interface to bind to for network connections.</p>\n</li>\n<li><p><code>localPort</code>: Local port to bind to for network connections.</p>\n</li>\n<li><p><code>family</code> : Version of IP stack. Defaults to <code>4</code>.</p>\n</li>\n</ul>\n<p>For local domain sockets, <code>options</code> argument should be an object which\nspecifies:\n\n</p>\n<ul>\n<li><code>path</code>: Path the client should connect to (Required).</li>\n</ul>\n<p>Common options are:\n\n</p>\n<ul>\n<li><code>allowHalfOpen</code>: if <code>true</code>, the socket won&#39;t automatically send\na FIN packet when the other end of the socket sends a FIN packet.\nDefaults to <code>false</code>.  See [&#39;end&#39;][] event for more information.</li>\n</ul>\n<p>The <code>connectListener</code> parameter will be added as an listener for the\n[&#39;connect&#39;][] event.\n\n</p>\n<p>Here is an example of a client of echo server as described previously:\n\n</p>\n<pre><code>var net = require(&#39;net&#39;);\nvar client = net.connect({port: 8124},\n    function() { //&#39;connect&#39; listener\n  console.log(&#39;connected to server!&#39;);\n  client.write(&#39;world!\\r\\n&#39;);\n});\nclient.on(&#39;data&#39;, function(data) {\n  console.log(data.toString());\n  client.end();\n});\nclient.on(&#39;end&#39;, function() {\n  console.log(&#39;disconnected from server&#39;);\n});</code></pre>\n<p>To connect on the socket <code>/tmp/echo.sock</code> the second line would just be\nchanged to\n\n</p>\n<pre><code>var client = net.connect({path: &#39;/tmp/echo.sock&#39;});</code></pre>\n",
+          "desc": "<p>A factory function, which returns a new <a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a>\nand automatically connects with the supplied <code>options</code>.\n\n</p>\n<p>The options are passed to both the <a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a>\nconstructor and the <a href=\"#net_socket_connect_options_connectlistener\">&#39;socket.connect&#39;</a>\nmethod.\n\n</p>\n<p>The <code>connectListener</code> parameter will be added as an listener for the\n[&#39;connect&#39;][] event.\n\n</p>\n<p>Here is an example of a client of the previously described echo server:\n\n</p>\n<pre><code>var net = require(&#39;net&#39;);\nvar client = net.connect({port: 8124},\n    function() { //&#39;connect&#39; listener\n  console.log(&#39;connected to server!&#39;);\n  client.write(&#39;world!\\r\\n&#39;);\n});\nclient.on(&#39;data&#39;, function(data) {\n  console.log(data.toString());\n  client.end();\n});\nclient.on(&#39;end&#39;, function() {\n  console.log(&#39;disconnected from server&#39;);\n});</code></pre>\n<p>To connect on the socket <code>/tmp/echo.sock</code> the second line would just be\nchanged to\n\n</p>\n<pre><code>var client = net.connect({path: &#39;/tmp/echo.sock&#39;});</code></pre>\n",
           "signatures": [
             {
               "params": [
@@ -9977,7 +10016,7 @@
           "textRaw": "net.createConnection(options[, connectionListener])",
           "type": "method",
           "name": "createConnection",
-          "desc": "<p>A factory method, which returns a new <a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a>\nand connects to the supplied address and port.\n\n</p>\n<p>When the socket is established, the [&#39;connect&#39;][] event will be emitted.\n\n</p>\n<p>Has the same events as <a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a>.\n\n</p>\n<p>For TCP sockets, <code>options</code> argument should be an object which specifies:\n\n</p>\n<ul>\n<li><p><code>port</code>: Port the client should connect to (Required).</p>\n</li>\n<li><p><code>host</code>: Host the client should connect to. Defaults to <code>&#39;localhost&#39;</code>.</p>\n</li>\n<li><p><code>localAddress</code>: Local interface to bind to for network connections.</p>\n</li>\n<li><p><code>localPort</code>: Local port to bind to for network connections.</p>\n</li>\n<li><p><code>family</code> : Version of IP stack. Defaults to <code>4</code>.</p>\n</li>\n</ul>\n<p>For local domain sockets, <code>options</code> argument should be an object which\nspecifies:\n\n</p>\n<ul>\n<li><code>path</code>: Path the client should connect to (Required).</li>\n</ul>\n<p>Common options are:\n\n</p>\n<ul>\n<li><code>allowHalfOpen</code>: if <code>true</code>, the socket won&#39;t automatically send\na FIN packet when the other end of the socket sends a FIN packet.\nDefaults to <code>false</code>.  See [&#39;end&#39;][] event for more information.</li>\n</ul>\n<p>The <code>connectListener</code> parameter will be added as an listener for the\n[&#39;connect&#39;][] event.\n\n</p>\n<p>Here is an example of a client of echo server as described previously:\n\n</p>\n<pre><code>var net = require(&#39;net&#39;);\nvar client = net.connect({port: 8124},\n    function() { //&#39;connect&#39; listener\n  console.log(&#39;connected to server!&#39;);\n  client.write(&#39;world!\\r\\n&#39;);\n});\nclient.on(&#39;data&#39;, function(data) {\n  console.log(data.toString());\n  client.end();\n});\nclient.on(&#39;end&#39;, function() {\n  console.log(&#39;disconnected from server&#39;);\n});</code></pre>\n<p>To connect on the socket <code>/tmp/echo.sock</code> the second line would just be\nchanged to\n\n</p>\n<pre><code>var client = net.connect({path: &#39;/tmp/echo.sock&#39;});</code></pre>\n",
+          "desc": "<p>A factory function, which returns a new <a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a>\nand automatically connects with the supplied <code>options</code>.\n\n</p>\n<p>The options are passed to both the <a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a>\nconstructor and the <a href=\"#net_socket_connect_options_connectlistener\">&#39;socket.connect&#39;</a>\nmethod.\n\n</p>\n<p>The <code>connectListener</code> parameter will be added as an listener for the\n[&#39;connect&#39;][] event.\n\n</p>\n<p>Here is an example of a client of the previously described echo server:\n\n</p>\n<pre><code>var net = require(&#39;net&#39;);\nvar client = net.connect({port: 8124},\n    function() { //&#39;connect&#39; listener\n  console.log(&#39;connected to server!&#39;);\n  client.write(&#39;world!\\r\\n&#39;);\n});\nclient.on(&#39;data&#39;, function(data) {\n  console.log(data.toString());\n  client.end();\n});\nclient.on(&#39;end&#39;, function() {\n  console.log(&#39;disconnected from server&#39;);\n});</code></pre>\n<p>To connect on the socket <code>/tmp/echo.sock</code> the second line would just be\nchanged to\n\n</p>\n<pre><code>var client = net.connect({path: &#39;/tmp/echo.sock&#39;});</code></pre>\n",
           "signatures": [
             {
               "params": [
@@ -9996,7 +10035,7 @@
           "textRaw": "net.connect(port[, host][, connectListener])",
           "type": "method",
           "name": "connect",
-          "desc": "<p>Creates a TCP connection to <code>port</code> on <code>host</code>. If <code>host</code> is omitted,\n<code>&#39;localhost&#39;</code> will be assumed.\nThe <code>connectListener</code> parameter will be added as an listener for the\n[&#39;connect&#39;][] event.\n\n</p>\n<p>Is a factory method which returns a new <a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a>.\n\n</p>\n",
+          "desc": "<p>A factory function, which returns a new\n<a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a> and automatically connects to the\nsupplied <code>port</code> and <code>host</code>.\n\n</p>\n<p>If <code>host</code> is omitted, <code>&#39;localhost&#39;</code> will be assumed.\n\n</p>\n<p>The <code>connectListener</code> parameter will be added as an listener for the\n[&#39;connect&#39;][] event.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -10034,7 +10073,7 @@
           "textRaw": "net.createConnection(port[, host][, connectListener])",
           "type": "method",
           "name": "createConnection",
-          "desc": "<p>Creates a TCP connection to <code>port</code> on <code>host</code>. If <code>host</code> is omitted,\n<code>&#39;localhost&#39;</code> will be assumed.\nThe <code>connectListener</code> parameter will be added as an listener for the\n[&#39;connect&#39;][] event.\n\n</p>\n<p>Is a factory method which returns a new <a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a>.\n\n</p>\n",
+          "desc": "<p>A factory function, which returns a new\n<a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a> and automatically connects to the\nsupplied <code>port</code> and <code>host</code>.\n\n</p>\n<p>If <code>host</code> is omitted, <code>&#39;localhost&#39;</code> will be assumed.\n\n</p>\n<p>The <code>connectListener</code> parameter will be added as an listener for the\n[&#39;connect&#39;][] event.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -10057,7 +10096,7 @@
           "textRaw": "net.connect(path[, connectListener])",
           "type": "method",
           "name": "connect",
-          "desc": "<p>Creates unix socket connection to <code>path</code>.\nThe <code>connectListener</code> parameter will be added as an listener for the\n[&#39;connect&#39;][] event.\n\n</p>\n<p>A factory method which returns a new <a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a>.\n\n</p>\n",
+          "desc": "<p>A factory function, which returns a new unix\n<a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a> and automatically connects to the\nsupplied <code>path</code>.\n\n</p>\n<p>The <code>connectListener</code> parameter will be added as an listener for the\n[&#39;connect&#39;][] event.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -10087,7 +10126,7 @@
           "textRaw": "net.createConnection(path[, connectListener])",
           "type": "method",
           "name": "createConnection",
-          "desc": "<p>Creates unix socket connection to <code>path</code>.\nThe <code>connectListener</code> parameter will be added as an listener for the\n[&#39;connect&#39;][] event.\n\n</p>\n<p>A factory method which returns a new <a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a>.\n\n</p>\n",
+          "desc": "<p>A factory function, which returns a new unix\n<a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a> and automatically connects to the\nsupplied <code>path</code>.\n\n</p>\n<p>The <code>connectListener</code> parameter will be added as an listener for the\n[&#39;connect&#39;][] event.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -10449,10 +10488,29 @@
               ]
             },
             {
+              "textRaw": "socket.connect(options[, connectListener])",
+              "type": "method",
+              "name": "connect",
+              "desc": "<p>Opens the connection for a given socket.\n\n</p>\n<p>For TCP sockets, <code>options</code> argument should be an object which specifies:\n\n</p>\n<ul>\n<li><p><code>port</code>: Port the client should connect to (Required).</p>\n</li>\n<li><p><code>host</code>: Host the client should connect to. Defaults to <code>&#39;localhost&#39;</code>.</p>\n</li>\n<li><p><code>localAddress</code>: Local interface to bind to for network connections.</p>\n</li>\n<li><p><code>localPort</code>: Local port to bind to for network connections.</p>\n</li>\n<li><p><code>family</code> : Version of IP stack. Defaults to <code>4</code>.</p>\n</li>\n</ul>\n<p>For local domain sockets, <code>options</code> argument should be an object which\nspecifies:\n\n</p>\n<ul>\n<li><code>path</code>: Path the client should connect to (Required).</li>\n</ul>\n<p>Normally this method is not needed, as <code>net.createConnection</code> opens the\nsocket. Use this only if you are implementing a custom Socket.\n\n</p>\n<p>This function is asynchronous. When the [&#39;connect&#39;][] event is emitted the\nsocket is established. If there is a problem connecting, the <code>&#39;connect&#39;</code> event\nwill not be emitted, the <code>&#39;error&#39;</code> event will be emitted with the exception.\n\n</p>\n<p>The <code>connectListener</code> parameter will be added as an listener for the\n[&#39;connect&#39;][] event.\n\n</p>\n",
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "name": "options"
+                    },
+                    {
+                      "name": "connectListener",
+                      "optional": true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
               "textRaw": "socket.connect(port[, host][, connectListener])",
               "type": "method",
               "name": "connect",
-              "desc": "<p>Opens the connection for a given socket. If <code>port</code> and <code>host</code> are given,\nthen the socket will be opened as a TCP socket, if <code>host</code> is omitted,\n<code>localhost</code> will be assumed. If a <code>path</code> is given, the socket will be\nopened as a unix socket to that path.\n\n</p>\n<p>Normally this method is not needed, as <code>net.createConnection</code> opens the\nsocket. Use this only if you are implementing a custom Socket.\n\n</p>\n<p>This function is asynchronous. When the [&#39;connect&#39;][] event is emitted the\nsocket is established. If there is a problem connecting, the <code>&#39;connect&#39;</code> event\nwill not be emitted, the <code>&#39;error&#39;</code> event will be emitted with the exception.\n\n</p>\n<p>The <code>connectListener</code> parameter will be added as an listener for the\n[&#39;connect&#39;][] event.\n\n\n</p>\n",
+              "desc": "<p>As <a href=\"#net_socket_connect_options_connectlistener\">socket.connect(options[, connectListener])</a>,\nwith options either as either <code>{port: port, host: host}</code> or <code>{path: path}</code>.\n\n</p>\n",
               "signatures": [
                 {
                   "params": [
@@ -10486,7 +10544,7 @@
               "textRaw": "socket.connect(path[, connectListener])",
               "type": "method",
               "name": "connect",
-              "desc": "<p>Opens the connection for a given socket. If <code>port</code> and <code>host</code> are given,\nthen the socket will be opened as a TCP socket, if <code>host</code> is omitted,\n<code>localhost</code> will be assumed. If a <code>path</code> is given, the socket will be\nopened as a unix socket to that path.\n\n</p>\n<p>Normally this method is not needed, as <code>net.createConnection</code> opens the\nsocket. Use this only if you are implementing a custom Socket.\n\n</p>\n<p>This function is asynchronous. When the [&#39;connect&#39;][] event is emitted the\nsocket is established. If there is a problem connecting, the <code>&#39;connect&#39;</code> event\nwill not be emitted, the <code>&#39;error&#39;</code> event will be emitted with the exception.\n\n</p>\n<p>The <code>connectListener</code> parameter will be added as an listener for the\n[&#39;connect&#39;][] event.\n\n\n</p>\n",
+              "desc": "<p>As <a href=\"#net_socket_connect_options_connectlistener\">socket.connect(options[, connectListener])</a>,\nwith options either as either <code>{port: port, host: host}</code> or <code>{path: path}</code>.\n\n</p>\n",
               "signatures": [
                 {
                   "params": [
@@ -11287,7 +11345,7 @@
           "textRaw": "querystring.parse(str[, sep][, eq][, options])",
           "type": "method",
           "name": "parse",
-          "desc": "<p>Deserialize a query string to an object.\nOptionally override the default separator (<code>&#39;&amp;&#39;</code>) and assignment (<code>&#39;=&#39;</code>)\ncharacters.\n\n</p>\n<p>Options object may contain <code>maxKeys</code> property (equal to 1000 by default), it&#39;ll\nbe used to limit processed keys. Set it to 0 to remove key count limitation.\n\n</p>\n<p>Options object may contain <code>decodeURIComponent</code> property (<code>decodeURIComponent</code> by default),\nit can be used to decode <code>non-utf8</code> encoding string if necessary.\n\n</p>\n<p>Example:\n\n</p>\n<pre><code>querystring.parse(&#39;foo=bar&amp;baz=qux&amp;baz=quux&amp;corge&#39;)\n// returns\n{ foo: &#39;bar&#39;, baz: [&#39;qux&#39;, &#39;quux&#39;], corge: &#39;&#39; }\n\n// Suppose gbkDecodeURIComponent function already exists,\n// it can decode `gbk` encoding string\nquerystring.parse(&#39;w=%D6%D0%CE%C4&amp;foo=bar&#39;, null, null,\n  { decodeURIComponent: gbkDecodeURIComponent })\n// returns\n{ w: &#39;中文&#39;, foo: &#39;bar&#39; }</code></pre>\n",
+          "desc": "<p>Deserialize a query string to an object.\nOptionally override the default separator (<code>&#39;&amp;&#39;</code>) and assignment (<code>&#39;=&#39;</code>)\ncharacters.\n\n</p>\n<p>Options object may contain <code>maxKeys</code> property (equal to 1000 by default), it&#39;ll\nbe used to limit processed keys. Set it to 0 to remove key count limitation.\n\n</p>\n<p>Options object may contain <code>decodeURIComponent</code> property (<code>querystring.unescape</code> by default),\nit can be used to decode a <code>non-utf8</code> encoding string if necessary.\n\n</p>\n<p>Example:\n\n</p>\n<pre><code>querystring.parse(&#39;foo=bar&amp;baz=qux&amp;baz=quux&amp;corge&#39;)\n// returns\n{ foo: &#39;bar&#39;, baz: [&#39;qux&#39;, &#39;quux&#39;], corge: &#39;&#39; }\n\n// Suppose gbkDecodeURIComponent function already exists,\n// it can decode `gbk` encoding string\nquerystring.parse(&#39;w=%D6%D0%CE%C4&amp;foo=bar&#39;, null, null,\n  { decodeURIComponent: gbkDecodeURIComponent })\n// returns\n{ w: &#39;中文&#39;, foo: &#39;bar&#39; }</code></pre>\n",
           "signatures": [
             {
               "params": [
@@ -11320,7 +11378,7 @@
         {
           "textRaw": "querystring.unescape",
           "name": "unescape",
-          "desc": "<p>The unescape function used by <code>querystring.parse</code>,\nprovided so that it could be overridden if necessary.\n\n</p>\n"
+          "desc": "<p>The unescape function used by <code>querystring.parse</code>,\nprovided so that it could be overridden if necessary.\n\n</p>\n<p>It will try to use <code>decodeURIComponent</code> in the first place,\nbut if that fails it falls back to a safer equivalent that\ndoesn&#39;t throw on malformed URLs.\n\n</p>\n"
         }
       ],
       "type": "module",

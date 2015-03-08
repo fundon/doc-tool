@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>net io.js v1.4.2 Manual &amp; Documentation</title>
+  <title>net io.js v1.5.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="net" class="interior">
       <header>
-        <h1>io.js v1.4.2 Documentation</h1>
+        <h1>io.js v1.5.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -104,6 +104,7 @@
 </li>
 <li><a href="#net_class_net_socket">Class: net.Socket</a><ul>
 <li><a href="#net_new_net_socket_options">new net.Socket([options])</a></li>
+<li><a href="#net_socket_connect_options_connectlistener">socket.connect(options[, connectListener])</a></li>
 <li><a href="#net_socket_connect_port_host_connectlistener">socket.connect(port[, host][, connectListener])</a></li>
 <li><a href="#net_socket_connect_path_connectlistener">socket.connect(path[, connectListener])</a></li>
 <li><a href="#net_socket_buffersize">socket.bufferSize</a></li>
@@ -148,8 +149,8 @@
       <div id="apicontent">
         <h1>net<span><a class="mark" href="#net_net" id="net_net">#</a></span></h1>
 <pre class="api_stability_2">Stability: 2 - Stable</pre><p>The <code>net</code> module provides you with an asynchronous network wrapper. It contains
-methods for creating both servers and clients (called streams). You can include
-this module with <code>require(&#39;net&#39;);</code>
+functions for creating both servers and clients (called streams). You can include
+this module with <code>require(&#39;net&#39;);</code>.
 
 </p>
 <h2>net.createServer([options][, connectionListener])<span><a class="mark" href="#net_net_createserver_options_connectionlistener" id="net_net_createserver_options_connectionlistener">#</a></span></h2>
@@ -207,51 +208,20 @@ just be changed to
 <pre><code>nc -U /tmp/echo.sock</code></pre>
 <h2>net.connect(options[, connectionListener])<span><a class="mark" href="#net_net_connect_options_connectionlistener" id="net_net_connect_options_connectionlistener">#</a></span></h2>
 <h2>net.createConnection(options[, connectionListener])<span><a class="mark" href="#net_net_createconnection_options_connectionlistener" id="net_net_createconnection_options_connectionlistener">#</a></span></h2>
-<p>A factory method, which returns a new <a href="#net_class_net_socket">&#39;net.Socket&#39;</a>
-and connects to the supplied address and port.
+<p>A factory function, which returns a new <a href="#net_class_net_socket">&#39;net.Socket&#39;</a>
+and automatically connects with the supplied <code>options</code>.
 
 </p>
-<p>When the socket is established, the <a href="#net_event_connect">&#39;connect&#39;</a> event will be emitted.
+<p>The options are passed to both the <a href="#net_class_net_socket">&#39;net.Socket&#39;</a>
+constructor and the <a href="#net_socket_connect_options_connectlistener">&#39;socket.connect&#39;</a>
+method.
 
 </p>
-<p>Has the same events as <a href="#net_class_net_socket">&#39;net.Socket&#39;</a>.
-
-</p>
-<p>For TCP sockets, <code>options</code> argument should be an object which specifies:
-
-</p>
-<ul>
-<li><p><code>port</code>: Port the client should connect to (Required).</p>
-</li>
-<li><p><code>host</code>: Host the client should connect to. Defaults to <code>&#39;localhost&#39;</code>.</p>
-</li>
-<li><p><code>localAddress</code>: Local interface to bind to for network connections.</p>
-</li>
-<li><p><code>localPort</code>: Local port to bind to for network connections.</p>
-</li>
-<li><p><code>family</code> : Version of IP stack. Defaults to <code>4</code>.</p>
-</li>
-</ul>
-<p>For local domain sockets, <code>options</code> argument should be an object which
-specifies:
-
-</p>
-<ul>
-<li><code>path</code>: Path the client should connect to (Required).</li>
-</ul>
-<p>Common options are:
-
-</p>
-<ul>
-<li><code>allowHalfOpen</code>: if <code>true</code>, the socket won&#39;t automatically send
-a FIN packet when the other end of the socket sends a FIN packet.
-Defaults to <code>false</code>.  See <a href="#net_event_end">&#39;end&#39;</a> event for more information.</li>
-</ul>
 <p>The <code>connectListener</code> parameter will be added as an listener for the
 <a href="#net_event_connect">&#39;connect&#39;</a> event.
 
 </p>
-<p>Here is an example of a client of echo server as described previously:
+<p>Here is an example of a client of the previously described echo server:
 
 </p>
 <pre><code>var net = require(&#39;net&#39;);
@@ -274,23 +244,27 @@ changed to
 <pre><code>var client = net.connect({path: &#39;/tmp/echo.sock&#39;});</code></pre>
 <h2>net.connect(port[, host][, connectListener])<span><a class="mark" href="#net_net_connect_port_host_connectlistener" id="net_net_connect_port_host_connectlistener">#</a></span></h2>
 <h2>net.createConnection(port[, host][, connectListener])<span><a class="mark" href="#net_net_createconnection_port_host_connectlistener" id="net_net_createconnection_port_host_connectlistener">#</a></span></h2>
-<p>Creates a TCP connection to <code>port</code> on <code>host</code>. If <code>host</code> is omitted,
-<code>&#39;localhost&#39;</code> will be assumed.
-The <code>connectListener</code> parameter will be added as an listener for the
-<a href="#net_event_connect">&#39;connect&#39;</a> event.
+<p>A factory function, which returns a new
+<a href="#net_class_net_socket">&#39;net.Socket&#39;</a> and automatically connects to the
+supplied <code>port</code> and <code>host</code>.
 
 </p>
-<p>Is a factory method which returns a new <a href="#net_class_net_socket">&#39;net.Socket&#39;</a>.
+<p>If <code>host</code> is omitted, <code>&#39;localhost&#39;</code> will be assumed.
+
+</p>
+<p>The <code>connectListener</code> parameter will be added as an listener for the
+<a href="#net_event_connect">&#39;connect&#39;</a> event.
 
 </p>
 <h2>net.connect(path[, connectListener])<span><a class="mark" href="#net_net_connect_path_connectlistener" id="net_net_connect_path_connectlistener">#</a></span></h2>
 <h2>net.createConnection(path[, connectListener])<span><a class="mark" href="#net_net_createconnection_path_connectlistener" id="net_net_createconnection_path_connectlistener">#</a></span></h2>
-<p>Creates unix socket connection to <code>path</code>.
-The <code>connectListener</code> parameter will be added as an listener for the
-<a href="#net_event_connect">&#39;connect&#39;</a> event.
+<p>A factory function, which returns a new unix
+<a href="#net_class_net_socket">&#39;net.Socket&#39;</a> and automatically connects to the
+supplied <code>path</code>.
 
 </p>
-<p>A factory method which returns a new <a href="#net_class_net_socket">&#39;net.Socket&#39;</a>.
+<p>The <code>connectListener</code> parameter will be added as an listener for the
+<a href="#net_event_connect">&#39;connect&#39;</a> event.
 
 </p>
 <h2>Class: net.Server<span><a class="mark" href="#net_class_net_server" id="net_class_net_server">#</a></span></h2>
@@ -541,14 +515,32 @@ socket (NOTE: Works only when <code>fd</code> is passed).
 About <code>allowHalfOpen</code>, refer to <code>createServer()</code> and <code>&#39;end&#39;</code> event.
 
 </p>
-<h3>socket.connect(port[, host][, connectListener])<span><a class="mark" href="#net_socket_connect_port_host_connectlistener" id="net_socket_connect_port_host_connectlistener">#</a></span></h3>
-<h3>socket.connect(path[, connectListener])<span><a class="mark" href="#net_socket_connect_path_connectlistener" id="net_socket_connect_path_connectlistener">#</a></span></h3>
-<p>Opens the connection for a given socket. If <code>port</code> and <code>host</code> are given,
-then the socket will be opened as a TCP socket, if <code>host</code> is omitted,
-<code>localhost</code> will be assumed. If a <code>path</code> is given, the socket will be
-opened as a unix socket to that path.
+<h3>socket.connect(options[, connectListener])<span><a class="mark" href="#net_socket_connect_options_connectlistener" id="net_socket_connect_options_connectlistener">#</a></span></h3>
+<p>Opens the connection for a given socket.
 
 </p>
+<p>For TCP sockets, <code>options</code> argument should be an object which specifies:
+
+</p>
+<ul>
+<li><p><code>port</code>: Port the client should connect to (Required).</p>
+</li>
+<li><p><code>host</code>: Host the client should connect to. Defaults to <code>&#39;localhost&#39;</code>.</p>
+</li>
+<li><p><code>localAddress</code>: Local interface to bind to for network connections.</p>
+</li>
+<li><p><code>localPort</code>: Local port to bind to for network connections.</p>
+</li>
+<li><p><code>family</code> : Version of IP stack. Defaults to <code>4</code>.</p>
+</li>
+</ul>
+<p>For local domain sockets, <code>options</code> argument should be an object which
+specifies:
+
+</p>
+<ul>
+<li><code>path</code>: Path the client should connect to (Required).</li>
+</ul>
 <p>Normally this method is not needed, as <code>net.createConnection</code> opens the
 socket. Use this only if you are implementing a custom Socket.
 
@@ -561,6 +553,11 @@ will not be emitted, the <code>&#39;error&#39;</code> event will be emitted with
 <p>The <code>connectListener</code> parameter will be added as an listener for the
 <a href="#net_event_connect">&#39;connect&#39;</a> event.
 
+</p>
+<h3>socket.connect(port[, host][, connectListener])<span><a class="mark" href="#net_socket_connect_port_host_connectlistener" id="net_socket_connect_port_host_connectlistener">#</a></span></h3>
+<h3>socket.connect(path[, connectListener])<span><a class="mark" href="#net_socket_connect_path_connectlistener" id="net_socket_connect_path_connectlistener">#</a></span></h3>
+<p>As <a href="#net_socket_connect_options_connectlistener">socket.connect(options[, connectListener])</a>,
+with options either as either <code>{port: port, host: host}</code> or <code>{path: path}</code>.
 
 </p>
 <h3>socket.bufferSize<span><a class="mark" href="#net_socket_buffersize" id="net_socket_buffersize">#</a></span></h3>

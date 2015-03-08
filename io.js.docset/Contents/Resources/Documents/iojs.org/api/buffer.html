@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Buffer io.js v1.4.2 Manual &amp; Documentation</title>
+  <title>Buffer io.js v1.5.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="buffer" class="interior">
       <header>
-        <h1>io.js v1.4.2 Documentation</h1>
+        <h1>io.js v1.5.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -104,6 +104,7 @@
 <li><a href="#buffer_buf_compare_otherbuffer">buf.compare(otherBuffer)</a></li>
 <li><a href="#buffer_buf_copy_targetbuffer_targetstart_sourcestart_sourceend">buf.copy(targetBuffer[, targetStart][, sourceStart][, sourceEnd])</a></li>
 <li><a href="#buffer_buf_slice_start_end">buf.slice([start][, end])</a></li>
+<li><a href="#buffer_buf_indexof_value_byteoffset">buf.indexOf(value[, byteOffset])</a></li>
 <li><a href="#buffer_buf_readuint8_offset_noassert">buf.readUInt8(offset[, noAssert])</a></li>
 <li><a href="#buffer_buf_readuint16le_offset_noassert">buf.readUInt16LE(offset[, noAssert])</a></li>
 <li><a href="#buffer_buf_readuint16be_offset_noassert">buf.readUInt16BE(offset[, noAssert])</a></li>
@@ -568,6 +569,19 @@ console.log(buf2.toString(&#39;ascii&#39;, 0, buf2.length));
 
 // abc
 // !bc</code></pre>
+<h3>buf.indexOf(value[, byteOffset])<span><a class="mark" href="#buffer_buf_indexof_value_byteoffset" id="buffer_buf_indexof_value_byteoffset">#</a></span></h3>
+<div class="signature"><ul>
+<li><code>value</code> String, Buffer or Number</li>
+<li><code>byteOffset</code> Number, Optional, Default: 0</li>
+<li>Return: Number</li>
+</div></ul>
+<p>Operates similar to
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf">Array#indexOf()</a>.
+Accepts a String, Buffer or Number. Strings are interpreted as UTF8. Buffers
+will use the entire buffer. So in order to compare a partial Buffer use
+<code>Buffer#slice()</code>. Numbers can range from 0 to 255.
+
+</p>
 <h3>buf.readUInt8(offset[, noAssert])<span><a class="mark" href="#buffer_buf_readuint8_offset_noassert" id="buffer_buf_readuint8_offset_noassert">#</a></span></h3>
 <div class="signature"><ul>
 <li><code>offset</code> Number</li>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Child Process io.js v1.4.2 Manual &amp; Documentation</title>
+  <title>Child Process io.js v1.5.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="child_process" class="interior">
       <header>
-        <h1>io.js v1.4.2 Documentation</h1>
+        <h1>io.js v1.5.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -99,9 +99,11 @@
 </ul>
 </li>
 <li><a href="#child_process_asynchronous_process_creation">Asynchronous Process Creation</a><ul>
-<li><a href="#child_process_child_process_spawn_command_args_options">child_process.spawn(command[, args][, options])</a></li>
+<li><a href="#child_process_child_process_spawn_command_args_options">child_process.spawn(command[, args][, options])</a><ul>
 <li><a href="#child_process_options_stdio">options.stdio</a></li>
 <li><a href="#child_process_options_detached">options.detached</a></li>
+</ul>
+</li>
 <li><a href="#child_process_child_process_exec_command_options_callback">child_process.exec(command[, options], callback)</a></li>
 <li><a href="#child_process_child_process_execfile_file_args_options_callback">child_process.execFile(file[, args][, options][, callback])</a></li>
 <li><a href="#child_process_child_process_fork_modulepath_args_options">child_process.fork(modulePath[, args][, options])</a></li>
@@ -601,7 +603,7 @@ grep.on(&#39;close&#39;, function (code) {
 child.on(&#39;error&#39;, function (err) {
   console.log(&#39;Failed to start child process.&#39;);
 });</code></pre>
-<h3>options.stdio<span><a class="mark" href="#child_process_options_stdio" id="child_process_options_stdio">#</a></span></h3>
+<h4>options.stdio<span><a class="mark" href="#child_process_options_stdio" id="child_process_options_stdio">#</a></span></h4>
 <p>As a shorthand, the <code>stdio</code> argument may be one of the following strings:
 
 </p>
@@ -657,7 +659,7 @@ spawn(&#39;prg&#39;, [], { stdio: [&#39;pipe&#39;, &#39;pipe&#39;, process.stder
 // Open an extra fd=4, to interact with programs present a
 // startd-style interface.
 spawn(&#39;prg&#39;, [], { stdio: [&#39;pipe&#39;, null, null, null, &#39;pipe&#39;] });</code></pre>
-<h3>options.detached<span><a class="mark" href="#child_process_options_detached" id="child_process_options_detached">#</a></span></h3>
+<h4>options.detached<span><a class="mark" href="#child_process_options_detached" id="child_process_options_detached">#</a></span></h4>
 <p>If the <code>detached</code> option is set, the child process will be made the leader of a
 new process group.  This makes it possible for the child to continue running 
 after the parent exits.

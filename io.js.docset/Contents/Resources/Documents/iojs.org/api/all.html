@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>About this Documentation io.js v1.4.2 Manual &amp; Documentation</title>
+  <title>About this Documentation io.js v1.5.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="all" class="interior">
       <header>
-        <h1>io.js v1.4.2 Documentation</h1>
+        <h1>io.js v1.5.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -140,6 +140,7 @@
 <li><a href="#all_buf_compare_otherbuffer">buf.compare(otherBuffer)</a></li>
 <li><a href="#all_buf_copy_targetbuffer_targetstart_sourcestart_sourceend">buf.copy(targetBuffer[, targetStart][, sourceStart][, sourceEnd])</a></li>
 <li><a href="#all_buf_slice_start_end">buf.slice([start][, end])</a></li>
+<li><a href="#all_buf_indexof_value_byteoffset">buf.indexOf(value[, byteOffset])</a></li>
 <li><a href="#all_buf_readuint8_offset_noassert">buf.readUInt8(offset[, noAssert])</a></li>
 <li><a href="#all_buf_readuint16le_offset_noassert">buf.readUInt16LE(offset[, noAssert])</a></li>
 <li><a href="#all_buf_readuint16be_offset_noassert">buf.readUInt16BE(offset[, noAssert])</a></li>
@@ -202,9 +203,11 @@
 </ul>
 </li>
 <li><a href="#all_asynchronous_process_creation">Asynchronous Process Creation</a><ul>
-<li><a href="#all_child_process_spawn_command_args_options">child_process.spawn(command[, args][, options])</a></li>
+<li><a href="#all_child_process_spawn_command_args_options">child_process.spawn(command[, args][, options])</a><ul>
 <li><a href="#all_options_stdio">options.stdio</a></li>
 <li><a href="#all_options_detached">options.detached</a></li>
+</ul>
+</li>
 <li><a href="#all_child_process_exec_command_options_callback">child_process.exec(command[, options], callback)</a></li>
 <li><a href="#all_child_process_execfile_file_args_options_callback">child_process.execFile(file[, args][, options][, callback])</a></li>
 <li><a href="#all_child_process_fork_modulepath_args_options">child_process.fork(modulePath[, args][, options])</a></li>
@@ -797,6 +800,7 @@
 </li>
 <li><a href="#all_class_net_socket">Class: net.Socket</a><ul>
 <li><a href="#all_new_net_socket_options">new net.Socket([options])</a></li>
+<li><a href="#all_socket_connect_options_connectlistener">socket.connect(options[, connectListener])</a></li>
 <li><a href="#all_socket_connect_port_host_connectlistener">socket.connect(port[, host][, connectListener])</a></li>
 <li><a href="#all_socket_connect_path_connectlistener">socket.connect(path[, connectListener])</a></li>
 <li><a href="#all_socket_buffersize">socket.bufferSize</a></li>
@@ -2555,6 +2559,19 @@ console.log(buf2.toString(&#39;ascii&#39;, 0, buf2.length));
 
 // abc
 // !bc</code></pre>
+<h3>buf.indexOf(value[, byteOffset])<span><a class="mark" href="#all_buf_indexof_value_byteoffset" id="all_buf_indexof_value_byteoffset">#</a></span></h3>
+<div class="signature"><ul>
+<li><code>value</code> String, Buffer or Number</li>
+<li><code>byteOffset</code> Number, Optional, Default: 0</li>
+<li>Return: Number</li>
+</div></ul>
+<p>Operates similar to
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf">Array#indexOf()</a>.
+Accepts a String, Buffer or Number. Strings are interpreted as UTF8. Buffers
+will use the entire buffer. So in order to compare a partial Buffer use
+<code>Buffer#slice()</code>. Numbers can range from 0 to 255.
+
+</p>
 <h3>buf.readUInt8(offset[, noAssert])<span><a class="mark" href="#all_buf_readuint8_offset_noassert" id="all_buf_readuint8_offset_noassert">#</a></span></h3>
 <div class="signature"><ul>
 <li><code>offset</code> Number</li>
@@ -3550,7 +3567,7 @@ grep.on(&#39;close&#39;, function (code) {
 child.on(&#39;error&#39;, function (err) {
   console.log(&#39;Failed to start child process.&#39;);
 });</code></pre>
-<h3>options.stdio<span><a class="mark" href="#all_options_stdio" id="all_options_stdio">#</a></span></h3>
+<h4>options.stdio<span><a class="mark" href="#all_options_stdio" id="all_options_stdio">#</a></span></h4>
 <p>As a shorthand, the <code>stdio</code> argument may be one of the following strings:
 
 </p>
@@ -3606,7 +3623,7 @@ spawn(&#39;prg&#39;, [], { stdio: [&#39;pipe&#39;, &#39;pipe&#39;, process.stder
 // Open an extra fd=4, to interact with programs present a
 // startd-style interface.
 spawn(&#39;prg&#39;, [], { stdio: [&#39;pipe&#39;, null, null, null, &#39;pipe&#39;] });</code></pre>
-<h3>options.detached<span><a class="mark" href="#all_options_detached" id="all_options_detached">#</a></span></h3>
+<h4>options.detached<span><a class="mark" href="#all_options_detached" id="all_options_detached">#</a></span></h4>
 <p>If the <code>detached</code> option is set, the child process will be made the leader of a
 new process group.  This makes it possible for the child to continue running 
 after the parent exits.
@@ -8129,6 +8146,11 @@ callback, and have some fallback logic if it is null.
   }
 });</code></pre>
 <h2>fs.exists(path, callback)<span><a class="mark" href="#all_fs_exists_path_callback" id="all_fs_exists_path_callback">#</a></span></h2>
+<p><code>fs.exists()</code> is <strong>deprecated</strong>. For supported alternatives please check out
+<a href="fs.html#fs_fs_stat_path_callback"><code>fs.stat</code></a> or
+<a href="fs.html#fs_fs_access_path_mode_callback"><code>fs.access</code></a>.
+
+</p>
 <p>Test whether or not the given path exists by checking with the file system.
 Then call the <code>callback</code> argument with either true or false.  Example:
 
@@ -8145,15 +8167,16 @@ that leaves you vulnerable to race conditions: another process may remove the
 file between the calls to <code>fs.exists()</code> and <code>fs.open()</code>.  Just open the file
 and handle the error when it&#39;s not there.
 
-</p>
-<p><code>fs.exists()</code> is <strong>deprecated</strong>.
+
 
 </p>
 <h2>fs.existsSync(path)<span><a class="mark" href="#all_fs_existssync_path" id="all_fs_existssync_path">#</a></span></h2>
-<p>Synchronous version of <code>fs.exists</code>.
+<p>Synchronous version of <a href="fs.html#fs_fs_exists_path_callback"><code>fs.exists</code></a>.
 
 </p>
-<p><code>fs.existsSync()</code> is <strong>deprecated</strong>.
+<p><code>fs.existsSync()</code> is <strong>deprecated</strong>. For supported alternatives please check
+out <a href="fs.html#fs_fs_statsync_path"><code>fs.statSync</code></a> or
+<a href="fs.html#fs_fs_accesssync_path_mode"><code>fs.accessSync</code></a>.
 
 </p>
 <h2>fs.access(path[, mode], callback)<span><a class="mark" href="#all_fs_access_path_mode_callback" id="all_fs_access_path_mode_callback">#</a></span></h2>
@@ -10513,8 +10536,8 @@ relative, and based on the real path of the files making the calls to
 </p>
 <h1>net<span><a class="mark" href="#all_net" id="all_net">#</a></span></h1>
 <pre class="api_stability_2">Stability: 2 - Stable</pre><p>The <code>net</code> module provides you with an asynchronous network wrapper. It contains
-methods for creating both servers and clients (called streams). You can include
-this module with <code>require(&#39;net&#39;);</code>
+functions for creating both servers and clients (called streams). You can include
+this module with <code>require(&#39;net&#39;);</code>.
 
 </p>
 <h2>net.createServer([options][, connectionListener])<span><a class="mark" href="#all_net_createserver_options_connectionlistener" id="all_net_createserver_options_connectionlistener">#</a></span></h2>
@@ -10572,51 +10595,20 @@ just be changed to
 <pre><code>nc -U /tmp/echo.sock</code></pre>
 <h2>net.connect(options[, connectionListener])<span><a class="mark" href="#all_net_connect_options_connectionlistener" id="all_net_connect_options_connectionlistener">#</a></span></h2>
 <h2>net.createConnection(options[, connectionListener])<span><a class="mark" href="#all_net_createconnection_options_connectionlistener" id="all_net_createconnection_options_connectionlistener">#</a></span></h2>
-<p>A factory method, which returns a new <a href="#net_class_net_socket">&#39;net.Socket&#39;</a>
-and connects to the supplied address and port.
+<p>A factory function, which returns a new <a href="#net_class_net_socket">&#39;net.Socket&#39;</a>
+and automatically connects with the supplied <code>options</code>.
 
 </p>
-<p>When the socket is established, the <a href="#net_event_connect">&#39;connect&#39;</a> event will be emitted.
+<p>The options are passed to both the <a href="#net_class_net_socket">&#39;net.Socket&#39;</a>
+constructor and the <a href="#net_socket_connect_options_connectlistener">&#39;socket.connect&#39;</a>
+method.
 
 </p>
-<p>Has the same events as <a href="#net_class_net_socket">&#39;net.Socket&#39;</a>.
-
-</p>
-<p>For TCP sockets, <code>options</code> argument should be an object which specifies:
-
-</p>
-<ul>
-<li><p><code>port</code>: Port the client should connect to (Required).</p>
-</li>
-<li><p><code>host</code>: Host the client should connect to. Defaults to <code>&#39;localhost&#39;</code>.</p>
-</li>
-<li><p><code>localAddress</code>: Local interface to bind to for network connections.</p>
-</li>
-<li><p><code>localPort</code>: Local port to bind to for network connections.</p>
-</li>
-<li><p><code>family</code> : Version of IP stack. Defaults to <code>4</code>.</p>
-</li>
-</ul>
-<p>For local domain sockets, <code>options</code> argument should be an object which
-specifies:
-
-</p>
-<ul>
-<li><code>path</code>: Path the client should connect to (Required).</li>
-</ul>
-<p>Common options are:
-
-</p>
-<ul>
-<li><code>allowHalfOpen</code>: if <code>true</code>, the socket won&#39;t automatically send
-a FIN packet when the other end of the socket sends a FIN packet.
-Defaults to <code>false</code>.  See <a href="#net_event_end">&#39;end&#39;</a> event for more information.</li>
-</ul>
 <p>The <code>connectListener</code> parameter will be added as an listener for the
 <a href="#net_event_connect">&#39;connect&#39;</a> event.
 
 </p>
-<p>Here is an example of a client of echo server as described previously:
+<p>Here is an example of a client of the previously described echo server:
 
 </p>
 <pre><code>var net = require(&#39;net&#39;);
@@ -10639,23 +10631,27 @@ changed to
 <pre><code>var client = net.connect({path: &#39;/tmp/echo.sock&#39;});</code></pre>
 <h2>net.connect(port[, host][, connectListener])<span><a class="mark" href="#all_net_connect_port_host_connectlistener" id="all_net_connect_port_host_connectlistener">#</a></span></h2>
 <h2>net.createConnection(port[, host][, connectListener])<span><a class="mark" href="#all_net_createconnection_port_host_connectlistener" id="all_net_createconnection_port_host_connectlistener">#</a></span></h2>
-<p>Creates a TCP connection to <code>port</code> on <code>host</code>. If <code>host</code> is omitted,
-<code>&#39;localhost&#39;</code> will be assumed.
-The <code>connectListener</code> parameter will be added as an listener for the
-<a href="#net_event_connect">&#39;connect&#39;</a> event.
+<p>A factory function, which returns a new
+<a href="#net_class_net_socket">&#39;net.Socket&#39;</a> and automatically connects to the
+supplied <code>port</code> and <code>host</code>.
 
 </p>
-<p>Is a factory method which returns a new <a href="#net_class_net_socket">&#39;net.Socket&#39;</a>.
+<p>If <code>host</code> is omitted, <code>&#39;localhost&#39;</code> will be assumed.
+
+</p>
+<p>The <code>connectListener</code> parameter will be added as an listener for the
+<a href="#net_event_connect">&#39;connect&#39;</a> event.
 
 </p>
 <h2>net.connect(path[, connectListener])<span><a class="mark" href="#all_net_connect_path_connectlistener" id="all_net_connect_path_connectlistener">#</a></span></h2>
 <h2>net.createConnection(path[, connectListener])<span><a class="mark" href="#all_net_createconnection_path_connectlistener" id="all_net_createconnection_path_connectlistener">#</a></span></h2>
-<p>Creates unix socket connection to <code>path</code>.
-The <code>connectListener</code> parameter will be added as an listener for the
-<a href="#net_event_connect">&#39;connect&#39;</a> event.
+<p>A factory function, which returns a new unix
+<a href="#net_class_net_socket">&#39;net.Socket&#39;</a> and automatically connects to the
+supplied <code>path</code>.
 
 </p>
-<p>A factory method which returns a new <a href="#net_class_net_socket">&#39;net.Socket&#39;</a>.
+<p>The <code>connectListener</code> parameter will be added as an listener for the
+<a href="#net_event_connect">&#39;connect&#39;</a> event.
 
 </p>
 <h2>Class: net.Server<span><a class="mark" href="#all_class_net_server" id="all_class_net_server">#</a></span></h2>
@@ -10906,14 +10902,32 @@ socket (NOTE: Works only when <code>fd</code> is passed).
 About <code>allowHalfOpen</code>, refer to <code>createServer()</code> and <code>&#39;end&#39;</code> event.
 
 </p>
-<h3>socket.connect(port[, host][, connectListener])<span><a class="mark" href="#all_socket_connect_port_host_connectlistener" id="all_socket_connect_port_host_connectlistener">#</a></span></h3>
-<h3>socket.connect(path[, connectListener])<span><a class="mark" href="#all_socket_connect_path_connectlistener" id="all_socket_connect_path_connectlistener">#</a></span></h3>
-<p>Opens the connection for a given socket. If <code>port</code> and <code>host</code> are given,
-then the socket will be opened as a TCP socket, if <code>host</code> is omitted,
-<code>localhost</code> will be assumed. If a <code>path</code> is given, the socket will be
-opened as a unix socket to that path.
+<h3>socket.connect(options[, connectListener])<span><a class="mark" href="#all_socket_connect_options_connectlistener" id="all_socket_connect_options_connectlistener">#</a></span></h3>
+<p>Opens the connection for a given socket.
 
 </p>
+<p>For TCP sockets, <code>options</code> argument should be an object which specifies:
+
+</p>
+<ul>
+<li><p><code>port</code>: Port the client should connect to (Required).</p>
+</li>
+<li><p><code>host</code>: Host the client should connect to. Defaults to <code>&#39;localhost&#39;</code>.</p>
+</li>
+<li><p><code>localAddress</code>: Local interface to bind to for network connections.</p>
+</li>
+<li><p><code>localPort</code>: Local port to bind to for network connections.</p>
+</li>
+<li><p><code>family</code> : Version of IP stack. Defaults to <code>4</code>.</p>
+</li>
+</ul>
+<p>For local domain sockets, <code>options</code> argument should be an object which
+specifies:
+
+</p>
+<ul>
+<li><code>path</code>: Path the client should connect to (Required).</li>
+</ul>
 <p>Normally this method is not needed, as <code>net.createConnection</code> opens the
 socket. Use this only if you are implementing a custom Socket.
 
@@ -10926,6 +10940,11 @@ will not be emitted, the <code>&#39;error&#39;</code> event will be emitted with
 <p>The <code>connectListener</code> parameter will be added as an listener for the
 <a href="#net_event_connect">&#39;connect&#39;</a> event.
 
+</p>
+<h3>socket.connect(port[, host][, connectListener])<span><a class="mark" href="#all_socket_connect_port_host_connectlistener" id="all_socket_connect_port_host_connectlistener">#</a></span></h3>
+<h3>socket.connect(path[, connectListener])<span><a class="mark" href="#all_socket_connect_path_connectlistener" id="all_socket_connect_path_connectlistener">#</a></span></h3>
+<p>As <a href="#net_socket_connect_options_connectlistener">socket.connect(options[, connectListener])</a>,
+with options either as either <code>{port: port, host: host}</code> or <code>{path: path}</code>.
 
 </p>
 <h3>socket.bufferSize<span><a class="mark" href="#all_socket_buffersize" id="all_socket_buffersize">#</a></span></h3>
@@ -12542,8 +12561,8 @@ characters.
 be used to limit processed keys. Set it to 0 to remove key count limitation.
 
 </p>
-<p>Options object may contain <code>decodeURIComponent</code> property (<code>decodeURIComponent</code> by default),
-it can be used to decode <code>non-utf8</code> encoding string if necessary.
+<p>Options object may contain <code>decodeURIComponent</code> property (<code>querystring.unescape</code> by default),
+it can be used to decode a <code>non-utf8</code> encoding string if necessary.
 
 </p>
 <p>Example:
@@ -12567,6 +12586,11 @@ provided so that it could be overridden if necessary.
 <h2>querystring.unescape<span><a class="mark" href="#all_querystring_unescape" id="all_querystring_unescape">#</a></span></h2>
 <p>The unescape function used by <code>querystring.parse</code>,
 provided so that it could be overridden if necessary.
+
+</p>
+<p>It will try to use <code>decodeURIComponent</code> in the first place,
+but if that fails it falls back to a safer equivalent that
+doesn&#39;t throw on malformed URLs.
 
 </p>
 <h1>Readline<span><a class="mark" href="#all_readline" id="all_readline">#</a></span></h1>

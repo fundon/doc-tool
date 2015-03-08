@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>File System io.js v1.4.2 Manual &amp; Documentation</title>
+  <title>File System io.js v1.5.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="fs" class="interior">
       <header>
-        <h1>io.js v1.4.2 Documentation</h1>
+        <h1>io.js v1.5.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -861,6 +861,11 @@ callback, and have some fallback logic if it is null.
   }
 });</code></pre>
 <h2>fs.exists(path, callback)<span><a class="mark" href="#fs_fs_exists_path_callback" id="fs_fs_exists_path_callback">#</a></span></h2>
+<p><code>fs.exists()</code> is <strong>deprecated</strong>. For supported alternatives please check out
+<a href="fs.html#fs_fs_stat_path_callback"><code>fs.stat</code></a> or
+<a href="fs.html#fs_fs_access_path_mode_callback"><code>fs.access</code></a>.
+
+</p>
 <p>Test whether or not the given path exists by checking with the file system.
 Then call the <code>callback</code> argument with either true or false.  Example:
 
@@ -877,15 +882,16 @@ that leaves you vulnerable to race conditions: another process may remove the
 file between the calls to <code>fs.exists()</code> and <code>fs.open()</code>.  Just open the file
 and handle the error when it&#39;s not there.
 
-</p>
-<p><code>fs.exists()</code> is <strong>deprecated</strong>.
+
 
 </p>
 <h2>fs.existsSync(path)<span><a class="mark" href="#fs_fs_existssync_path" id="fs_fs_existssync_path">#</a></span></h2>
-<p>Synchronous version of <code>fs.exists</code>.
+<p>Synchronous version of <a href="fs.html#fs_fs_exists_path_callback"><code>fs.exists</code></a>.
 
 </p>
-<p><code>fs.existsSync()</code> is <strong>deprecated</strong>.
+<p><code>fs.existsSync()</code> is <strong>deprecated</strong>. For supported alternatives please check
+out <a href="fs.html#fs_fs_statsync_path"><code>fs.statSync</code></a> or
+<a href="fs.html#fs_fs_accesssync_path_mode"><code>fs.accessSync</code></a>.
 
 </p>
 <h2>fs.access(path[, mode], callback)<span><a class="mark" href="#fs_fs_access_path_mode_callback" id="fs_fs_access_path_mode_callback">#</a></span></h2>

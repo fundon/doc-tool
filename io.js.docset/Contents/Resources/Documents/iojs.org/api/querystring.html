@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Query String io.js v1.4.2 Manual &amp; Documentation</title>
+  <title>Query String io.js v1.5.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="querystring" class="interior">
       <header>
-        <h1>io.js v1.4.2 Documentation</h1>
+        <h1>io.js v1.5.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -132,8 +132,8 @@ characters.
 be used to limit processed keys. Set it to 0 to remove key count limitation.
 
 </p>
-<p>Options object may contain <code>decodeURIComponent</code> property (<code>decodeURIComponent</code> by default),
-it can be used to decode <code>non-utf8</code> encoding string if necessary.
+<p>Options object may contain <code>decodeURIComponent</code> property (<code>querystring.unescape</code> by default),
+it can be used to decode a <code>non-utf8</code> encoding string if necessary.
 
 </p>
 <p>Example:
@@ -157,6 +157,11 @@ provided so that it could be overridden if necessary.
 <h2>querystring.unescape<span><a class="mark" href="#querystring_querystring_unescape" id="querystring_querystring_unescape">#</a></span></h2>
 <p>The unescape function used by <code>querystring.parse</code>,
 provided so that it could be overridden if necessary.
+
+</p>
+<p>It will try to use <code>decodeURIComponent</code> in the first place,
+but if that fails it falls back to a safer equivalent that
+doesn&#39;t throw on malformed URLs.
 </p>
 
       </div>

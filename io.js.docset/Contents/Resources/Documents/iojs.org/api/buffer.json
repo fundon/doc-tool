@@ -689,6 +689,45 @@
               "desc": "<p>Returns a new buffer which references the same memory as the old, but offset\nand cropped by the <code>start</code> (defaults to <code>0</code>) and <code>end</code> (defaults to\n<code>buffer.length</code>) indexes.  Negative indexes start from the end of the buffer.\n\n</p>\n<p><strong>Modifying the new buffer slice will modify memory in the original buffer!</strong>\n\n</p>\n<p>Example: build a Buffer with the ASCII alphabet, take a slice, then modify one\nbyte from the original Buffer.\n\n</p>\n<pre><code>var buf1 = new Buffer(26);\n\nfor (var i = 0 ; i &lt; 26 ; i++) {\n  buf1[i] = i + 97; // 97 is ASCII a\n}\n\nvar buf2 = buf1.slice(0, 3);\nconsole.log(buf2.toString(&#39;ascii&#39;, 0, buf2.length));\nbuf1[0] = 33;\nconsole.log(buf2.toString(&#39;ascii&#39;, 0, buf2.length));\n\n// abc\n// !bc</code></pre>\n"
             },
             {
+              "textRaw": "buf.indexOf(value[, byteOffset])",
+              "type": "method",
+              "name": "indexOf",
+              "signatures": [
+                {
+                  "return": {
+                    "textRaw": "Return: Number ",
+                    "name": "return",
+                    "desc": "Number"
+                  },
+                  "params": [
+                    {
+                      "textRaw": "`value` String, Buffer or Number ",
+                      "name": "value",
+                      "desc": "String, Buffer or Number"
+                    },
+                    {
+                      "textRaw": "`byteOffset` Number, Optional, Default: 0 ",
+                      "name": "byteOffset",
+                      "desc": "Number, Optional, Default: 0",
+                      "optional": true
+                    }
+                  ]
+                },
+                {
+                  "params": [
+                    {
+                      "name": "value"
+                    },
+                    {
+                      "name": "byteOffset",
+                      "optional": true
+                    }
+                  ]
+                }
+              ],
+              "desc": "<p>Operates similar to\n<a href=\"https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf\">Array#indexOf()</a>.\nAccepts a String, Buffer or Number. Strings are interpreted as UTF8. Buffers\nwill use the entire buffer. So in order to compare a partial Buffer use\n<code>Buffer#slice()</code>. Numbers can range from 0 to 255.\n\n</p>\n"
+            },
+            {
               "textRaw": "buf.readUInt8(offset[, noAssert])",
               "type": "method",
               "name": "readUInt8",
