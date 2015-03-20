@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>About this Documentation io.js v1.5.0 Manual &amp; Documentation</title>
+  <title>About this Documentation io.js v1.6.1 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="all" class="interior">
       <header>
-        <h1>io.js v1.5.0 Documentation</h1>
+        <h1>io.js v1.6.1 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -698,7 +698,7 @@
 <li><a href="#all_event_upgrade_1">Event: &#39;upgrade&#39;</a></li>
 <li><a href="#all_event_continue">Event: &#39;continue&#39;</a></li>
 <li><a href="#all_event_abort">Event: &#39;abort&#39;</a></li>
-<li><a href="#all_request_flush">request.flush()</a></li>
+<li><a href="#all_request_flushheaders">request.flushHeaders()</a></li>
 <li><a href="#all_request_write_chunk_encoding_callback">request.write(chunk[, encoding][, callback])</a></li>
 <li><a href="#all_request_end_data_encoding_callback">request.end([data][, encoding][, callback])</a></li>
 <li><a href="#all_request_abort">request.abort()</a></li>
@@ -3082,7 +3082,7 @@ socket.on(&#39;readable&#39;, function() {
   data.copy(sb, 0, 0, 10);
   store.push(sb);
 });</code></pre>
-<p>Though this should used sparingly and only be a last resort <em>after</em> a developer
+<p>Though this should be used sparingly and only be a last resort <em>after</em> a developer
 has actively observed undue memory retention in their applications.
 
 </p>
@@ -7319,9 +7319,10 @@ attached to.
 
 </p>
 <h2>Class: events.EventEmitter<span><a class="mark" href="#all_class_events_eventemitter" id="all_class_events_eventemitter">#</a></span></h2>
-<p>To access the EventEmitter class, <code>require(&#39;events&#39;).EventEmitter</code>.
+<p>Use <code>require(&#39;events&#39;)</code> to access the EventEmitter class.
 
 </p>
+<pre><code class="javascript">var EventEmitter = require(&#39;events&#39;);</code></pre>
 <p>When an <code>EventEmitter</code> instance experiences an error, the typical action is
 to emit an <code>&#39;error&#39;</code> event.  Error events are treated as a special case in
 io.js.  If there is no listener for it, then the default action is to print
@@ -9539,7 +9540,7 @@ the client should send the request body.
 emitted on the first call to <code>abort()</code>.
 
 </p>
-<h3>request.flush()<span><a class="mark" href="#all_request_flush" id="all_request_flush">#</a></span></h3>
+<h3>request.flushHeaders()<span><a class="mark" href="#all_request_flushheaders" id="all_request_flushheaders">#</a></span></h3>
 <p>Flush the request headers.
 
 </p>
@@ -9549,7 +9550,7 @@ hard to pack the request headers and data into a single TCP packet.
 
 </p>
 <p>That&#39;s usually what you want (it saves a TCP round-trip) but not when the first
-data isn&#39;t sent until possibly much later.  <code>request.flush()</code> lets you bypass
+data isn&#39;t sent until possibly much later.  <code>request.flushHeaders()</code> lets you bypass
 the optimization and kickstart the request.
 
 </p>
@@ -10704,7 +10705,7 @@ would be to wait a second and then try again. This can be done with
 </p>
 <p>This function is asynchronous.  When the server has been bound,
 <a href="#net_event_listening">&#39;listening&#39;</a> event will be emitted.  The last parameter <code>callback</code>
-will be added as an listener for the <a href="#net_event_listening">&#39;listening&#39;</a> event.
+will be added as a listener for the <a href="#net_event_listening">&#39;listening&#39;</a> event.
 
 </p>
 <p>On UNIX, the local domain is usually known as the UNIX domain. The path is a
@@ -11572,7 +11573,7 @@ process.env.PATH.split(path.delimiter)
 
 process.env.PATH.split(path.delimiter)
 // returns
-[&#39;C:\Windows\system32&#39;, &#39;C:\Windows&#39;, &#39;C:\Program Files\iojs\&#39;]</code></pre>
+[&#39;C:\\Windows\\system32&#39;, &#39;C:\\Windows&#39;, &#39;C:\\Program Files\\iojs\\&#39;]</code></pre>
 <h2>path.parse(pathString)<span><a class="mark" href="#all_path_parse_pathstring" id="all_path_parse_pathstring">#</a></span></h2>
 <p>Returns an object from a path string.
 
@@ -11595,8 +11596,8 @@ process.env.PATH.split(path.delimiter)
 <pre><code>path.parse(&#39;C:\\path\\dir\\index.html&#39;)
 // returns
 {
-    root : &quot;C:\&quot;,
-    dir : &quot;C:\path\dir&quot;,
+    root : &quot;C:\\&quot;,
+    dir : &quot;C:\\path\\dir&quot;,
     base : &quot;index.html&quot;,
     ext : &quot;.html&quot;,
     name : &quot;index&quot;
@@ -15220,10 +15221,6 @@ clients that connect and attempt to verify that certificate. Default:
 which is not authorized with the list of supplied CAs. This option only
 has an effect if <code>requestCert</code> is <code>true</code>. Default: <code>false</code>.</p>
 </li>
-<li><p><code>checkServerIdentity(servername, cert)</code>: Provide an override for checking
-server&#39;s hostname against the certificate. Should return an error if verification
-fails. Return <code>undefined</code> if passing.</p>
-</li>
 <li><p><code>NPNProtocols</code>: An array or <code>Buffer</code> of possible NPN protocols. (Protocols
 should be ordered by their priority).</p>
 </li>
@@ -15356,6 +15353,10 @@ where first byte is next protocol name&#39;s length. (Passing array should
 usually be much simpler: <code>[&#39;hello&#39;, &#39;world&#39;]</code>.)</p>
 </li>
 <li><p><code>servername</code>: Servername for SNI (Server Name Indication) TLS extension.</p>
+</li>
+<li><p><code>checkServerIdentity(servername, cert)</code>: Provide an override for checking
+server&#39;s hostname against the certificate. Should return an error if verification
+fails. Return <code>undefined</code> if passing.</p>
 </li>
 <li><p><code>secureProtocol</code>: The SSL method to use, e.g. <code>SSLv3_method</code> to force
 SSL version 3. The possible values depend on your installation of
@@ -15958,7 +15959,7 @@ string will not be in the parsed object. Examples are shown for the URL
 <li><p><code>protocol</code>: The request protocol, lowercased.</p>
 <p>  Example: <code>&#39;http:&#39;</code></p>
 </li>
-<li><p><code>slashes</code>: The protocol requires slashes after the colon</p>
+<li><p><code>slashes</code>: The protocol requires slashes after the colon.</p>
 <p>  Example: true or false</p>
 </li>
 <li><p><code>host</code>: The full lowercased host portion of the URL, including port
@@ -16024,18 +16025,18 @@ empty) string.  Defaults to <code>false</code>.
 <li>The protocols <code>http</code>, <code>https</code>, <code>ftp</code>, <code>gopher</code>, <code>file</code> will be
 postfixed with <code>://</code> (colon-slash-slash).</li>
 <li>All other protocols <code>mailto</code>, <code>xmpp</code>, <code>aim</code>, <code>sftp</code>, <code>foo</code>, etc will
-be postfixed with <code>:</code> (colon)</li>
+be postfixed with <code>:</code> (colon).</li>
 </ul>
 </li>
 <li><code>slashes</code> set to <code>true</code> if the protocol requires <code>://</code> (colon-slash-slash)<ul>
 <li>Only needs to be set for protocols not previously listed as requiring
-slashes, such as <code>mongodb://localhost:8000/</code></li>
+slashes, such as <code>mongodb://localhost:8000/</code>.</li>
 </ul>
 </li>
 <li><code>auth</code> will be used if present.</li>
 <li><code>hostname</code> will only be used if <code>host</code> is absent.</li>
 <li><code>port</code> will only be used if <code>host</code> is absent.</li>
-<li><code>host</code> will be used in place of <code>hostname</code> and <code>port</code></li>
+<li><code>host</code> will be used in place of <code>hostname</code> and <code>port</code>.</li>
 <li><code>pathname</code> is treated the same with or without the leading <code>/</code> (slash).</li>
 <li><code>query</code> (object; see <code>querystring</code>) will only be used if <code>search</code> is absent.</li>
 <li><code>search</code> will be used in place of <code>query</code>.<ul>
@@ -16109,8 +16110,8 @@ argument. Supported placeholders are:
 <ul>
 <li><code>%s</code> - String.</li>
 <li><code>%d</code> - Number (both integer and float).</li>
-<li><code>%j</code> - JSON.  Replaced with the string <code>&#39;[Circular]&#39;</code> if the argument<pre><code>   contains circular references.</code></pre>
-</li>
+<li><code>%j</code> - JSON.  Replaced with the string <code>&#39;[Circular]&#39;</code> if the argument
+contains circular references.</li>
 <li><code>%</code> - single percent sign (<code>&#39;%&#39;</code>). This does not consume an argument.</li>
 </ul>
 <p>If the placeholder does not have a corresponding argument, the placeholder is
@@ -16566,7 +16567,8 @@ code does not have access to local scope, but does have access to the current
 <p>Example of using <code>vm.runInThisContext</code> and <code>eval</code> to run the same code:
 
 </p>
-<pre><code>var localVar = &#39;initial value&#39;;
+<pre><code>var vm = require(&#39;vm&#39;);
+var localVar = &#39;initial value&#39;;
 
 var vmResult = vm.runInThisContext(&#39;localVar = &quot;vm&quot;;&#39;);
 console.log(&#39;vmResult: &#39;, vmResult);
@@ -16666,7 +16668,7 @@ new one. These globals are contained in the sandbox.
 
 </p>
 <pre><code>var util = require(&#39;util&#39;);
-var vm = require(&#39;vm&#39;),
+var vm = require(&#39;vm&#39;);
 
 var sandbox = {
   animal: &#39;cat&#39;,
@@ -16777,10 +16779,11 @@ var sandbox = {
   count: 2
 };
 
+var context = new vm.createContext(sandbox);
 var script = new vm.Script(&#39;count += 1; name = &quot;kitty&quot;&#39;);
 
 for (var i = 0; i &lt; 10; ++i) {
-  script.runInContext(sandbox);
+  script.runInContext(context);
 }
 
 console.log(util.inspect(sandbox));

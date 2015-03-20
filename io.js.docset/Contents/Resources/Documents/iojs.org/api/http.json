@@ -784,10 +784,10 @@
           ],
           "methods": [
             {
-              "textRaw": "request.flush()",
+              "textRaw": "request.flushHeaders()",
               "type": "method",
-              "name": "flush",
-              "desc": "<p>Flush the request headers.\n\n</p>\n<p>For efficiency reasons, io.js normally buffers the request headers until you\ncall <code>request.end()</code> or write the first chunk of request data.  It then tries\nhard to pack the request headers and data into a single TCP packet.\n\n</p>\n<p>That&#39;s usually what you want (it saves a TCP round-trip) but not when the first\ndata isn&#39;t sent until possibly much later.  <code>request.flush()</code> lets you bypass\nthe optimization and kickstart the request.\n\n</p>\n",
+              "name": "flushHeaders",
+              "desc": "<p>Flush the request headers.\n\n</p>\n<p>For efficiency reasons, io.js normally buffers the request headers until you\ncall <code>request.end()</code> or write the first chunk of request data.  It then tries\nhard to pack the request headers and data into a single TCP packet.\n\n</p>\n<p>That&#39;s usually what you want (it saves a TCP round-trip) but not when the first\ndata isn&#39;t sent until possibly much later.  <code>request.flushHeaders()</code> lets you bypass\nthe optimization and kickstart the request.\n\n</p>\n",
               "signatures": [
                 {
                   "params": []

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Path io.js v1.5.0 Manual &amp; Documentation</title>
+  <title>Path io.js v1.6.1 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="path" class="interior">
       <header>
-        <h1>io.js v1.5.0 Documentation</h1>
+        <h1>io.js v1.6.1 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -303,7 +303,7 @@ process.env.PATH.split(path.delimiter)
 
 process.env.PATH.split(path.delimiter)
 // returns
-[&#39;C:\Windows\system32&#39;, &#39;C:\Windows&#39;, &#39;C:\Program Files\iojs\&#39;]</code></pre>
+[&#39;C:\\Windows\\system32&#39;, &#39;C:\\Windows&#39;, &#39;C:\\Program Files\\iojs\\&#39;]</code></pre>
 <h2>path.parse(pathString)<span><a class="mark" href="#path_path_parse_pathstring" id="path_path_parse_pathstring">#</a></span></h2>
 <p>Returns an object from a path string.
 
@@ -326,8 +326,8 @@ process.env.PATH.split(path.delimiter)
 <pre><code>path.parse(&#39;C:\\path\\dir\\index.html&#39;)
 // returns
 {
-    root : &quot;C:\&quot;,
-    dir : &quot;C:\path\dir&quot;,
+    root : &quot;C:\\&quot;,
+    dir : &quot;C:\\path\\dir&quot;,
     base : &quot;index.html&quot;,
     ext : &quot;.html&quot;,
     name : &quot;index&quot;

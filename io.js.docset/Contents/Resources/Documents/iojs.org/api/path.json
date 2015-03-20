@@ -152,7 +152,7 @@
           "textRaw": "path.parse(pathString)",
           "type": "method",
           "name": "parse",
-          "desc": "<p>Returns an object from a path string.\n\n</p>\n<p>An example on *nix:\n\n</p>\n<pre><code>path.parse(&#39;/home/user/dir/file.txt&#39;)\n// returns\n{\n    root : &quot;/&quot;,\n    dir : &quot;/home/user/dir&quot;,\n    base : &quot;file.txt&quot;,\n    ext : &quot;.txt&quot;,\n    name : &quot;file&quot;\n}</code></pre>\n<p>An example on Windows:\n\n</p>\n<pre><code>path.parse(&#39;C:\\\\path\\\\dir\\\\index.html&#39;)\n// returns\n{\n    root : &quot;C:\\&quot;,\n    dir : &quot;C:\\path\\dir&quot;,\n    base : &quot;index.html&quot;,\n    ext : &quot;.html&quot;,\n    name : &quot;index&quot;\n}</code></pre>\n",
+          "desc": "<p>Returns an object from a path string.\n\n</p>\n<p>An example on *nix:\n\n</p>\n<pre><code>path.parse(&#39;/home/user/dir/file.txt&#39;)\n// returns\n{\n    root : &quot;/&quot;,\n    dir : &quot;/home/user/dir&quot;,\n    base : &quot;file.txt&quot;,\n    ext : &quot;.txt&quot;,\n    name : &quot;file&quot;\n}</code></pre>\n<p>An example on Windows:\n\n</p>\n<pre><code>path.parse(&#39;C:\\\\path\\\\dir\\\\index.html&#39;)\n// returns\n{\n    root : &quot;C:\\\\&quot;,\n    dir : &quot;C:\\\\path\\\\dir&quot;,\n    base : &quot;index.html&quot;,\n    ext : &quot;.html&quot;,\n    name : &quot;index&quot;\n}</code></pre>\n",
           "signatures": [
             {
               "params": [
@@ -188,7 +188,7 @@
         {
           "textRaw": "path.delimiter",
           "name": "delimiter",
-          "desc": "<p>The platform-specific path delimiter, <code>;</code> or <code>&#39;:&#39;</code>.\n\n</p>\n<p>An example on *nix:\n\n</p>\n<pre><code>console.log(process.env.PATH)\n// &#39;/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin&#39;\n\nprocess.env.PATH.split(path.delimiter)\n// returns\n[&#39;/usr/bin&#39;, &#39;/bin&#39;, &#39;/usr/sbin&#39;, &#39;/sbin&#39;, &#39;/usr/local/bin&#39;]</code></pre>\n<p>An example on Windows:\n\n</p>\n<pre><code>console.log(process.env.PATH)\n// &#39;C:\\Windows\\system32;C:\\Windows;C:\\Program Files\\iojs\\&#39;\n\nprocess.env.PATH.split(path.delimiter)\n// returns\n[&#39;C:\\Windows\\system32&#39;, &#39;C:\\Windows&#39;, &#39;C:\\Program Files\\iojs\\&#39;]</code></pre>\n"
+          "desc": "<p>The platform-specific path delimiter, <code>;</code> or <code>&#39;:&#39;</code>.\n\n</p>\n<p>An example on *nix:\n\n</p>\n<pre><code>console.log(process.env.PATH)\n// &#39;/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin&#39;\n\nprocess.env.PATH.split(path.delimiter)\n// returns\n[&#39;/usr/bin&#39;, &#39;/bin&#39;, &#39;/usr/sbin&#39;, &#39;/sbin&#39;, &#39;/usr/local/bin&#39;]</code></pre>\n<p>An example on Windows:\n\n</p>\n<pre><code>console.log(process.env.PATH)\n// &#39;C:\\Windows\\system32;C:\\Windows;C:\\Program Files\\iojs\\&#39;\n\nprocess.env.PATH.split(path.delimiter)\n// returns\n[&#39;C:\\\\Windows\\\\system32&#39;, &#39;C:\\\\Windows&#39;, &#39;C:\\\\Program Files\\\\iojs\\\\&#39;]</code></pre>\n"
         },
         {
           "textRaw": "path.posix",

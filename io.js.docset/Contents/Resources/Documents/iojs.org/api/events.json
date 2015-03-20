@@ -13,7 +13,7 @@
           "textRaw": "Class: events.EventEmitter",
           "type": "class",
           "name": "events.EventEmitter",
-          "desc": "<p>To access the EventEmitter class, <code>require(&#39;events&#39;).EventEmitter</code>.\n\n</p>\n<p>When an <code>EventEmitter</code> instance experiences an error, the typical action is\nto emit an <code>&#39;error&#39;</code> event.  Error events are treated as a special case in\nio.js.  If there is no listener for it, then the default action is to print\na stack trace and exit the program.\n\n</p>\n<p>All EventEmitters emit the event <code>&#39;newListener&#39;</code> when new listeners are\nadded and <code>&#39;removeListener&#39;</code> when a listener is removed.\n\n</p>\n",
+          "desc": "<p>Use <code>require(&#39;events&#39;)</code> to access the EventEmitter class.\n\n</p>\n<pre><code class=\"javascript\">var EventEmitter = require(&#39;events&#39;);</code></pre>\n<p>When an <code>EventEmitter</code> instance experiences an error, the typical action is\nto emit an <code>&#39;error&#39;</code> event.  Error events are treated as a special case in\nio.js.  If there is no listener for it, then the default action is to print\na stack trace and exit the program.\n\n</p>\n<p>All EventEmitters emit the event <code>&#39;newListener&#39;</code> when new listeners are\nadded and <code>&#39;removeListener&#39;</code> when a listener is removed.\n\n</p>\n",
           "methods": [
             {
               "textRaw": "emitter.addListener(event, listener)",
