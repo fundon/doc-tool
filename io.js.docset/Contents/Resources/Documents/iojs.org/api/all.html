@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>About this Documentation io.js v1.6.1 Manual &amp; Documentation</title>
+  <title>About this Documentation io.js v1.7.1 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="all" class="interior">
       <header>
-        <h1>io.js v1.6.1 Documentation</h1>
+        <h1>io.js v1.7.1 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -257,7 +257,8 @@
 </li>
 </ul>
 </li>
-<li><a href="#all_console">console</a><ul>
+<li><a href="#all_console">Console</a><ul>
+<li><a href="#all_console_1">console</a><ul>
 <li><a href="#all_console_log_data">console.log([data][, ...])</a></li>
 <li><a href="#all_console_info_data">console.info([data][, ...])</a></li>
 <li><a href="#all_console_error_data">console.error([data][, ...])</a></li>
@@ -267,6 +268,12 @@
 <li><a href="#all_console_timeend_label">console.timeEnd(label)</a></li>
 <li><a href="#all_console_trace_message">console.trace(message[, ...])</a></li>
 <li><a href="#all_console_assert_value_message">console.assert(value[, message][, ...])</a></li>
+</ul>
+</li>
+<li><a href="#all_class_console">Class: Console</a><ul>
+<li><a href="#all_new_console_stdout_stderr">new Console(stdout[, stderr])</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#all_crypto">Crypto</a><ul>
@@ -619,7 +626,7 @@
 <li><a href="#all_global_objects">Global Objects</a><ul>
 <li><a href="#all_global">global</a></li>
 <li><a href="#all_process">process</a></li>
-<li><a href="#all_console_1">console</a></li>
+<li><a href="#all_console_2">console</a></li>
 <li><a href="#all_class_buffer_1">Class: Buffer</a></li>
 <li><a href="#all_require">require()</a><ul>
 <li><a href="#all_require_resolve">require.resolve()</a></li>
@@ -1393,23 +1400,32 @@ the following JavaScript code:
 <pre><code>// hello.cc
 #include &lt;node.h&gt;
 
-using namespace v8;
+namespace demo {
+
+using v8::FunctionCallbackInfo;
+using v8::HandleScope;
+using v8::Isolate;
+using v8::Local;
+using v8::Object;
+using v8::String;
+using v8::Value;
 
 void Method(const FunctionCallbackInfo&lt;Value&gt;&amp; args) {
-  Isolate* isolate = Isolate::GetCurrent();
-  HandleScope scope(isolate);
+  Isolate* isolate = args.GetIsolate();
   args.GetReturnValue().Set(String::NewFromUtf8(isolate, &quot;world&quot;));
 }
 
-void init(Handle&lt;Object&gt; exports) {
+void init(Local&lt;Object&gt; exports) {
   NODE_SET_METHOD(exports, &quot;hello&quot;, Method);
 }
 
-NODE_MODULE(addon, init)</code></pre>
+NODE_MODULE(addon, init)
+
+}  // namespace demo</code></pre>
 <p>Note that all io.js addons must export an initialization function:
 
 </p>
-<pre><code>void Initialize (Handle&lt;Object&gt; exports);
+<pre><code>void Initialize(Local&lt;Object&gt; exports);
 NODE_MODULE(module_name, Initialize)</code></pre>
 <p>There is no semi-colon after <code>NODE_MODULE</code> as it&#39;s not a function (see
 <code>node.h</code>).
@@ -1499,11 +1515,20 @@ function calls and return a result. This is the main and only needed source
 <pre><code>// addon.cc
 #include &lt;node.h&gt;
 
-using namespace v8;
+namespace demo {
+
+using v8::Exception;
+using v8::FunctionCallbackInfo;
+using v8::HandleScope;
+using v8::Isolate;
+using v8::Local;
+using v8::Number;
+using v8::Object;
+using v8::String;
+using v8::Value;
 
 void Add(const FunctionCallbackInfo&lt;Value&gt;&amp; args) {
-  Isolate* isolate = Isolate::GetCurrent();
-  HandleScope scope(isolate);
+  Isolate* isolate = args.GetIsolate();
 
   if (args.Length() &lt; 2) {
     isolate-&gt;ThrowException(Exception::TypeError(
@@ -1523,11 +1548,13 @@ void Add(const FunctionCallbackInfo&lt;Value&gt;&amp; args) {
   args.GetReturnValue().Set(num);
 }
 
-void Init(Handle&lt;Object&gt; exports) {
+void Init(Local&lt;Object&gt; exports) {
   NODE_SET_METHOD(exports, &quot;add&quot;, Add);
 }
 
-NODE_MODULE(addon, Init)</code></pre>
+NODE_MODULE(addon, Init)
+
+}  // namespace demo</code></pre>
 <p>You can test it with the following JavaScript snippet:
 
 </p>
@@ -1543,23 +1570,33 @@ there. Here&#39;s <code>addon.cc</code>:
 <pre><code>// addon.cc
 #include &lt;node.h&gt;
 
-using namespace v8;
+namespace demo {
+
+using v8::Function;
+using v8::FunctionCallbackInfo;
+using v8::HandleScope;
+using v8::Isolate;
+using v8::Local;
+using v8::Null;
+using v8::Object;
+using v8::String;
+using v8::Value;
 
 void RunCallback(const FunctionCallbackInfo&lt;Value&gt;&amp; args) {
-  Isolate* isolate = Isolate::GetCurrent();
-  HandleScope scope(isolate);
-
+  Isolate* isolate = args.GetIsolate();
   Local&lt;Function&gt; cb = Local&lt;Function&gt;::Cast(args[0]);
   const unsigned argc = 1;
   Local&lt;Value&gt; argv[argc] = { String::NewFromUtf8(isolate, &quot;hello world&quot;) };
-  cb-&gt;Call(isolate-&gt;GetCurrentContext()-&gt;Global(), argc, argv);
+  cb-&gt;Call(Null(isolate), argc, argv);
 }
 
-void Init(Handle&lt;Object&gt; exports, Handle&lt;Object&gt; module) {
+void Init(Local&lt;Object&gt; exports, Local&lt;Object&gt; module) {
   NODE_SET_METHOD(module, &quot;exports&quot;, RunCallback);
 }
 
-NODE_MODULE(addon, Init)</code></pre>
+NODE_MODULE(addon, Init)
+
+}  // namespace demo</code></pre>
 <p>Note that this example uses a two-argument form of <code>Init()</code> that receives
 the full <code>module</code> object as the second argument. This allows the addon
 to completely overwrite <code>exports</code> with a single function instead of
@@ -1584,11 +1621,18 @@ the string passed to <code>createObject()</code>:
 <pre><code>// addon.cc
 #include &lt;node.h&gt;
 
-using namespace v8;
+namespace demo {
+
+using v8::FunctionCallbackInfo;
+using v8::HandleScope;
+using v8::Isolate;
+using v8::Local;
+using v8::Object;
+using v8::String;
+using v8::Value;
 
 void CreateObject(const FunctionCallbackInfo&lt;Value&gt;&amp; args) {
-  Isolate* isolate = Isolate::GetCurrent();
-  HandleScope scope(isolate);
+  Isolate* isolate = args.GetIsolate();
 
   Local&lt;Object&gt; obj = Object::New(isolate);
   obj-&gt;Set(String::NewFromUtf8(isolate, &quot;msg&quot;), args[0]-&gt;ToString());
@@ -1596,11 +1640,13 @@ void CreateObject(const FunctionCallbackInfo&lt;Value&gt;&amp; args) {
   args.GetReturnValue().Set(obj);
 }
 
-void Init(Handle&lt;Object&gt; exports, Handle&lt;Object&gt; module) {
+void Init(Local&lt;Object&gt; exports, Local&lt;Object&gt; module) {
   NODE_SET_METHOD(module, &quot;exports&quot;, CreateObject);
 }
 
-NODE_MODULE(addon, Init)</code></pre>
+NODE_MODULE(addon, Init)
+
+}  // namespace demo</code></pre>
 <p>To test it in JavaScript:
 
 </p>
@@ -1618,17 +1664,25 @@ wraps a C++ function:
 <pre><code>// addon.cc
 #include &lt;node.h&gt;
 
-using namespace v8;
+namespace demo {
+
+using v8::Function;
+using v8::FunctionCallbackInfo;
+using v8::FunctionTemplate;
+using v8::HandleScope;
+using v8::Isolate;
+using v8::Local;
+using v8::Object;
+using v8::String;
+using v8::Value;
 
 void MyFunction(const FunctionCallbackInfo&lt;Value&gt;&amp; args) {
-  Isolate* isolate = Isolate::GetCurrent();
-  HandleScope scope(isolate);
+  Isolate* isolate = args.GetIsolate();
   args.GetReturnValue().Set(String::NewFromUtf8(isolate, &quot;hello world&quot;));
 }
 
 void CreateFunction(const FunctionCallbackInfo&lt;Value&gt;&amp; args) {
-  Isolate* isolate = Isolate::GetCurrent();
-  HandleScope scope(isolate);
+  Isolate* isolate = args.GetIsolate();
 
   Local&lt;FunctionTemplate&gt; tpl = FunctionTemplate::New(isolate, MyFunction);
   Local&lt;Function&gt; fn = tpl-&gt;GetFunction();
@@ -1639,11 +1693,13 @@ void CreateFunction(const FunctionCallbackInfo&lt;Value&gt;&amp; args) {
   args.GetReturnValue().Set(fn);
 }
 
-void Init(Handle&lt;Object&gt; exports, Handle&lt;Object&gt; module) {
+void Init(Local&lt;Object&gt; exports, Local&lt;Object&gt; module) {
   NODE_SET_METHOD(module, &quot;exports&quot;, CreateFunction);
 }
 
-NODE_MODULE(addon, Init)</code></pre>
+NODE_MODULE(addon, Init)
+
+}  // namespace demo</code></pre>
 <p>To test:
 
 </p>
@@ -1662,13 +1718,18 @@ module <code>addon.cc</code>:
 #include &lt;node.h&gt;
 #include &quot;myobject.h&quot;
 
-using namespace v8;
+namespace demo {
 
-void InitAll(Handle&lt;Object&gt; exports) {
+using v8::Local;
+using v8::Object;
+
+void InitAll(Local&lt;Object&gt; exports) {
   MyObject::Init(exports);
 }
 
-NODE_MODULE(addon, InitAll)</code></pre>
+NODE_MODULE(addon, InitAll)
+
+}  // namespace demo</code></pre>
 <p>Then in <code>myobject.h</code> make your wrapper inherit from <code>node::ObjectWrap</code>:
 
 </p>
@@ -1679,9 +1740,11 @@ NODE_MODULE(addon, InitAll)</code></pre>
 #include &lt;node.h&gt;
 #include &lt;node_object_wrap.h&gt;
 
+namespace demo {
+
 class MyObject : public node::ObjectWrap {
  public:
-  static void Init(v8::Handle&lt;v8::Object&gt; exports);
+  static void Init(v8::Local&lt;v8::Object&gt; exports);
 
  private:
   explicit MyObject(double value = 0);
@@ -1693,6 +1756,8 @@ class MyObject : public node::ObjectWrap {
   double value_;
 };
 
+}  // namespace demo
+
 #endif</code></pre>
 <p>And in <code>myobject.cc</code> implement the various methods that you want to expose.
 Here we expose the method <code>plusOne</code> by adding it to the constructor&#39;s
@@ -1702,7 +1767,19 @@ prototype:
 <pre><code>// myobject.cc
 #include &quot;myobject.h&quot;
 
-using namespace v8;
+namespace demo {
+
+using v8::Function;
+using v8::FunctionCallbackInfo;
+using v8::FunctionTemplate;
+using v8::HandleScope;
+using v8::Isolate;
+using v8::Local;
+using v8::Number;
+using v8::Object;
+using v8::Persistent;
+using v8::String;
+using v8::Value;
 
 Persistent&lt;Function&gt; MyObject::constructor;
 
@@ -1712,8 +1789,8 @@ MyObject::MyObject(double value) : value_(value) {
 MyObject::~MyObject() {
 }
 
-void MyObject::Init(Handle&lt;Object&gt; exports) {
-  Isolate* isolate = Isolate::GetCurrent();
+void MyObject::Init(Local&lt;Object&gt; exports) {
+  Isolate* isolate = exports-&gt;GetIsolate();
 
   // Prepare constructor template
   Local&lt;FunctionTemplate&gt; tpl = FunctionTemplate::New(isolate, New);
@@ -1729,8 +1806,7 @@ void MyObject::Init(Handle&lt;Object&gt; exports) {
 }
 
 void MyObject::New(const FunctionCallbackInfo&lt;Value&gt;&amp; args) {
-  Isolate* isolate = Isolate::GetCurrent();
-  HandleScope scope(isolate);
+  Isolate* isolate = args.GetIsolate();
 
   if (args.IsConstructCall()) {
     // Invoked as constructor: `new MyObject(...)`
@@ -1748,14 +1824,15 @@ void MyObject::New(const FunctionCallbackInfo&lt;Value&gt;&amp; args) {
 }
 
 void MyObject::PlusOne(const FunctionCallbackInfo&lt;Value&gt;&amp; args) {
-  Isolate* isolate = Isolate::GetCurrent();
-  HandleScope scope(isolate);
+  Isolate* isolate = args.GetIsolate();
 
   MyObject* obj = ObjectWrap::Unwrap&lt;MyObject&gt;(args.Holder());
   obj-&gt;value_ += 1;
 
   args.GetReturnValue().Set(Number::New(isolate, obj-&gt;value_));
-}</code></pre>
+}
+
+}  // namespace demo</code></pre>
 <p>Test it with:
 
 </p>
@@ -1781,21 +1858,29 @@ explicitly instantiating them with the <code>new</code> operator in JavaScript, 
 #include &lt;node.h&gt;
 #include &quot;myobject.h&quot;
 
-using namespace v8;
+namespace demo {
+
+using v8::FunctionCallbackInfo;
+using v8::HandleScope;
+using v8::Isolate;
+using v8::Local;
+using v8::Object;
+using v8::String;
+using v8::Value;
 
 void CreateObject(const FunctionCallbackInfo&lt;Value&gt;&amp; args) {
-  Isolate* isolate = Isolate::GetCurrent();
-  HandleScope scope(isolate);
   MyObject::NewInstance(args);
 }
 
-void InitAll(Handle&lt;Object&gt; exports, Handle&lt;Object&gt; module) {
-  MyObject::Init();
+void InitAll(Local&lt;Object&gt; exports, Local&lt;Object&gt; module) {
+  MyObject::Init(exports-&gt;GetIsolate());
 
   NODE_SET_METHOD(module, &quot;exports&quot;, CreateObject);
 }
 
-NODE_MODULE(addon, InitAll)</code></pre>
+NODE_MODULE(addon, InitAll)
+
+}  // namespace demo</code></pre>
 <p>In <code>myobject.h</code> we now introduce the static method <code>NewInstance</code> that takes
 care of instantiating the object (i.e. it does the job of <code>new</code> in JavaScript):
 
@@ -1807,9 +1892,11 @@ care of instantiating the object (i.e. it does the job of <code>new</code> in Ja
 #include &lt;node.h&gt;
 #include &lt;node_object_wrap.h&gt;
 
+namespace demo {
+
 class MyObject : public node::ObjectWrap {
  public:
-  static void Init();
+  static void Init(v8::Isolate* isolate);
   static void NewInstance(const v8::FunctionCallbackInfo&lt;v8::Value&gt;&amp; args);
 
  private:
@@ -1822,6 +1909,8 @@ class MyObject : public node::ObjectWrap {
   double value_;
 };
 
+}  // namespace demo
+
 #endif</code></pre>
 <p>The implementation is similar to the above in <code>myobject.cc</code>:
 
@@ -1830,7 +1919,19 @@ class MyObject : public node::ObjectWrap {
 #include &lt;node.h&gt;
 #include &quot;myobject.h&quot;
 
-using namespace v8;
+namespace demo {
+
+using v8::Function;
+using v8::FunctionCallbackInfo;
+using v8::FunctionTemplate;
+using v8::HandleScope;
+using v8::Isolate;
+using v8::Local;
+using v8::Number;
+using v8::Object;
+using v8::Persistent;
+using v8::String;
+using v8::Value;
 
 Persistent&lt;Function&gt; MyObject::constructor;
 
@@ -1840,8 +1941,7 @@ MyObject::MyObject(double value) : value_(value) {
 MyObject::~MyObject() {
 }
 
-void MyObject::Init() {
-  Isolate* isolate = Isolate::GetCurrent();
+void MyObject::Init(Isolate* isolate) {
   // Prepare constructor template
   Local&lt;FunctionTemplate&gt; tpl = FunctionTemplate::New(isolate, New);
   tpl-&gt;SetClassName(String::NewFromUtf8(isolate, &quot;MyObject&quot;));
@@ -1854,8 +1954,7 @@ void MyObject::Init() {
 }
 
 void MyObject::New(const FunctionCallbackInfo&lt;Value&gt;&amp; args) {
-  Isolate* isolate = Isolate::GetCurrent();
-  HandleScope scope(isolate);
+  Isolate* isolate = args.GetIsolate();
 
   if (args.IsConstructCall()) {
     // Invoked as constructor: `new MyObject(...)`
@@ -1873,11 +1972,10 @@ void MyObject::New(const FunctionCallbackInfo&lt;Value&gt;&amp; args) {
 }
 
 void MyObject::NewInstance(const FunctionCallbackInfo&lt;Value&gt;&amp; args) {
-  Isolate* isolate = Isolate::GetCurrent();
-  HandleScope scope(isolate);
+  Isolate* isolate = args.GetIsolate();
 
   const unsigned argc = 1;
-  Handle&lt;Value&gt; argv[argc] = { args[0] };
+  Local&lt;Value&gt; argv[argc] = { args[0] };
   Local&lt;Function&gt; cons = Local&lt;Function&gt;::New(isolate, constructor);
   Local&lt;Object&gt; instance = cons-&gt;NewInstance(argc, argv);
 
@@ -1885,14 +1983,15 @@ void MyObject::NewInstance(const FunctionCallbackInfo&lt;Value&gt;&amp; args) {
 }
 
 void MyObject::PlusOne(const FunctionCallbackInfo&lt;Value&gt;&amp; args) {
-  Isolate* isolate = Isolate::GetCurrent();
-  HandleScope scope(isolate);
+  Isolate* isolate = args.GetIsolate();
 
   MyObject* obj = ObjectWrap::Unwrap&lt;MyObject&gt;(args.Holder());
   obj-&gt;value_ += 1;
 
   args.GetReturnValue().Set(Number::New(isolate, obj-&gt;value_));
-}</code></pre>
+}
+
+}  // namespace demo</code></pre>
 <p>Test it with:
 
 </p>
@@ -1920,17 +2019,23 @@ In the following <code>addon.cc</code> we introduce a function <code>add()</code
 #include &lt;node_object_wrap.h&gt;
 #include &quot;myobject.h&quot;
 
-using namespace v8;
+namespace demo {
+
+using v8::FunctionCallbackInfo;
+using v8::HandleScope;
+using v8::Isolate;
+using v8::Local;
+using v8::Number;
+using v8::Object;
+using v8::String;
+using v8::Value;
 
 void CreateObject(const FunctionCallbackInfo&lt;Value&gt;&amp; args) {
-  Isolate* isolate = Isolate::GetCurrent();
-  HandleScope scope(isolate);
   MyObject::NewInstance(args);
 }
 
 void Add(const FunctionCallbackInfo&lt;Value&gt;&amp; args) {
-  Isolate* isolate = Isolate::GetCurrent();
-  HandleScope scope(isolate);
+  Isolate* isolate = args.GetIsolate();
 
   MyObject* obj1 = node::ObjectWrap::Unwrap&lt;MyObject&gt;(
       args[0]-&gt;ToObject());
@@ -1941,14 +2046,16 @@ void Add(const FunctionCallbackInfo&lt;Value&gt;&amp; args) {
   args.GetReturnValue().Set(Number::New(isolate, sum));
 }
 
-void InitAll(Handle&lt;Object&gt; exports) {
-  MyObject::Init();
+void InitAll(Local&lt;Object&gt; exports) {
+  MyObject::Init(exports-&gt;GetIsolate());
 
   NODE_SET_METHOD(exports, &quot;createObject&quot;, CreateObject);
   NODE_SET_METHOD(exports, &quot;add&quot;, Add);
 }
 
-NODE_MODULE(addon, InitAll)</code></pre>
+NODE_MODULE(addon, InitAll)
+
+}  // namespace demo</code></pre>
 <p>To make things interesting we introduce a public method in <code>myobject.h</code> so we
 can probe private values after unwrapping the object:
 
@@ -1960,9 +2067,11 @@ can probe private values after unwrapping the object:
 #include &lt;node.h&gt;
 #include &lt;node_object_wrap.h&gt;
 
+namespace demo {
+
 class MyObject : public node::ObjectWrap {
  public:
-  static void Init();
+  static void Init(v8::Isolate* isolate);
   static void NewInstance(const v8::FunctionCallbackInfo&lt;v8::Value&gt;&amp; args);
   inline double value() const { return value_; }
 
@@ -1975,6 +2084,8 @@ class MyObject : public node::ObjectWrap {
   double value_;
 };
 
+}  // namespace demo
+
 #endif</code></pre>
 <p>The implementation of <code>myobject.cc</code> is similar as before:
 
@@ -1983,7 +2094,18 @@ class MyObject : public node::ObjectWrap {
 #include &lt;node.h&gt;
 #include &quot;myobject.h&quot;
 
-using namespace v8;
+namespace demo {
+
+using v8::Function;
+using v8::FunctionCallbackInfo;
+using v8::FunctionTemplate;
+using v8::HandleScope;
+using v8::Isolate;
+using v8::Local;
+using v8::Object;
+using v8::Persistent;
+using v8::String;
+using v8::Value;
 
 Persistent&lt;Function&gt; MyObject::constructor;
 
@@ -1993,9 +2115,7 @@ MyObject::MyObject(double value) : value_(value) {
 MyObject::~MyObject() {
 }
 
-void MyObject::Init() {
-  Isolate* isolate = Isolate::GetCurrent();
-
+void MyObject::Init(Isolate* isolate) {
   // Prepare constructor template
   Local&lt;FunctionTemplate&gt; tpl = FunctionTemplate::New(isolate, New);
   tpl-&gt;SetClassName(String::NewFromUtf8(isolate, &quot;MyObject&quot;));
@@ -2005,8 +2125,7 @@ void MyObject::Init() {
 }
 
 void MyObject::New(const FunctionCallbackInfo&lt;Value&gt;&amp; args) {
-  Isolate* isolate = Isolate::GetCurrent();
-  HandleScope scope(isolate);
+  Isolate* isolate = args.GetIsolate();
 
   if (args.IsConstructCall()) {
     // Invoked as constructor: `new MyObject(...)`
@@ -2024,16 +2143,17 @@ void MyObject::New(const FunctionCallbackInfo&lt;Value&gt;&amp; args) {
 }
 
 void MyObject::NewInstance(const FunctionCallbackInfo&lt;Value&gt;&amp; args) {
-  Isolate* isolate = Isolate::GetCurrent();
-  HandleScope scope(isolate);
+  Isolate* isolate = args.GetIsolate();
 
   const unsigned argc = 1;
-  Handle&lt;Value&gt; argv[argc] = { args[0] };
+  Local&lt;Value&gt; argv[argc] = { args[0] };
   Local&lt;Function&gt; cons = Local&lt;Function&gt;::New(isolate, constructor);
   Local&lt;Object&gt; instance = cons-&gt;NewInstance(argc, argv);
 
   args.GetReturnValue().Set(instance);
-}</code></pre>
+}
+
+}  // namespace demo</code></pre>
 <p>Test it with:
 
 </p>
@@ -4611,13 +4731,25 @@ worker.on(&#39;exit&#39;, function(code, signal) {
 <p>In a worker you can also use <code>process.on(&#39;error&#39;)</code>.
 
 </p>
-<h1>console<span><a class="mark" href="#all_console" id="all_console">#</a></span></h1>
-<pre class="api_stability_2">Stability: 2 - Stable</pre><div class="signature"><ul>
+<h1>Console<span><a class="mark" href="#all_console" id="all_console">#</a></span></h1>
+<pre class="api_stability_2">Stability: 2 - Stable</pre><p>The module defines a <code>Console</code> class and exports a <code>console</code> object.
+
+</p>
+<p>The <code>console</code> object is a special instance of <code>Console</code> whose output is
+sent to stdout or stderr.
+
+</p>
+<p>For ease of use, <code>console</code> is defined as a global object and can be used
+directly without <code>require</code>.
+
+</p>
+<h2>console<span><a class="mark" href="#all_console_1" id="all_console_1">#</a></span></h2>
+<div class="signature"><ul>
 <li><span class="type">Object</span></li>
 </div></ul>
 <!--type=global-->
 
-<p>For printing to stdout and stderr.  Similar to the console object functions
+<p>For printing to stdout and stderr. Similar to the console object functions
 provided by most web browsers, here the output is sent to stdout or stderr.
 
 </p>
@@ -4636,7 +4768,7 @@ should worry about unless you log huge amounts of data.
 
 
 </p>
-<h2>console.log([data][, ...])<span><a class="mark" href="#all_console_log_data" id="all_console_log_data">#</a></span></h2>
+<h3>console.log([data][, ...])<span><a class="mark" href="#all_console_log_data" id="all_console_log_data">#</a></span></h3>
 <p>Prints to stdout with newline. This function can take multiple arguments in a
 <code>printf()</code>-like way. Example:
 
@@ -4648,19 +4780,19 @@ console.log(&#39;count: %d&#39;, count);
 is used on each argument.  See <a href="util.html#util_util_format_format">util.format()</a> for more information.
 
 </p>
-<h2>console.info([data][, ...])<span><a class="mark" href="#all_console_info_data" id="all_console_info_data">#</a></span></h2>
+<h3>console.info([data][, ...])<span><a class="mark" href="#all_console_info_data" id="all_console_info_data">#</a></span></h3>
 <p>Same as <code>console.log</code>.
 
 </p>
-<h2>console.error([data][, ...])<span><a class="mark" href="#all_console_error_data" id="all_console_error_data">#</a></span></h2>
+<h3>console.error([data][, ...])<span><a class="mark" href="#all_console_error_data" id="all_console_error_data">#</a></span></h3>
 <p>Same as <code>console.log</code> but prints to stderr.
 
 </p>
-<h2>console.warn([data][, ...])<span><a class="mark" href="#all_console_warn_data" id="all_console_warn_data">#</a></span></h2>
+<h3>console.warn([data][, ...])<span><a class="mark" href="#all_console_warn_data" id="all_console_warn_data">#</a></span></h3>
 <p>Same as <code>console.error</code>.
 
 </p>
-<h2>console.dir(obj[, options])<span><a class="mark" href="#all_console_dir_obj_options" id="all_console_dir_obj_options">#</a></span></h2>
+<h3>console.dir(obj[, options])<span><a class="mark" href="#all_console_dir_obj_options" id="all_console_dir_obj_options">#</a></span></h3>
 <p>Uses <code>util.inspect</code> on <code>obj</code> and prints resulting string to stdout. This function
 bypasses any custom <code>inspect()</code> function on <code>obj</code>. An optional <em>options</em> object
 may be passed that alters certain aspects of the formatted string:
@@ -4678,7 +4810,7 @@ object. This is useful for inspecting large complicated objects. Defaults to
 Defaults to <code>false</code>. Colors are customizable, see below.</p>
 </li>
 </ul>
-<h2>console.time(label)<span><a class="mark" href="#all_console_time_label" id="all_console_time_label">#</a></span></h2>
+<h3>console.time(label)<span><a class="mark" href="#all_console_time_label" id="all_console_time_label">#</a></span></h3>
 <p>Used to calculate the duration of a specific operation. To start a timer, call
 the <code>console.time()</code> method, giving it a name as only parameter. To stop the
 timer, and to get the elapsed time in milliseconds, just call the
@@ -4686,7 +4818,7 @@ timer, and to get the elapsed time in milliseconds, just call the
 timer&#39;s name as the parameter.
 
 </p>
-<h2>console.timeEnd(label)<span><a class="mark" href="#all_console_timeend_label" id="all_console_timeend_label">#</a></span></h2>
+<h3>console.timeEnd(label)<span><a class="mark" href="#all_console_timeend_label" id="all_console_timeend_label">#</a></span></h3>
 <p>Stops a timer that was previously started by calling
 <a href="#console_console_time_label"><code>console.time()</code></a> and print the result to the
 console.
@@ -4701,16 +4833,48 @@ for (var i = 0; i &lt; 100; i++) {
 }
 console.timeEnd(&#39;100-elements&#39;);
 // prints 100-elements: 262ms</code></pre>
-<h2>console.trace(message[, ...])<span><a class="mark" href="#all_console_trace_message" id="all_console_trace_message">#</a></span></h2>
+<h3>console.trace(message[, ...])<span><a class="mark" href="#all_console_trace_message" id="all_console_trace_message">#</a></span></h3>
 <p>Print to stderr <code>&#39;Trace :&#39;</code>, followed by the formatted message and stack trace
 to the current position.
 
 </p>
-<h2>console.assert(value[, message][, ...])<span><a class="mark" href="#all_console_assert_value_message" id="all_console_assert_value_message">#</a></span></h2>
+<h3>console.assert(value[, message][, ...])<span><a class="mark" href="#all_console_assert_value_message" id="all_console_assert_value_message">#</a></span></h3>
 <p>Similar to <a href="assert.html#assert_assert_value_message_assert_ok_value_message">assert.ok()</a>, but the error message is formatted as
 <code>util.format(message...)</code>.
 
 </p>
+<h2>Class: Console<span><a class="mark" href="#all_class_console" id="all_class_console">#</a></span></h2>
+<!--type=class-->
+
+<p>Use <code>require(&#39;console&#39;).Console</code> or <code>console.Console</code> to access this class.
+
+</p>
+<pre><code>var Console = require(&#39;console&#39;).Console;
+var Console = console.Console;</code></pre>
+<p>You can use <code>Console</code> class to custom simple logger like <code>console</code>, but with
+different output streams.
+
+</p>
+<h3>new Console(stdout[, stderr])<span><a class="mark" href="#all_new_console_stdout_stderr" id="all_new_console_stdout_stderr">#</a></span></h3>
+<p>Create a new <code>Console</code> by passing one or two writable stream instances.
+<code>stdout</code> is a writable stream to print log or info output. <code>stderr</code>
+is used for warning or error output. If <code>stderr</code> isn&#39;t passed, the warning
+and error output will be sent to the <code>stdout</code>.
+
+</p>
+<pre><code>var output = fs.createWriteStream(&#39;./stdout.log&#39;);
+var errorOutput = fs.createWriteStream(&#39;./stderr.log&#39;);
+// custom simple logger
+var logger = new Console(output, errorOutput);
+// use it like console
+var count = 5;
+logger.log(&#39;count: %d&#39;, count);
+// in stdout.log: count 5</code></pre>
+<p>The global <code>console</code> is a special <code>Console</code> whose output is sent to
+<code>process.stdout</code> and <code>process.stderr</code>:
+
+</p>
+<pre><code>new Console(process.stdout, process.stderr);</code></pre>
 <h1>Crypto<span><a class="mark" href="#all_crypto" id="all_crypto">#</a></span></h1>
 <pre class="api_stability_2">Stability: 2 - Stable</pre><p>Use <code>require(&#39;crypto&#39;)</code> to access this module.
 
@@ -5759,7 +5923,7 @@ with <code>socket.address().address</code> and <code>socket.address().port</code
 and an optional boolean <code>reuseAddr</code> field.
 
 </p>
-<p>When <code>reuseAddr</code> is true <code>socket.bind()</code> will reuse the address, even if
+<p>When <code>reuseAddr</code> is <code>true</code> <code>socket.bind()</code> will reuse the address, even if
 another process has already bound a socket on it. <code>reuseAddr</code> defaults to
 <code>false</code>.
 
@@ -8415,7 +8579,7 @@ scope; <code>var something</code> inside an io.js module will be local to that m
 <p>The process object. See the <a href="process.html#process_process">process object</a> section.
 
 </p>
-<h2>console<span><a class="mark" href="#all_console_1" id="all_console_1">#</a></span></h2>
+<h2>console<span><a class="mark" href="#all_console_2" id="all_console_2">#</a></span></h2>
 <!-- type=global -->
 
 <ul>
@@ -9129,11 +9293,6 @@ default to <code>Connection: keep-alive</code>. Possible values:<ul>
 <code>Connection: close</code>.</li>
 </ul>
 </li>
-<li><code>keepAlive</code>: {Boolean} Keep sockets around in a pool to be used
-by other requests in the future. Default = <code>false</code></li>
-<li><code>keepAliveMsecs</code>: {Integer} When using HTTP KeepAlive, how often to
-send TCP KeepAlive packets over sockets being kept alive.  Default =
-<code>1000</code>.  Only relevant if <code>keepAlive</code> is set to <code>true</code>.</li>
 </ul>
 <p>The optional <code>callback</code> parameter will be added as a one time listener for
 the <a href="#http_event_response">&#39;response&#39;</a> event.
@@ -12237,7 +12396,6 @@ the &quot;config.gypi&quot; file that was produced when running the <code>./conf
      node_shared_cares: &#39;false&#39;,
      node_shared_http_parser: &#39;false&#39;,
      node_shared_libuv: &#39;false&#39;,
-     node_shared_v8: &#39;false&#39;,
      node_shared_zlib: &#39;false&#39;,
      node_use_dtrace: &#39;false&#39;,
      node_use_openssl: &#39;true&#39;,
@@ -13104,6 +13262,10 @@ r.on(&#39;reset&#39;, function (context) {
 Tab completion is supported for both global and local variables.
 
 </p>
+<p>Core modules will be loaded on-demand into the environment. For example,
+accessing <code>fs</code> will <code>require()</code> the <code>fs</code> module as <code>global.fs</code>.
+
+</p>
 <p>The special variable <code>_</code> (underscore) contains the result of the last expression.
 
 </p>
@@ -13599,7 +13761,7 @@ data.
 </p>
 <pre><code class="javascript">var readable = getReadableStreamSomehow();
 readable.resume();
-readable.on(&#39;end&#39;, function(chunk) {
+readable.on(&#39;end&#39;, function() {
   console.log(&#39;got to the end, but did not read anything&#39;);
 });</code></pre>
 <h4>readable.pause()<span><a class="mark" href="#all_readable_pause" id="all_readable_pause">#</a></span></h4>
@@ -16120,8 +16282,8 @@ not replaced.
 </p>
 <pre><code>util.format(&#39;%s:%s&#39;, &#39;foo&#39;); // &#39;foo:%s&#39;</code></pre>
 <p>If there are more arguments than placeholders, the extra arguments are
-converted to strings with <code>util.inspect()</code> and these strings are concatenated,
-delimited by a space.
+coerced to strings (for objects and symbols, <code>util.inspect()</code> is used)
+and then concatenated, delimited by a space.
 
 </p>
 <pre><code>util.format(&#39;%s:%s&#39;, &#39;foo&#39;, &#39;bar&#39;, &#39;baz&#39;); // &#39;foo:bar baz&#39;</code></pre>
@@ -16365,7 +16527,8 @@ util.isUndefined(foo)
 util.isUndefined(null)
   // false</code></pre>
 <h2>util.isObject(object)<span><a class="mark" href="#all_util_isobject_object" id="all_util_isobject_object">#</a></span></h2>
-<p>Returns <code>true</code> if the given &quot;object&quot; is strictly an <code>Object</code>. <code>false</code> otherwise.
+<p>Returns <code>true</code> if the given &quot;object&quot; is strictly an <code>Object</code> <strong>and</strong> not a
+<code>Function</code>. <code>false</code> otherwise.
 
 </p>
 <pre><code>var util = require(&#39;util&#39;);
@@ -16375,7 +16538,9 @@ util.isObject(5)
 util.isObject(null)
   // false
 util.isObject({})
-  // true</code></pre>
+  // true
+util.isObject(function(){})
+  // false</code></pre>
 <h2>util.isFunction(object)<span><a class="mark" href="#all_util_isfunction_object" id="all_util_isfunction_object">#</a></span></h2>
 <p>Returns <code>true</code> if the given &quot;object&quot; is a <code>Function</code>. <code>false</code> otherwise.
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>util io.js v1.6.1 Manual &amp; Documentation</title>
+  <title>util io.js v1.7.1 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="util" class="interior">
       <header>
-        <h1>io.js v1.6.1 Documentation</h1>
+        <h1>io.js v1.7.1 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -181,8 +181,8 @@ not replaced.
 </p>
 <pre><code>util.format(&#39;%s:%s&#39;, &#39;foo&#39;); // &#39;foo:%s&#39;</code></pre>
 <p>If there are more arguments than placeholders, the extra arguments are
-converted to strings with <code>util.inspect()</code> and these strings are concatenated,
-delimited by a space.
+coerced to strings (for objects and symbols, <code>util.inspect()</code> is used)
+and then concatenated, delimited by a space.
 
 </p>
 <pre><code>util.format(&#39;%s:%s&#39;, &#39;foo&#39;, &#39;bar&#39;, &#39;baz&#39;); // &#39;foo:bar baz&#39;</code></pre>
@@ -426,7 +426,8 @@ util.isUndefined(foo)
 util.isUndefined(null)
   // false</code></pre>
 <h2>util.isObject(object)<span><a class="mark" href="#util_util_isobject_object" id="util_util_isobject_object">#</a></span></h2>
-<p>Returns <code>true</code> if the given &quot;object&quot; is strictly an <code>Object</code>. <code>false</code> otherwise.
+<p>Returns <code>true</code> if the given &quot;object&quot; is strictly an <code>Object</code> <strong>and</strong> not a
+<code>Function</code>. <code>false</code> otherwise.
 
 </p>
 <pre><code>var util = require(&#39;util&#39;);
@@ -436,7 +437,9 @@ util.isObject(5)
 util.isObject(null)
   // false
 util.isObject({})
-  // true</code></pre>
+  // true
+util.isObject(function(){})
+  // false</code></pre>
 <h2>util.isFunction(object)<span><a class="mark" href="#util_util_isfunction_object" id="util_util_isfunction_object">#</a></span></h2>
 <p>Returns <code>true</code> if the given &quot;object&quot; is a <code>Function</code>. <code>false</code> otherwise.
 

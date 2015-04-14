@@ -9,6 +9,7 @@ clean:
 	@rm -rf $(API_DIR)/*
 
 copy:
+	@cd ..; make doc
 	@cp -R ../io.js/out/doc/api/* $(API_DIR)/
 
 fonts:

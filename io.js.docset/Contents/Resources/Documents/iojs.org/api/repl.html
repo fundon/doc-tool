@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>REPL io.js v1.6.1 Manual &amp; Documentation</title>
+  <title>REPL io.js v1.7.1 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="repl" class="interior">
       <header>
-        <h1>io.js v1.6.1 Documentation</h1>
+        <h1>io.js v1.7.1 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -261,6 +261,10 @@ r.on(&#39;reset&#39;, function (context) {
 
 <p>Inside the REPL, Control+D will exit.  Multi-line expressions can be input.
 Tab completion is supported for both global and local variables.
+
+</p>
+<p>Core modules will be loaded on-demand into the environment. For example,
+accessing <code>fs</code> will <code>require()</code> the <code>fs</code> module as <code>global.fs</code>.
 
 </p>
 <p>The special variable <code>_</code> (underscore) contains the result of the last expression.

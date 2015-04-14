@@ -130,7 +130,7 @@
                   "params": []
                 }
               ],
-              "desc": "<p>This method will cause the readable stream to resume emitting <code>data</code>\nevents.\n\n</p>\n<p>This method will switch the stream into flowing mode.  If you do <em>not</em>\nwant to consume the data from a stream, but you <em>do</em> want to get to\nits <code>end</code> event, you can call [<code>readable.resume()</code>][] to open the flow of\ndata.\n\n</p>\n<pre><code class=\"javascript\">var readable = getReadableStreamSomehow();\nreadable.resume();\nreadable.on(&#39;end&#39;, function(chunk) {\n  console.log(&#39;got to the end, but did not read anything&#39;);\n});</code></pre>\n"
+              "desc": "<p>This method will cause the readable stream to resume emitting <code>data</code>\nevents.\n\n</p>\n<p>This method will switch the stream into flowing mode.  If you do <em>not</em>\nwant to consume the data from a stream, but you <em>do</em> want to get to\nits <code>end</code> event, you can call [<code>readable.resume()</code>][] to open the flow of\ndata.\n\n</p>\n<pre><code class=\"javascript\">var readable = getReadableStreamSomehow();\nreadable.resume();\nreadable.on(&#39;end&#39;, function() {\n  console.log(&#39;got to the end, but did not read anything&#39;);\n});</code></pre>\n"
             },
             {
               "textRaw": "readable.pause()",
@@ -629,7 +629,7 @@
                       "params": []
                     }
                   ],
-                  "desc": "<p>This method will cause the readable stream to resume emitting <code>data</code>\nevents.\n\n</p>\n<p>This method will switch the stream into flowing mode.  If you do <em>not</em>\nwant to consume the data from a stream, but you <em>do</em> want to get to\nits <code>end</code> event, you can call [<code>readable.resume()</code>][] to open the flow of\ndata.\n\n</p>\n<pre><code class=\"javascript\">var readable = getReadableStreamSomehow();\nreadable.resume();\nreadable.on(&#39;end&#39;, function(chunk) {\n  console.log(&#39;got to the end, but did not read anything&#39;);\n});</code></pre>\n"
+                  "desc": "<p>This method will cause the readable stream to resume emitting <code>data</code>\nevents.\n\n</p>\n<p>This method will switch the stream into flowing mode.  If you do <em>not</em>\nwant to consume the data from a stream, but you <em>do</em> want to get to\nits <code>end</code> event, you can call [<code>readable.resume()</code>][] to open the flow of\ndata.\n\n</p>\n<pre><code class=\"javascript\">var readable = getReadableStreamSomehow();\nreadable.resume();\nreadable.on(&#39;end&#39;, function() {\n  console.log(&#39;got to the end, but did not read anything&#39;);\n});</code></pre>\n"
                 },
                 {
                   "textRaw": "readable.pause()",
