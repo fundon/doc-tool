@@ -700,7 +700,7 @@
               ]
             },
             {
-              "textRaw": "process.nextTick(callback)",
+              "textRaw": "process.nextTick(callback[, arg][, ...])",
               "type": "method",
               "name": "nextTick",
               "signatures": [
@@ -710,6 +710,14 @@
                       "textRaw": "`callback` {Function} ",
                       "name": "callback",
                       "type": "Function"
+                    },
+                    {
+                      "name": "arg",
+                      "optional": true
+                    },
+                    {
+                      "name": "...",
+                      "optional": true
                     }
                   ]
                 },
@@ -717,6 +725,14 @@
                   "params": [
                     {
                       "name": "callback"
+                    },
+                    {
+                      "name": "arg",
+                      "optional": true
+                    },
+                    {
+                      "name": "...",
+                      "optional": true
                     }
                   ]
                 }
@@ -16616,7 +16632,7 @@
           ]
         },
         {
-          "textRaw": "process.nextTick(callback)",
+          "textRaw": "process.nextTick(callback[, arg][, ...])",
           "type": "method",
           "name": "nextTick",
           "signatures": [
@@ -16626,6 +16642,14 @@
                   "textRaw": "`callback` {Function} ",
                   "name": "callback",
                   "type": "Function"
+                },
+                {
+                  "name": "arg",
+                  "optional": true
+                },
+                {
+                  "name": "...",
+                  "optional": true
                 }
               ]
             },
@@ -16633,6 +16657,14 @@
               "params": [
                 {
                   "name": "callback"
+                },
+                {
+                  "name": "arg",
+                  "optional": true
+                },
+                {
+                  "name": "...",
+                  "optional": true
                 }
               ]
             }
