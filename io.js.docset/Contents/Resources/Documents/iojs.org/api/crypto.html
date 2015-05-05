@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Crypto io.js v1.8.0 Manual &amp; Documentation</title>
+  <title>Crypto io.js v2.0.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="crypto" class="interior">
       <header>
-        <h1>io.js v1.8.0 Documentation</h1>
+        <h1>io.js v2.0.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -384,7 +384,7 @@ passwords to be tested very rapidly.
 
 </p>
 <p>In line with OpenSSL&#39;s recommendation to use pbkdf2 instead of EVP_BytesToKey it
-is recommended you derive a key and iv yourself with <a href="#crypto_crypto_pbkdf2_password_salt_iterations_keylen_callback">crypto.pbkdf2</a> and to
+is recommended you derive a key and iv yourself with <a href="#crypto_crypto_pbkdf2_password_salt_iterations_keylen_digest_callback">crypto.pbkdf2</a> and to
 then use <a href="#crypto_crypto_createcipheriv_algorithm_key_iv">createCipheriv()</a> to create the cipher stream.
 
 </p>
@@ -716,7 +716,7 @@ expected.
 supported groups are: <code>&#39;modp1&#39;</code>, <code>&#39;modp2&#39;</code>, <code>&#39;modp5&#39;</code> (defined in <a href="http://www.rfc-editor.org/rfc/rfc2412.txt">RFC
 2412</a>) and <code>&#39;modp14&#39;</code>, <code>&#39;modp15&#39;</code>, <code>&#39;modp16&#39;</code>, <code>&#39;modp17&#39;</code>,
 <code>&#39;modp18&#39;</code> (defined in <a href="http://www.rfc-editor.org/rfc/rfc3526.txt">RFC 3526</a>).  The returned object mimics the
-interface of objects created by <a href="#crypto_crypto_creatediffiehellman_prime_encoding">crypto.createDiffieHellman()</a>
+interface of objects created by <a href="#crypto_crypto_creatediffiehellman_prime_prime_encoding_generator_generator_encoding">crypto.createDiffieHellman()</a>
 above, but will not allow to change the keys (with
 <a href="#crypto_diffiehellman_setpublickey_public_key_encoding">diffieHellman.setPublicKey()</a> for example).  The advantage of using
 this routine is that the parties don&#39;t have to generate nor exchange

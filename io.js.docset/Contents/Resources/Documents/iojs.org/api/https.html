@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>HTTPS io.js v1.8.0 Manual &amp; Documentation</title>
+  <title>HTTPS io.js v2.0.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="https" class="interior">
       <header>
-        <h1>io.js v1.8.0 Documentation</h1>
+        <h1>io.js v2.0.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -169,7 +169,7 @@ https.createServer(options, function (req, res) {
 
 </p>
 <p><code>options</code> can be an object or a string. If <code>options</code> is a string, it is
-automatically parsed with <a href="url.html#url.parse">url.parse()</a>.
+automatically parsed with <a href="url.html#url_url_parse_urlstr_parsequerystring_slashesdenotehost">url.parse()</a>.
 
 </p>
 <p>All options from <a href="http.html#http_http_request_options_callback">http.request()</a> are valid.
@@ -206,11 +206,19 @@ req.on(&#39;error&#39;, function(e) {
 <ul>
 <li><code>host</code>: A domain name or IP address of the server to issue the request to.
 Defaults to <code>&#39;localhost&#39;</code>.</li>
-<li><code>hostname</code>: To support <code>url.parse()</code> <code>hostname</code> is preferred over <code>host</code></li>
+<li><code>hostname</code>: Alias for <code>host</code>. To support <code>url.parse()</code> <code>hostname</code> is
+preferred over <code>host</code>.</li>
+<li><code>family</code>: IP address family to use when resolving <code>host</code> and <code>hostname</code>.
+Valid values are <code>4</code> or <code>6</code>. When unspecified, both IP v4 and v6 will be
+used.</li>
 <li><code>port</code>: Port of remote server. Defaults to 443.</li>
+<li><code>localAddress</code>: Local interface to bind for network connections.</li>
+<li><code>socketPath</code>: Unix Domain Socket (use one of host:port or socketPath).</li>
 <li><code>method</code>: A string specifying the HTTP request method. Defaults to <code>&#39;GET&#39;</code>.</li>
 <li><code>path</code>: Request path. Defaults to <code>&#39;/&#39;</code>. Should include query string if any.
-E.G. <code>&#39;/index.html?page=12&#39;</code></li>
+E.G. <code>&#39;/index.html?page=12&#39;</code>. An exception is thrown when the request path
+contains illegal characters. Currently, only spaces are rejected but that
+may change in the future.</li>
 <li><code>headers</code>: An object containing request headers.</li>
 <li><code>auth</code>: Basic authentication i.e. <code>&#39;user:password&#39;</code> to compute an
 Authorization header.</li>
@@ -288,7 +296,7 @@ var req = https.request(options, function(res) {
 
 </p>
 <p><code>options</code> can be an object or a string. If <code>options</code> is a string, it is
-automatically parsed with <a href="url.html#url.parse">url.parse()</a>.
+automatically parsed with <a href="url.html#url_url_parse_urlstr_parsequerystring_slashesdenotehost">url.parse()</a>.
 
 </p>
 <p>Example:

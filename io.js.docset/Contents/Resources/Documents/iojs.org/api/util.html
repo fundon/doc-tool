@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>util io.js v1.8.0 Manual &amp; Documentation</title>
+  <title>util io.js v2.0.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="util" class="interior">
       <header>
-        <h1>io.js v1.8.0 Documentation</h1>
+        <h1>io.js v2.0.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -528,11 +528,13 @@ stream.write(&quot;It works!&quot;); // Received data: &quot;It works!&quot;</co
 <p>Marks that a method should not be used any more.
 
 </p>
-<pre><code>exports.puts = exports.deprecate(function() {
+<pre><code>var util = require(&#39;util&#39;);
+
+exports.puts = util.deprecate(function() {
   for (var i = 0, len = arguments.length; i &lt; len; ++i) {
     process.stdout.write(arguments[i] + &#39;\n&#39;);
   }
-}, &#39;util.puts: Use console.log instead&#39;)</code></pre>
+}, &#39;util.puts: Use console.log instead&#39;);</code></pre>
 <p>It returns a modified function which warns once by default.
 
 </p>

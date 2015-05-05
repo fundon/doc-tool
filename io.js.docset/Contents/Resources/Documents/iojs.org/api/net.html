@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>net io.js v1.8.0 Manual &amp; Documentation</title>
+  <title>net io.js v2.0.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="net" class="interior">
       <header>
-        <h1>io.js v1.8.0 Documentation</h1>
+        <h1>io.js v2.0.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -374,7 +374,7 @@ the last parameter <code>callback</code> will be added as an listener for the
 </div></ul>
 <p>The <code>port</code>, <code>host</code>, and <code>backlog</code> properties of <code>options</code>, as well as the
 optional callback function, behave as they do on a call to
-<a href="#net_server_listen_port_host_backlog_callback">server.listen(port, [host], [backlog], [callback])
+<a href="#net_server_listen_port_hostname_backlog_callback">server.listen(port, [host], [backlog], [callback])
 </a>. Alternatively, the <code>path</code>
 option can be used to specify a UNIX socket.
 
@@ -533,6 +533,8 @@ About <code>allowHalfOpen</code>, refer to <code>createServer()</code> and <code
 </li>
 <li><p><code>family</code> : Version of IP stack. Defaults to <code>4</code>.</p>
 </li>
+<li><p><code>lookup</code> : Custom lookup function. Defaults to <code>dns.lookup</code>.</p>
+</li>
 </ul>
 <p>For local domain sockets, <code>options</code> argument should be an object which
 specifies:
@@ -583,7 +585,7 @@ encoded, so the exact number of bytes is not known.)
 </p>
 <h3>socket.setEncoding([encoding])<span><a class="mark" href="#net_socket_setencoding_encoding" id="net_socket_setencoding_encoding">#</a></span></h3>
 <p>Set the encoding for the socket as a Readable Stream. See
-<a href="stream.html#stream_stream_setencoding_encoding">stream.setEncoding()</a> for more information.
+<a href="stream.html#stream_readable_setencoding_encoding">stream.setEncoding()</a> for more information.
 
 </p>
 <h3>socket.write(data[, encoding][, callback])<span><a class="mark" href="#net_socket_write_data_encoding_callback" id="net_socket_write_data_encoding_callback">#</a></span></h3>
@@ -721,9 +723,9 @@ Not applicable to UNIX sockets.
 
 </p>
 <ul>
-<li><code>err</code> {Error | Null} The error object.  See <a href="dns.html#dns_dns_lookup_domain_family_callback">dns.lookup()</a>.</li>
+<li><code>err</code> {Error | Null} The error object.  See <a href="dns.html#dns_dns_lookup_hostname_options_callback">dns.lookup()</a>.</li>
 <li><code>address</code> {String} The IP address.</li>
-<li><code>family</code> {String | Null} The address type.  See <a href="dns.html#dns_dns_lookup_domain_family_callback">dns.lookup()</a>.</li>
+<li><code>family</code> {String | Null} The address type.  See <a href="dns.html#dns_dns_lookup_hostname_options_callback">dns.lookup()</a>.</li>
 </ul>
 <h3>Event: &#39;connect&#39;<span><a class="mark" href="#net_event_connect" id="net_event_connect">#</a></span></h3>
 <p>Emitted when a socket connection is successfully established.

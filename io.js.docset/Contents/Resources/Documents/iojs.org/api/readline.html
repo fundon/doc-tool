@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Readline io.js v1.8.0 Manual &amp; Documentation</title>
+  <title>Readline io.js v2.0.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="readline" class="interior">
       <header>
-        <h1>io.js v1.8.0 Documentation</h1>
+        <h1>io.js v2.0.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -149,6 +149,8 @@ below for an example of using this.</p>
 <li><p><code>terminal</code> - pass <code>true</code> if the <code>input</code> and <code>output</code> streams should be
 treated like a TTY, and have ANSI/VT100 escape codes written to it.
 Defaults to checking <code>isTTY</code> on the <code>output</code> stream upon instantiation.</p>
+</li>
+<li><p><code>historySize</code> - maximum number of history lines retained. Defaults to <code>30</code>.</p>
 </li>
 </ul>
 <p>The <code>completer</code> function is given the current line entered by the user, and

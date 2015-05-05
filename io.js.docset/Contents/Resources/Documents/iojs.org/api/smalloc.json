@@ -4,8 +4,9 @@
     {
       "textRaw": "Smalloc",
       "name": "smalloc",
-      "stability": 2,
-      "stabilityText": "Stable",
+      "stability": 0,
+      "stabilityText": "Deprecated",
+      "desc": "<p>This module has been deprecated for technical reasons and will be removed when\nthe V8 JavaScript engine is upgraded to version 4.3 or 4.4.  It is recommended\nthat you start using [typed arrays][] instead.\n\n</p>\n",
       "classes": [
         {
           "textRaw": "Class: smalloc",

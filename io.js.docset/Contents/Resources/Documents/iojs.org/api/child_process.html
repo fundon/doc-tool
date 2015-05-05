@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Child Process io.js v1.8.0 Manual &amp; Documentation</title>
+  <title>Child Process io.js v2.0.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="child_process" class="interior">
       <header>
-        <h1>io.js v1.8.0 Documentation</h1>
+        <h1>io.js v2.0.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -292,11 +292,15 @@ the parent&#39;s <code>child.stdio[1]</code> is a stream, all other values in th
 <code>null</code>.
 
 </p>
-<pre><code>child = child_process.spawn(&quot;ls&quot;, {
+<pre><code>var assert = require(&#39;assert&#39;);
+var fs = require(&#39;fs&#39;);
+var child_process = require(&#39;child_process&#39;);
+
+child = child_process.spawn(&#39;ls&#39;, {
     stdio: [
       0, // use parents stdin for child
       &#39;pipe&#39;, // pipe child&#39;s stdout to parent
-      fs.openSync(&quot;err.out&quot;, &quot;w&quot;) // direct child&#39;s stderr to a file
+      fs.openSync(&#39;err.out&#39;, &#39;w&#39;) // direct child&#39;s stderr to a file
     ]
 });
 
@@ -342,7 +346,7 @@ be sent <code>&#39;SIGTERM&#39;</code>. See <code>signal(7)</code> for a list of
     grep  = spawn(&#39;grep&#39;, [&#39;ssh&#39;]);
 
 grep.on(&#39;close&#39;, function (code, signal) {
-  console.log(&#39;child process terminated due to receipt of signal &#39;+signal);
+  console.log(&#39;child process terminated due to receipt of signal &#39; + signal);
 });
 
 // send SIGHUP to process

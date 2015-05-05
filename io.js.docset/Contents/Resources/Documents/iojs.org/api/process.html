@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>process io.js v1.8.0 Manual &amp; Documentation</title>
+  <title>process io.js v2.0.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="process" class="interior">
       <header>
-        <h1>io.js v1.8.0 Documentation</h1>
+        <h1>io.js v2.0.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -97,9 +97,13 @@
 <li><a href="#process_process_exit_code">process.exit([code])</a></li>
 <li><a href="#process_process_exitcode">process.exitCode</a></li>
 <li><a href="#process_process_getgid">process.getgid()</a></li>
+<li><a href="#process_process_getegid">process.getegid()</a></li>
 <li><a href="#process_process_setgid_id">process.setgid(id)</a></li>
+<li><a href="#process_process_setegid_id">process.setegid(id)</a></li>
 <li><a href="#process_process_getuid">process.getuid()</a></li>
+<li><a href="#process_process_geteuid">process.geteuid()</a></li>
 <li><a href="#process_process_setuid_id">process.setuid(id)</a></li>
+<li><a href="#process_process_seteuid_id">process.seteuid(id)</a></li>
 <li><a href="#process_process_getgroups">process.getgroups()</a></li>
 <li><a href="#process_process_setgroups_groups">process.setgroups(groups)</a></li>
 <li><a href="#process_process_initgroups_user_extra_group">process.initgroups(user, extra_group)</a></li>
@@ -452,7 +456,7 @@ process.stdin.on(&#39;end&#39;, function() {
 <p>As a Stream, <code>process.stdin</code> can also be used in &quot;old&quot; mode that is compatible
 with scripts written for node.js prior to v0.10.
 For more information see
-<a href="stream.html#stream_compatibility_with_older_node_versions">Stream compatibility</a>.
+<a href="stream.html#stream_compatibility_with_older_node_js_versions">Stream compatibility</a>.
 
 </p>
 <p>In &quot;old&quot; Streams mode the stdin stream is paused by default, so one
@@ -597,6 +601,18 @@ This is the numerical group id, not the group name.
 <pre><code>if (process.getgid) {
   console.log(&#39;Current gid: &#39; + process.getgid());
 }</code></pre>
+<h2>process.getegid()<span><a class="mark" href="#process_process_getegid" id="process_process_getegid">#</a></span></h2>
+<p>Note: this function is only available on POSIX platforms (i.e. not Windows,
+Android)
+
+</p>
+<p>Gets the effective group identity of the process. (See getegid(2).)
+This is the numerical group id, not the group name.
+
+</p>
+<pre><code>if (process.getegid) {
+  console.log(&#39;Current gid: &#39; + process.getegid());
+}</code></pre>
 <h2>process.setgid(id)<span><a class="mark" href="#process_process_setgid_id" id="process_process_setgid_id">#</a></span></h2>
 <p>Note: this function is only available on POSIX platforms (i.e. not Windows,
 Android)
@@ -617,6 +633,26 @@ blocks while resolving it to a numerical ID.
     console.log(&#39;Failed to set gid: &#39; + err);
   }
 }</code></pre>
+<h2>process.setegid(id)<span><a class="mark" href="#process_process_setegid_id" id="process_process_setegid_id">#</a></span></h2>
+<p>Note: this function is only available on POSIX platforms (i.e. not Windows,
+Android)
+
+</p>
+<p>Sets the effective group identity of the process. (See setegid(2).)
+This accepts either a numerical ID or a groupname string. If a groupname
+is specified, this method blocks while resolving it to a numerical ID.
+
+</p>
+<pre><code>if (process.getegid &amp;&amp; process.setegid) {
+  console.log(&#39;Current gid: &#39; + process.getegid());
+  try {
+    process.setegid(501);
+    console.log(&#39;New gid: &#39; + process.getegid());
+  }
+  catch (err) {
+    console.log(&#39;Failed to set gid: &#39; + err);
+  }
+}</code></pre>
 <h2>process.getuid()<span><a class="mark" href="#process_process_getuid" id="process_process_getuid">#</a></span></h2>
 <p>Note: this function is only available on POSIX platforms (i.e. not Windows,
 Android)
@@ -628,6 +664,18 @@ This is the numerical userid, not the username.
 </p>
 <pre><code>if (process.getuid) {
   console.log(&#39;Current uid: &#39; + process.getuid());
+}</code></pre>
+<h2>process.geteuid()<span><a class="mark" href="#process_process_geteuid" id="process_process_geteuid">#</a></span></h2>
+<p>Note: this function is only available on POSIX platforms (i.e. not Windows,
+Android)
+
+</p>
+<p>Gets the effective user identity of the process. (See geteuid(2).)
+This is the numerical userid, not the username.
+
+</p>
+<pre><code>if (process.geteuid) {
+  console.log(&#39;Current uid: &#39; + process.geteuid());
 }</code></pre>
 <h2>process.setuid(id)<span><a class="mark" href="#process_process_setuid_id" id="process_process_setuid_id">#</a></span></h2>
 <p>Note: this function is only available on POSIX platforms (i.e. not Windows,
@@ -644,6 +692,26 @@ blocks while resolving it to a numerical ID.
   try {
     process.setuid(501);
     console.log(&#39;New uid: &#39; + process.getuid());
+  }
+  catch (err) {
+    console.log(&#39;Failed to set uid: &#39; + err);
+  }
+}</code></pre>
+<h2>process.seteuid(id)<span><a class="mark" href="#process_process_seteuid_id" id="process_process_seteuid_id">#</a></span></h2>
+<p>Note: this function is only available on POSIX platforms (i.e. not Windows,
+Android)
+
+</p>
+<p>Sets the effective user identity of the process. (See seteuid(2).)
+This accepts either a numerical ID or a username string.  If a username
+is specified, this method blocks while resolving it to a numerical ID.
+
+</p>
+<pre><code>if (process.geteuid &amp;&amp; process.seteuid) {
+  console.log(&#39;Current uid: &#39; + process.geteuid());
+  try {
+    process.seteuid(501);
+    console.log(&#39;New uid: &#39; + process.geteuid());
   }
   catch (err) {
     console.log(&#39;Failed to set uid: &#39; + err);

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>About this Documentation io.js v1.8.0 Manual &amp; Documentation</title>
+  <title>About this Documentation io.js v2.0.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="all" class="interior">
       <header>
-        <h1>io.js v1.8.0 Documentation</h1>
+        <h1>io.js v2.0.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -900,9 +900,13 @@
 <li><a href="#all_process_exit_code">process.exit([code])</a></li>
 <li><a href="#all_process_exitcode">process.exitCode</a></li>
 <li><a href="#all_process_getgid">process.getgid()</a></li>
+<li><a href="#all_process_getegid">process.getegid()</a></li>
 <li><a href="#all_process_setgid_id">process.setgid(id)</a></li>
+<li><a href="#all_process_setegid_id">process.setegid(id)</a></li>
 <li><a href="#all_process_getuid">process.getuid()</a></li>
+<li><a href="#all_process_geteuid">process.geteuid()</a></li>
 <li><a href="#all_process_setuid_id">process.setuid(id)</a></li>
+<li><a href="#all_process_seteuid_id">process.seteuid(id)</a></li>
 <li><a href="#all_process_getgroups">process.getgroups()</a></li>
 <li><a href="#all_process_setgroups_groups">process.setgroups(groups)</a></li>
 <li><a href="#all_process_initgroups_user_extra_group">process.initgroups(user, extra_group)</a></li>
@@ -3376,11 +3380,15 @@ the parent&#39;s <code>child.stdio[1]</code> is a stream, all other values in th
 <code>null</code>.
 
 </p>
-<pre><code>child = child_process.spawn(&quot;ls&quot;, {
+<pre><code>var assert = require(&#39;assert&#39;);
+var fs = require(&#39;fs&#39;);
+var child_process = require(&#39;child_process&#39;);
+
+child = child_process.spawn(&#39;ls&#39;, {
     stdio: [
       0, // use parents stdin for child
       &#39;pipe&#39;, // pipe child&#39;s stdout to parent
-      fs.openSync(&quot;err.out&quot;, &quot;w&quot;) // direct child&#39;s stderr to a file
+      fs.openSync(&#39;err.out&#39;, &#39;w&#39;) // direct child&#39;s stderr to a file
     ]
 });
 
@@ -3426,7 +3434,7 @@ be sent <code>&#39;SIGTERM&#39;</code>. See <code>signal(7)</code> for a list of
     grep  = spawn(&#39;grep&#39;, [&#39;ssh&#39;]);
 
 grep.on(&#39;close&#39;, function (code, signal) {
-  console.log(&#39;child process terminated due to receipt of signal &#39;+signal);
+  console.log(&#39;child process terminated due to receipt of signal &#39; + signal);
 });
 
 // send SIGHUP to process
@@ -5087,7 +5095,7 @@ passwords to be tested very rapidly.
 
 </p>
 <p>In line with OpenSSL&#39;s recommendation to use pbkdf2 instead of EVP_BytesToKey it
-is recommended you derive a key and iv yourself with <a href="#crypto_crypto_pbkdf2_password_salt_iterations_keylen_callback">crypto.pbkdf2</a> and to
+is recommended you derive a key and iv yourself with <a href="#crypto_crypto_pbkdf2_password_salt_iterations_keylen_digest_callback">crypto.pbkdf2</a> and to
 then use <a href="#crypto_crypto_createcipheriv_algorithm_key_iv">createCipheriv()</a> to create the cipher stream.
 
 </p>
@@ -5419,7 +5427,7 @@ expected.
 supported groups are: <code>&#39;modp1&#39;</code>, <code>&#39;modp2&#39;</code>, <code>&#39;modp5&#39;</code> (defined in <a href="http://www.rfc-editor.org/rfc/rfc2412.txt">RFC
 2412</a>) and <code>&#39;modp14&#39;</code>, <code>&#39;modp15&#39;</code>, <code>&#39;modp16&#39;</code>, <code>&#39;modp17&#39;</code>,
 <code>&#39;modp18&#39;</code> (defined in <a href="http://www.rfc-editor.org/rfc/rfc3526.txt">RFC 3526</a>).  The returned object mimics the
-interface of objects created by <a href="#crypto_crypto_creatediffiehellman_prime_encoding">crypto.createDiffieHellman()</a>
+interface of objects created by <a href="#crypto_crypto_creatediffiehellman_prime_prime_encoding_generator_generator_encoding">crypto.createDiffieHellman()</a>
 above, but will not allow to change the keys (with
 <a href="#crypto_diffiehellman_setpublickey_public_key_encoding">diffieHellman.setPublicKey()</a> for example).  The advantage of using
 this routine is that the parties don&#39;t have to generate nor exchange
@@ -8955,7 +8963,7 @@ parameter is 511 (not 512).
 
 </p>
 <p>This function is asynchronous. The last parameter <code>callback</code> will be added as
-a listener for the <a href="#net_event_listening">&#39;listening&#39;</a> event.  See also <a href="net.html#net_server_listen_port_host_backlog_callback">net.Server.listen(port)</a>.
+a listener for the <a href="#net_event_listening">&#39;listening&#39;</a> event.  See also <a href="net.html#net_server_listen_port_hostname_backlog_callback">net.Server.listen(port)</a>.
 
 
 </p>
@@ -8986,7 +8994,7 @@ already been bound to a port or domain socket.
 
 </p>
 <p>This function is asynchronous. The last parameter <code>callback</code> will be added as
-a listener for the <a href="net.html#event_listening_">&#39;listening&#39;</a> event.
+a listener for the <a href="net.html#net_event_listening">&#39;listening&#39;</a> event.
 See also <a href="net.html#net_server_listen_handle_callback">net.Server.listen()</a>.
 
 </p>
@@ -9051,7 +9059,7 @@ passed as the second parameter to the <code>&#39;request&#39;</code> event.
 
 </p>
 <p>Indicates that the underlying connection was terminated before
-<a href="#http_response_end_data_encoding">response.end()</a> was called or able to flush.
+<a href="#http_response_end_data_encoding_callback">response.end()</a> was called or able to flush.
 
 </p>
 <h3>Event: &#39;finish&#39;<span><a class="mark" href="#all_event_finish" id="all_event_finish">#</a></span></h3>
@@ -9087,10 +9095,10 @@ response.writeHead(200, {
   &#39;Content-Length&#39;: body.length,
   &#39;Content-Type&#39;: &#39;text/plain&#39; });</code></pre>
 <p>This method must only be called once on a message and it must
-be called before <a href="#http_response_end_data_encoding">response.end()</a> is called.
+be called before <a href="#http_response_end_data_encoding_callback">response.end()</a> is called.
 
 </p>
-<p>If you call <a href="#http_response_write_chunk_encoding">response.write()</a> or <a href="#http_response_end_data_encoding">response.end()</a> before calling this, the
+<p>If you call <a href="#http_response_write_chunk_encoding_callback">response.write()</a> or <a href="#http_response_end_data_encoding_callback">response.end()</a> before calling this, the
 implicit/mutable headers will be calculated and call this function for you.
 
 </p>
@@ -9120,7 +9128,7 @@ sockets.
 
 </p>
 <h3>response.statusCode<span><a class="mark" href="#all_response_statuscode" id="all_response_statuscode">#</a></span></h3>
-<p>When using implicit headers (not calling <a href="#http_response_writehead_statuscode_reasonphrase_headers">response.writeHead()</a> explicitly),
+<p>When using implicit headers (not calling <a href="#http_response_writehead_statuscode_statusmessage_headers">response.writeHead()</a> explicitly),
 this property controls the status code that will be sent to the client when
 the headers get flushed.
 
@@ -9194,7 +9202,7 @@ implicitly flushed.
 </p>
 <pre><code>response.removeHeader(&quot;Content-Encoding&quot;);</code></pre>
 <h3>response.write(chunk[, encoding][, callback])<span><a class="mark" href="#all_response_write_chunk_encoding_callback" id="all_response_write_chunk_encoding_callback">#</a></span></h3>
-<p>If this method is called and <a href="#http_response_writehead_statuscode_reasonphrase_headers">response.writeHead()</a> has not been called,
+<p>If this method is called and <a href="#http_response_writehead_statuscode_statusmessage_headers">response.writeHead()</a> has not been called,
 it will switch to implicit header mode and flush the implicit headers.
 
 </p>
@@ -9273,10 +9281,14 @@ automatically parsed with <a href="url.html#url_url_parse_urlstr_parsequerystrin
 <ul>
 <li><code>host</code>: A domain name or IP address of the server to issue the request to.
 Defaults to <code>&#39;localhost&#39;</code>.</li>
-<li><code>hostname</code>: To support <code>url.parse()</code> <code>hostname</code> is preferred over <code>host</code></li>
+<li><code>hostname</code>: Alias for <code>host</code>. To support <code>url.parse()</code> <code>hostname</code> is
+preferred over <code>host</code>.</li>
+<li><code>family</code>: IP address family to use when resolving <code>host</code> and <code>hostname</code>.
+Valid values are <code>4</code> or <code>6</code>. When unspecified, both IP v4 and v6 will be
+used.</li>
 <li><code>port</code>: Port of remote server. Defaults to 80.</li>
 <li><code>localAddress</code>: Local interface to bind for network connections.</li>
-<li><code>socketPath</code>: Unix Domain Socket (use one of host:port or socketPath)</li>
+<li><code>socketPath</code>: Unix Domain Socket (use one of host:port or socketPath).</li>
 <li><code>method</code>: A string specifying the HTTP request method. Defaults to <code>&#39;GET&#39;</code>.</li>
 <li><code>path</code>: Request path. Defaults to <code>&#39;/&#39;</code>. Should include query string if any.
 E.G. <code>&#39;/index.html?page=12&#39;</code>. An exception is thrown when the request path
@@ -9287,7 +9299,7 @@ may change in the future.</li>
 Authorization header.</li>
 <li><code>agent</code>: Controls <a href="#https_class_https_agent">Agent</a> behavior. When an Agent is used request will
 default to <code>Connection: keep-alive</code>. Possible values:<ul>
-<li><code>undefined</code> (default): use <a href="#http_http_globalagent">global Agent</a> for this host and port.</li>
+<li><code>undefined</code> (default): use <a href="#https_https_globalagent">globalAgent</a> for this host and port.</li>
 <li><code>Agent</code> object: explicitly use the passed in <code>Agent</code>.</li>
 <li><code>false</code>: opts out of connection pooling with an Agent, defaults request to
 <code>Connection: close</code>.</li>
@@ -9984,7 +9996,7 @@ https.createServer(options, function (req, res) {
 
 </p>
 <p><code>options</code> can be an object or a string. If <code>options</code> is a string, it is
-automatically parsed with <a href="url.html#url.parse">url.parse()</a>.
+automatically parsed with <a href="url.html#url_url_parse_urlstr_parsequerystring_slashesdenotehost">url.parse()</a>.
 
 </p>
 <p>All options from <a href="http.html#http_http_request_options_callback">http.request()</a> are valid.
@@ -10021,11 +10033,19 @@ req.on(&#39;error&#39;, function(e) {
 <ul>
 <li><code>host</code>: A domain name or IP address of the server to issue the request to.
 Defaults to <code>&#39;localhost&#39;</code>.</li>
-<li><code>hostname</code>: To support <code>url.parse()</code> <code>hostname</code> is preferred over <code>host</code></li>
+<li><code>hostname</code>: Alias for <code>host</code>. To support <code>url.parse()</code> <code>hostname</code> is
+preferred over <code>host</code>.</li>
+<li><code>family</code>: IP address family to use when resolving <code>host</code> and <code>hostname</code>.
+Valid values are <code>4</code> or <code>6</code>. When unspecified, both IP v4 and v6 will be
+used.</li>
 <li><code>port</code>: Port of remote server. Defaults to 443.</li>
+<li><code>localAddress</code>: Local interface to bind for network connections.</li>
+<li><code>socketPath</code>: Unix Domain Socket (use one of host:port or socketPath).</li>
 <li><code>method</code>: A string specifying the HTTP request method. Defaults to <code>&#39;GET&#39;</code>.</li>
 <li><code>path</code>: Request path. Defaults to <code>&#39;/&#39;</code>. Should include query string if any.
-E.G. <code>&#39;/index.html?page=12&#39;</code></li>
+E.G. <code>&#39;/index.html?page=12&#39;</code>. An exception is thrown when the request path
+contains illegal characters. Currently, only spaces are rejected but that
+may change in the future.</li>
 <li><code>headers</code>: An object containing request headers.</li>
 <li><code>auth</code>: Basic authentication i.e. <code>&#39;user:password&#39;</code> to compute an
 Authorization header.</li>
@@ -10103,7 +10123,7 @@ var req = https.request(options, function(res) {
 
 </p>
 <p><code>options</code> can be an object or a string. If <code>options</code> is a string, it is
-automatically parsed with <a href="url.html#url.parse">url.parse()</a>.
+automatically parsed with <a href="url.html#url_url_parse_urlstr_parsequerystring_slashesdenotehost">url.parse()</a>.
 
 </p>
 <p>Example:
@@ -10921,7 +10941,7 @@ the last parameter <code>callback</code> will be added as an listener for the
 </div></ul>
 <p>The <code>port</code>, <code>host</code>, and <code>backlog</code> properties of <code>options</code>, as well as the
 optional callback function, behave as they do on a call to
-<a href="#net_server_listen_port_host_backlog_callback">server.listen(port, [host], [backlog], [callback])
+<a href="#net_server_listen_port_hostname_backlog_callback">server.listen(port, [host], [backlog], [callback])
 </a>. Alternatively, the <code>path</code>
 option can be used to specify a UNIX socket.
 
@@ -11080,6 +11100,8 @@ About <code>allowHalfOpen</code>, refer to <code>createServer()</code> and <code
 </li>
 <li><p><code>family</code> : Version of IP stack. Defaults to <code>4</code>.</p>
 </li>
+<li><p><code>lookup</code> : Custom lookup function. Defaults to <code>dns.lookup</code>.</p>
+</li>
 </ul>
 <p>For local domain sockets, <code>options</code> argument should be an object which
 specifies:
@@ -11130,7 +11152,7 @@ encoded, so the exact number of bytes is not known.)
 </p>
 <h3>socket.setEncoding([encoding])<span><a class="mark" href="#all_socket_setencoding_encoding" id="all_socket_setencoding_encoding">#</a></span></h3>
 <p>Set the encoding for the socket as a Readable Stream. See
-<a href="stream.html#stream_stream_setencoding_encoding">stream.setEncoding()</a> for more information.
+<a href="stream.html#stream_readable_setencoding_encoding">stream.setEncoding()</a> for more information.
 
 </p>
 <h3>socket.write(data[, encoding][, callback])<span><a class="mark" href="#all_socket_write_data_encoding_callback" id="all_socket_write_data_encoding_callback">#</a></span></h3>
@@ -11268,9 +11290,9 @@ Not applicable to UNIX sockets.
 
 </p>
 <ul>
-<li><code>err</code> {Error | Null} The error object.  See <a href="dns.html#dns_dns_lookup_domain_family_callback">dns.lookup()</a>.</li>
+<li><code>err</code> {Error | Null} The error object.  See <a href="dns.html#dns_dns_lookup_hostname_options_callback">dns.lookup()</a>.</li>
 <li><code>address</code> {String} The IP address.</li>
-<li><code>family</code> {String | Null} The address type.  See <a href="dns.html#dns_dns_lookup_domain_family_callback">dns.lookup()</a>.</li>
+<li><code>family</code> {String | Null} The address type.  See <a href="dns.html#dns_dns_lookup_hostname_options_callback">dns.lookup()</a>.</li>
 </ul>
 <h3>Event: &#39;connect&#39;<span><a class="mark" href="#all_event_connect_2" id="all_event_connect_2">#</a></span></h3>
 <p>Emitted when a socket connection is successfully established.
@@ -12112,7 +12134,7 @@ process.stdin.on(&#39;end&#39;, function() {
 <p>As a Stream, <code>process.stdin</code> can also be used in &quot;old&quot; mode that is compatible
 with scripts written for node.js prior to v0.10.
 For more information see
-<a href="stream.html#stream_compatibility_with_older_node_versions">Stream compatibility</a>.
+<a href="stream.html#stream_compatibility_with_older_node_js_versions">Stream compatibility</a>.
 
 </p>
 <p>In &quot;old&quot; Streams mode the stdin stream is paused by default, so one
@@ -12257,6 +12279,18 @@ This is the numerical group id, not the group name.
 <pre><code>if (process.getgid) {
   console.log(&#39;Current gid: &#39; + process.getgid());
 }</code></pre>
+<h2>process.getegid()<span><a class="mark" href="#all_process_getegid" id="all_process_getegid">#</a></span></h2>
+<p>Note: this function is only available on POSIX platforms (i.e. not Windows,
+Android)
+
+</p>
+<p>Gets the effective group identity of the process. (See getegid(2).)
+This is the numerical group id, not the group name.
+
+</p>
+<pre><code>if (process.getegid) {
+  console.log(&#39;Current gid: &#39; + process.getegid());
+}</code></pre>
 <h2>process.setgid(id)<span><a class="mark" href="#all_process_setgid_id" id="all_process_setgid_id">#</a></span></h2>
 <p>Note: this function is only available on POSIX platforms (i.e. not Windows,
 Android)
@@ -12277,6 +12311,26 @@ blocks while resolving it to a numerical ID.
     console.log(&#39;Failed to set gid: &#39; + err);
   }
 }</code></pre>
+<h2>process.setegid(id)<span><a class="mark" href="#all_process_setegid_id" id="all_process_setegid_id">#</a></span></h2>
+<p>Note: this function is only available on POSIX platforms (i.e. not Windows,
+Android)
+
+</p>
+<p>Sets the effective group identity of the process. (See setegid(2).)
+This accepts either a numerical ID or a groupname string. If a groupname
+is specified, this method blocks while resolving it to a numerical ID.
+
+</p>
+<pre><code>if (process.getegid &amp;&amp; process.setegid) {
+  console.log(&#39;Current gid: &#39; + process.getegid());
+  try {
+    process.setegid(501);
+    console.log(&#39;New gid: &#39; + process.getegid());
+  }
+  catch (err) {
+    console.log(&#39;Failed to set gid: &#39; + err);
+  }
+}</code></pre>
 <h2>process.getuid()<span><a class="mark" href="#all_process_getuid" id="all_process_getuid">#</a></span></h2>
 <p>Note: this function is only available on POSIX platforms (i.e. not Windows,
 Android)
@@ -12288,6 +12342,18 @@ This is the numerical userid, not the username.
 </p>
 <pre><code>if (process.getuid) {
   console.log(&#39;Current uid: &#39; + process.getuid());
+}</code></pre>
+<h2>process.geteuid()<span><a class="mark" href="#all_process_geteuid" id="all_process_geteuid">#</a></span></h2>
+<p>Note: this function is only available on POSIX platforms (i.e. not Windows,
+Android)
+
+</p>
+<p>Gets the effective user identity of the process. (See geteuid(2).)
+This is the numerical userid, not the username.
+
+</p>
+<pre><code>if (process.geteuid) {
+  console.log(&#39;Current uid: &#39; + process.geteuid());
 }</code></pre>
 <h2>process.setuid(id)<span><a class="mark" href="#all_process_setuid_id" id="all_process_setuid_id">#</a></span></h2>
 <p>Note: this function is only available on POSIX platforms (i.e. not Windows,
@@ -12304,6 +12370,26 @@ blocks while resolving it to a numerical ID.
   try {
     process.setuid(501);
     console.log(&#39;New uid: &#39; + process.getuid());
+  }
+  catch (err) {
+    console.log(&#39;Failed to set uid: &#39; + err);
+  }
+}</code></pre>
+<h2>process.seteuid(id)<span><a class="mark" href="#all_process_seteuid_id" id="all_process_seteuid_id">#</a></span></h2>
+<p>Note: this function is only available on POSIX platforms (i.e. not Windows,
+Android)
+
+</p>
+<p>Sets the effective user identity of the process. (See seteuid(2).)
+This accepts either a numerical ID or a username string.  If a username
+is specified, this method blocks while resolving it to a numerical ID.
+
+</p>
+<pre><code>if (process.geteuid &amp;&amp; process.seteuid) {
+  console.log(&#39;Current uid: &#39; + process.geteuid());
+  try {
+    process.seteuid(501);
+    console.log(&#39;New uid: &#39; + process.geteuid());
   }
   catch (err) {
     console.log(&#39;Failed to set uid: &#39; + err);
@@ -12792,6 +12878,8 @@ below for an example of using this.</p>
 treated like a TTY, and have ANSI/VT100 escape codes written to it.
 Defaults to checking <code>isTTY</code> on the <code>output</code> stream upon instantiation.</p>
 </li>
+<li><p><code>historySize</code> - maximum number of history lines retained. Defaults to <code>30</code>.</p>
+</li>
 </ul>
 <p>The <code>completer</code> function is given the current line entered by the user, and
 is supposed to return an Array with 2 entries:
@@ -13119,6 +13207,21 @@ terminal settings which will allow you to use with <code>rlwrap</code>.
 
 </p>
 <pre><code>alias iojs=&quot;env NODE_NO_READLINE=1 rlwrap iojs&quot;</code></pre>
+<p>The built-in repl (invoked by running <code>iojs</code> or <code>iojs -i</code>) may be controlled
+via the following environment variables:
+
+</p>
+<ul>
+<li><code>NODE_REPL_HISTORY_FILE</code> - if given, must be a path to a user-writable,
+user-readable file. When a valid path is given, persistent history support
+is enabled: REPL history will persist across <code>iojs</code> repl sessions.</li>
+<li><code>NODE_REPL_HISTORY_SIZE</code> - defaults to <code>1000</code>. In conjunction with
+<code>NODE_REPL_HISTORY_FILE</code>, controls how many lines of history will be
+persisted. Must be a positive number.</li>
+<li><code>NODE_REPL_MODE</code> - may be any of <code>sloppy</code>, <code>strict</code>, or <code>magic</code>. Defaults
+to <code>magic</code>, which will automatically run &quot;strict mode only&quot; statements in
+strict mode.</li>
+</ul>
 <h2>repl.start(options)<span><a class="mark" href="#all_repl_start_options" id="all_repl_start_options">#</a></span></h2>
 <p>Returns and starts a <code>REPLServer</code> instance, that inherits from 
 [Readline Interface][]. Accepts an &quot;options&quot; Object that takes 
@@ -13153,6 +13256,16 @@ return value of command if it&#39;s <code>undefined</code>. Defaults to <code>fa
 <li><p><code>writer</code> - the function to invoke for each command that gets evaluated which
 returns the formatting (including coloring) to display. Defaults to
 <code>util.inspect</code>.</p>
+</li>
+<li><p><code>replMode</code> - controls whether the repl runs all commands in strict mode,
+default mode, or a hybrid mode (&quot;magic&quot; mode.) Acceptable values are:</p>
+<ul>
+<li><code>repl.REPL_MODE_SLOPPY</code> - run commands in sloppy mode.</li>
+<li><code>repl.REPL_MODE_STRICT</code> - run commands in strict mode. This is equivalent to
+prefacing every repl statement with <code>&#39;use strict&#39;</code>.</li>
+<li><code>repl.REPL_MODE_MAGIC</code> - attempt to run commands in default mode. If they
+fail to parse, re-try in strict mode.</li>
+</ul>
 </li>
 </ul>
 <p>You can use your own <code>eval</code> function if it has following signature:
@@ -13319,7 +13432,12 @@ command.  Press twice on a blank line to forcibly exit.</li>
 <li><code>&lt;ctrl&gt;D</code> - Similar to the <code>.exit</code> keyword.</li>
 </ul>
 <h1>Smalloc<span><a class="mark" href="#all_smalloc" id="all_smalloc">#</a></span></h1>
-<pre class="api_stability_2">Stability: 2 - Stable</pre><h2>Class: smalloc<span><a class="mark" href="#all_class_smalloc" id="all_class_smalloc">#</a></span></h2>
+<pre class="api_stability_0">Stability: 0 - Deprecated</pre><p>This module has been deprecated for technical reasons and will be removed when
+the V8 JavaScript engine is upgraded to version 4.3 or 4.4.  It is recommended
+that you start using <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays">typed arrays</a> instead.
+
+</p>
+<h2>Class: smalloc<span><a class="mark" href="#all_class_smalloc" id="all_class_smalloc">#</a></span></h2>
 <p>Buffers are backed by a simple allocator that only handles the assignation of
 external raw memory. Smalloc exposes that functionality.
 
@@ -15608,9 +15726,9 @@ routines to perform transparent encryption/decryption of incoming/outgoing data.
 </li>
 <li><p><code>server</code>: An optional <a href="net.html#net_class_net_server">net.Server</a> instance</p>
 </li>
-<li><p><code>requestCert</code>: Optional, see <a href="#tls_tls_createsecurepair_credentials_isserver_requestcert_rejectunauthorized">tls.createSecurePair</a></p>
+<li><p><code>requestCert</code>: Optional, see <a href="#tls_tls_createsecurepair_context_isserver_requestcert_rejectunauthorized">tls.createSecurePair</a></p>
 </li>
-<li><p><code>rejectUnauthorized</code>: Optional, see <a href="#tls_tls_createsecurepair_credentials_isserver_requestcert_rejectunauthorized">tls.createSecurePair</a></p>
+<li><p><code>rejectUnauthorized</code>: Optional, see <a href="#tls_tls_createsecurepair_context_isserver_requestcert_rejectunauthorized">tls.createSecurePair</a></p>
 </li>
 <li><p><code>NPNProtocols</code>: Optional, see <a href="#tls_tls_createserver_options_secureconnectionlistener">tls.createServer</a></p>
 </li>
@@ -16629,11 +16747,13 @@ stream.write(&quot;It works!&quot;); // Received data: &quot;It works!&quot;</co
 <p>Marks that a method should not be used any more.
 
 </p>
-<pre><code>exports.puts = exports.deprecate(function() {
+<pre><code>var util = require(&#39;util&#39;);
+
+exports.puts = util.deprecate(function() {
   for (var i = 0, len = arguments.length; i &lt; len; ++i) {
     process.stdout.write(arguments[i] + &#39;\n&#39;);
   }
-}, &#39;util.puts: Use console.log instead&#39;)</code></pre>
+}, &#39;util.puts: Use console.log instead&#39;);</code></pre>
 <p>It returns a modified function which warns once by default.
 
 </p>

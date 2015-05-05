@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>REPL io.js v1.8.0 Manual &amp; Documentation</title>
+  <title>REPL io.js v2.0.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="repl" class="interior">
       <header>
-        <h1>io.js v1.8.0 Documentation</h1>
+        <h1>io.js v2.0.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -120,6 +120,21 @@ terminal settings which will allow you to use with <code>rlwrap</code>.
 
 </p>
 <pre><code>alias iojs=&quot;env NODE_NO_READLINE=1 rlwrap iojs&quot;</code></pre>
+<p>The built-in repl (invoked by running <code>iojs</code> or <code>iojs -i</code>) may be controlled
+via the following environment variables:
+
+</p>
+<ul>
+<li><code>NODE_REPL_HISTORY_FILE</code> - if given, must be a path to a user-writable,
+user-readable file. When a valid path is given, persistent history support
+is enabled: REPL history will persist across <code>iojs</code> repl sessions.</li>
+<li><code>NODE_REPL_HISTORY_SIZE</code> - defaults to <code>1000</code>. In conjunction with
+<code>NODE_REPL_HISTORY_FILE</code>, controls how many lines of history will be
+persisted. Must be a positive number.</li>
+<li><code>NODE_REPL_MODE</code> - may be any of <code>sloppy</code>, <code>strict</code>, or <code>magic</code>. Defaults
+to <code>magic</code>, which will automatically run &quot;strict mode only&quot; statements in
+strict mode.</li>
+</ul>
 <h2>repl.start(options)<span><a class="mark" href="#repl_repl_start_options" id="repl_repl_start_options">#</a></span></h2>
 <p>Returns and starts a <code>REPLServer</code> instance, that inherits from 
 [Readline Interface][]. Accepts an &quot;options&quot; Object that takes 
@@ -154,6 +169,16 @@ return value of command if it&#39;s <code>undefined</code>. Defaults to <code>fa
 <li><p><code>writer</code> - the function to invoke for each command that gets evaluated which
 returns the formatting (including coloring) to display. Defaults to
 <code>util.inspect</code>.</p>
+</li>
+<li><p><code>replMode</code> - controls whether the repl runs all commands in strict mode,
+default mode, or a hybrid mode (&quot;magic&quot; mode.) Acceptable values are:</p>
+<ul>
+<li><code>repl.REPL_MODE_SLOPPY</code> - run commands in sloppy mode.</li>
+<li><code>repl.REPL_MODE_STRICT</code> - run commands in strict mode. This is equivalent to
+prefacing every repl statement with <code>&#39;use strict&#39;</code>.</li>
+<li><code>repl.REPL_MODE_MAGIC</code> - attempt to run commands in default mode. If they
+fail to parse, re-try in strict mode.</li>
+</ul>
 </li>
 </ul>
 <p>You can use your own <code>eval</code> function if it has following signature:

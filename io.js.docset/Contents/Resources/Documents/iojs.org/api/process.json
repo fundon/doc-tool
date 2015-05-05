@@ -73,7 +73,7 @@
         {
           "textRaw": "process.stdin",
           "name": "stdin",
-          "desc": "<p>A <code>Readable Stream</code> for stdin (on fd <code>0</code>).\n\n</p>\n<p>Example of opening standard input and listening for both events:\n\n</p>\n<pre><code>process.stdin.setEncoding(&#39;utf8&#39;);\n\nprocess.stdin.on(&#39;readable&#39;, function() {\n  var chunk = process.stdin.read();\n  if (chunk !== null) {\n    process.stdout.write(&#39;data: &#39; + chunk);\n  }\n});\n\nprocess.stdin.on(&#39;end&#39;, function() {\n  process.stdout.write(&#39;end&#39;);\n});</code></pre>\n<p>As a Stream, <code>process.stdin</code> can also be used in &quot;old&quot; mode that is compatible\nwith scripts written for node.js prior to v0.10.\nFor more information see\n<a href=\"stream.html#stream_compatibility_with_older_node_versions\">Stream compatibility</a>.\n\n</p>\n<p>In &quot;old&quot; Streams mode the stdin stream is paused by default, so one\nmust call <code>process.stdin.resume()</code> to read from it. Note also that calling\n<code>process.stdin.resume()</code> itself would switch stream to &quot;old&quot; mode.\n\n</p>\n<p>If you are starting a new project you should prefer a more recent &quot;new&quot; Streams\nmode over &quot;old&quot; one.\n\n</p>\n"
+          "desc": "<p>A <code>Readable Stream</code> for stdin (on fd <code>0</code>).\n\n</p>\n<p>Example of opening standard input and listening for both events:\n\n</p>\n<pre><code>process.stdin.setEncoding(&#39;utf8&#39;);\n\nprocess.stdin.on(&#39;readable&#39;, function() {\n  var chunk = process.stdin.read();\n  if (chunk !== null) {\n    process.stdout.write(&#39;data: &#39; + chunk);\n  }\n});\n\nprocess.stdin.on(&#39;end&#39;, function() {\n  process.stdout.write(&#39;end&#39;);\n});</code></pre>\n<p>As a Stream, <code>process.stdin</code> can also be used in &quot;old&quot; mode that is compatible\nwith scripts written for node.js prior to v0.10.\nFor more information see\n<a href=\"stream.html#stream_compatibility_with_older_node_js_versions\">Stream compatibility</a>.\n\n</p>\n<p>In &quot;old&quot; Streams mode the stdin stream is paused by default, so one\nmust call <code>process.stdin.resume()</code> to read from it. Note also that calling\n<code>process.stdin.resume()</code> itself would switch stream to &quot;old&quot; mode.\n\n</p>\n<p>If you are starting a new project you should prefer a more recent &quot;new&quot; Streams\nmode over &quot;old&quot; one.\n\n</p>\n"
         },
         {
           "textRaw": "process.argv",
@@ -207,10 +207,36 @@
           ]
         },
         {
+          "textRaw": "process.getegid()",
+          "type": "method",
+          "name": "getegid",
+          "desc": "<p>Note: this function is only available on POSIX platforms (i.e. not Windows,\nAndroid)\n\n</p>\n<p>Gets the effective group identity of the process. (See getegid(2).)\nThis is the numerical group id, not the group name.\n\n</p>\n<pre><code>if (process.getegid) {\n  console.log(&#39;Current gid: &#39; + process.getegid());\n}</code></pre>\n",
+          "signatures": [
+            {
+              "params": []
+            }
+          ]
+        },
+        {
           "textRaw": "process.setgid(id)",
           "type": "method",
           "name": "setgid",
           "desc": "<p>Note: this function is only available on POSIX platforms (i.e. not Windows,\nAndroid)\n\n</p>\n<p>Sets the group identity of the process. (See setgid(2).)  This accepts either\na numerical ID or a groupname string. If a groupname is specified, this method\nblocks while resolving it to a numerical ID.\n\n</p>\n<pre><code>if (process.getgid &amp;&amp; process.setgid) {\n  console.log(&#39;Current gid: &#39; + process.getgid());\n  try {\n    process.setgid(501);\n    console.log(&#39;New gid: &#39; + process.getgid());\n  }\n  catch (err) {\n    console.log(&#39;Failed to set gid: &#39; + err);\n  }\n}</code></pre>\n",
+          "signatures": [
+            {
+              "params": [
+                {
+                  "name": "id"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "textRaw": "process.setegid(id)",
+          "type": "method",
+          "name": "setegid",
+          "desc": "<p>Note: this function is only available on POSIX platforms (i.e. not Windows,\nAndroid)\n\n</p>\n<p>Sets the effective group identity of the process. (See setegid(2).)\nThis accepts either a numerical ID or a groupname string. If a groupname\nis specified, this method blocks while resolving it to a numerical ID.\n\n</p>\n<pre><code>if (process.getegid &amp;&amp; process.setegid) {\n  console.log(&#39;Current gid: &#39; + process.getegid());\n  try {\n    process.setegid(501);\n    console.log(&#39;New gid: &#39; + process.getegid());\n  }\n  catch (err) {\n    console.log(&#39;Failed to set gid: &#39; + err);\n  }\n}</code></pre>\n",
           "signatures": [
             {
               "params": [
@@ -233,10 +259,36 @@
           ]
         },
         {
+          "textRaw": "process.geteuid()",
+          "type": "method",
+          "name": "geteuid",
+          "desc": "<p>Note: this function is only available on POSIX platforms (i.e. not Windows,\nAndroid)\n\n</p>\n<p>Gets the effective user identity of the process. (See geteuid(2).)\nThis is the numerical userid, not the username.\n\n</p>\n<pre><code>if (process.geteuid) {\n  console.log(&#39;Current uid: &#39; + process.geteuid());\n}</code></pre>\n",
+          "signatures": [
+            {
+              "params": []
+            }
+          ]
+        },
+        {
           "textRaw": "process.setuid(id)",
           "type": "method",
           "name": "setuid",
           "desc": "<p>Note: this function is only available on POSIX platforms (i.e. not Windows,\nAndroid)\n\n</p>\n<p>Sets the user identity of the process. (See setuid(2).)  This accepts either\na numerical ID or a username string.  If a username is specified, this method\nblocks while resolving it to a numerical ID.\n\n</p>\n<pre><code>if (process.getuid &amp;&amp; process.setuid) {\n  console.log(&#39;Current uid: &#39; + process.getuid());\n  try {\n    process.setuid(501);\n    console.log(&#39;New uid: &#39; + process.getuid());\n  }\n  catch (err) {\n    console.log(&#39;Failed to set uid: &#39; + err);\n  }\n}</code></pre>\n",
+          "signatures": [
+            {
+              "params": [
+                {
+                  "name": "id"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "textRaw": "process.seteuid(id)",
+          "type": "method",
+          "name": "seteuid",
+          "desc": "<p>Note: this function is only available on POSIX platforms (i.e. not Windows,\nAndroid)\n\n</p>\n<p>Sets the effective user identity of the process. (See seteuid(2).)\nThis accepts either a numerical ID or a username string.  If a username\nis specified, this method blocks while resolving it to a numerical ID.\n\n</p>\n<pre><code>if (process.geteuid &amp;&amp; process.seteuid) {\n  console.log(&#39;Current uid: &#39; + process.geteuid());\n  try {\n    process.seteuid(501);\n    console.log(&#39;New uid: &#39; + process.geteuid());\n  }\n  catch (err) {\n    console.log(&#39;Failed to set uid: &#39; + err);\n  }\n}</code></pre>\n",
           "signatures": [
             {
               "params": [

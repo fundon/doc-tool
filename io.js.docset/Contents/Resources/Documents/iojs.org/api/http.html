@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>HTTP io.js v1.8.0 Manual &amp; Documentation</title>
+  <title>HTTP io.js v2.0.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="http" class="interior">
       <header>
-        <h1>io.js v1.8.0 Documentation</h1>
+        <h1>io.js v2.0.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -366,7 +366,7 @@ parameter is 511 (not 512).
 
 </p>
 <p>This function is asynchronous. The last parameter <code>callback</code> will be added as
-a listener for the <a href="net.html#net_event_listening">&#39;listening&#39;</a> event.  See also <a href="net.html#net_server_listen_port_host_backlog_callback">net.Server.listen(port)</a>.
+a listener for the <a href="net.html#net_event_listening">&#39;listening&#39;</a> event.  See also <a href="net.html#net_server_listen_port_hostname_backlog_callback">net.Server.listen(port)</a>.
 
 
 </p>
@@ -397,7 +397,7 @@ already been bound to a port or domain socket.
 
 </p>
 <p>This function is asynchronous. The last parameter <code>callback</code> will be added as
-a listener for the <a href="net.html#event_listening_">&#39;listening&#39;</a> event.
+a listener for the <a href="net.html#net_event_listening">&#39;listening&#39;</a> event.
 See also <a href="net.html#net_server_listen_handle_callback">net.Server.listen()</a>.
 
 </p>
@@ -462,7 +462,7 @@ passed as the second parameter to the <code>&#39;request&#39;</code> event.
 
 </p>
 <p>Indicates that the underlying connection was terminated before
-<a href="#http_response_end_data_encoding">response.end()</a> was called or able to flush.
+<a href="#http_response_end_data_encoding_callback">response.end()</a> was called or able to flush.
 
 </p>
 <h3>Event: &#39;finish&#39;<span><a class="mark" href="#http_event_finish" id="http_event_finish">#</a></span></h3>
@@ -498,10 +498,10 @@ response.writeHead(200, {
   &#39;Content-Length&#39;: body.length,
   &#39;Content-Type&#39;: &#39;text/plain&#39; });</code></pre>
 <p>This method must only be called once on a message and it must
-be called before <a href="#http_response_end_data_encoding">response.end()</a> is called.
+be called before <a href="#http_response_end_data_encoding_callback">response.end()</a> is called.
 
 </p>
-<p>If you call <a href="#http_response_write_chunk_encoding">response.write()</a> or <a href="#http_response_end_data_encoding">response.end()</a> before calling this, the
+<p>If you call <a href="#http_response_write_chunk_encoding_callback">response.write()</a> or <a href="#http_response_end_data_encoding_callback">response.end()</a> before calling this, the
 implicit/mutable headers will be calculated and call this function for you.
 
 </p>
@@ -531,7 +531,7 @@ sockets.
 
 </p>
 <h3>response.statusCode<span><a class="mark" href="#http_response_statuscode" id="http_response_statuscode">#</a></span></h3>
-<p>When using implicit headers (not calling <a href="#http_response_writehead_statuscode_reasonphrase_headers">response.writeHead()</a> explicitly),
+<p>When using implicit headers (not calling <a href="#http_response_writehead_statuscode_statusmessage_headers">response.writeHead()</a> explicitly),
 this property controls the status code that will be sent to the client when
 the headers get flushed.
 
@@ -605,7 +605,7 @@ implicitly flushed.
 </p>
 <pre><code>response.removeHeader(&quot;Content-Encoding&quot;);</code></pre>
 <h3>response.write(chunk[, encoding][, callback])<span><a class="mark" href="#http_response_write_chunk_encoding_callback" id="http_response_write_chunk_encoding_callback">#</a></span></h3>
-<p>If this method is called and <a href="#http_response_writehead_statuscode_reasonphrase_headers">response.writeHead()</a> has not been called,
+<p>If this method is called and <a href="#http_response_writehead_statuscode_statusmessage_headers">response.writeHead()</a> has not been called,
 it will switch to implicit header mode and flush the implicit headers.
 
 </p>
@@ -684,10 +684,14 @@ automatically parsed with <a href="url.html#url_url_parse_urlstr_parsequerystrin
 <ul>
 <li><code>host</code>: A domain name or IP address of the server to issue the request to.
 Defaults to <code>&#39;localhost&#39;</code>.</li>
-<li><code>hostname</code>: To support <code>url.parse()</code> <code>hostname</code> is preferred over <code>host</code></li>
+<li><code>hostname</code>: Alias for <code>host</code>. To support <code>url.parse()</code> <code>hostname</code> is
+preferred over <code>host</code>.</li>
+<li><code>family</code>: IP address family to use when resolving <code>host</code> and <code>hostname</code>.
+Valid values are <code>4</code> or <code>6</code>. When unspecified, both IP v4 and v6 will be
+used.</li>
 <li><code>port</code>: Port of remote server. Defaults to 80.</li>
 <li><code>localAddress</code>: Local interface to bind for network connections.</li>
-<li><code>socketPath</code>: Unix Domain Socket (use one of host:port or socketPath)</li>
+<li><code>socketPath</code>: Unix Domain Socket (use one of host:port or socketPath).</li>
 <li><code>method</code>: A string specifying the HTTP request method. Defaults to <code>&#39;GET&#39;</code>.</li>
 <li><code>path</code>: Request path. Defaults to <code>&#39;/&#39;</code>. Should include query string if any.
 E.G. <code>&#39;/index.html?page=12&#39;</code>. An exception is thrown when the request path
@@ -698,7 +702,7 @@ may change in the future.</li>
 Authorization header.</li>
 <li><code>agent</code>: Controls <a href="#http_class_http_agent">Agent</a> behavior. When an Agent is used request will
 default to <code>Connection: keep-alive</code>. Possible values:<ul>
-<li><code>undefined</code> (default): use <a href="#http_http_globalagent">global Agent</a> for this host and port.</li>
+<li><code>undefined</code> (default): use <a href="#http_http_globalagent">globalAgent</a> for this host and port.</li>
 <li><code>Agent</code> object: explicitly use the passed in <code>Agent</code>.</li>
 <li><code>false</code>: opts out of connection pooling with an Agent, defaults request to
 <code>Connection: close</code>.</li>
