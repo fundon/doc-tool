@@ -20,13 +20,17 @@
           ]
         },
         {
-          "textRaw": "setFlagsFromString()",
+          "textRaw": "setFlagsFromString(string)",
           "type": "method",
           "name": "setFlagsFromString",
           "desc": "<p>Set additional V8 command line flags.  Use with care; changing settings\nafter the VM has started may result in unpredictable behavior, including\ncrashes and data loss.  Or it may simply do nothing.\n\n</p>\n<p>The V8 options available for a version of io.js may be determined by running\n<code>iojs --v8-options</code>.  An unofficial, community-maintained list of options\nand their effects is available\n<a href=\"https://github.com/thlorenz/v8-flags/blob/master/flags-0.11.md\">here</a>.\n\n</p>\n<p>Usage:\n\n</p>\n<pre><code>// Print GC events to stdout for one minute.\nvar v8 = require(&#39;v8&#39;);\nv8.setFlagsFromString(&#39;--trace_gc&#39;);\nsetTimeout(function() { v8.setFlagsFromString(&#39;--notrace_gc&#39;); }, 60e3);</code></pre>\n",
           "signatures": [
             {
-              "params": []
+              "params": [
+                {
+                  "name": "string"
+                }
+              ]
             }
           ]
         }
