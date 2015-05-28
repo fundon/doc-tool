@@ -119,7 +119,7 @@
                   ]
                 }
               ],
-              "desc": "<p>Calls <code>message.connection.setTimeout(msecs, callback)</code>.\n\n</p>\n"
+              "desc": "<p>Calls <code>message.connection.setTimeout(msecs, callback)</code>.\n\n</p>\n<p>Returns <code>message</code>.\n\n</p>\n"
             }
           ]
         }
@@ -384,7 +384,7 @@
                   ]
                 }
               ],
-              "desc": "<p>Sets the timeout value for sockets, and emits a <code>&#39;timeout&#39;</code> event on\nthe Server object, passing the socket as an argument, if a timeout\noccurs.\n\n</p>\n<p>If there is a <code>&#39;timeout&#39;</code> event listener on the Server object, then it\nwill be called with the timed-out socket as an argument.\n\n</p>\n<p>By default, the Server&#39;s timeout value is 2 minutes, and sockets are\ndestroyed automatically if they time out.  However, if you assign a\ncallback to the Server&#39;s <code>&#39;timeout&#39;</code> event, then you are responsible\nfor handling socket timeouts.\n\n</p>\n"
+              "desc": "<p>Sets the timeout value for sockets, and emits a <code>&#39;timeout&#39;</code> event on\nthe Server object, passing the socket as an argument, if a timeout\noccurs.\n\n</p>\n<p>If there is a <code>&#39;timeout&#39;</code> event listener on the Server object, then it\nwill be called with the timed-out socket as an argument.\n\n</p>\n<p>By default, the Server&#39;s timeout value is 2 minutes, and sockets are\ndestroyed automatically if they time out.  However, if you assign a\ncallback to the Server&#39;s <code>&#39;timeout&#39;</code> event, then you are responsible\nfor handling socket timeouts.\n\n</p>\n<p>Returns <code>server</code>.\n\n</p>\n"
             }
           ],
           "properties": [
@@ -487,7 +487,7 @@
                   ]
                 }
               ],
-              "desc": "<p>Sets the Socket&#39;s timeout value to <code>msecs</code>.  If a callback is\nprovided, then it is added as a listener on the <code>&#39;timeout&#39;</code> event on\nthe response object.\n\n</p>\n<p>If no <code>&#39;timeout&#39;</code> listener is added to the request, the response, or\nthe server, then sockets are destroyed when they time out.  If you\nassign a handler on the request, the response, or the server&#39;s\n<code>&#39;timeout&#39;</code> events, then it is your responsibility to handle timed out\nsockets.\n\n</p>\n"
+              "desc": "<p>Sets the Socket&#39;s timeout value to <code>msecs</code>.  If a callback is\nprovided, then it is added as a listener on the <code>&#39;timeout&#39;</code> event on\nthe response object.\n\n</p>\n<p>If no <code>&#39;timeout&#39;</code> listener is added to the request, the response, or\nthe server, then sockets are destroyed when they time out.  If you\nassign a handler on the request, the response, or the server&#39;s\n<code>&#39;timeout&#39;</code> events, then it is your responsibility to handle timed out\nsockets.\n\n</p>\n<p>Returns <code>response</code>.\n\n</p>\n"
             },
             {
               "textRaw": "response.setHeader(name, value)",
@@ -856,7 +856,7 @@
               "textRaw": "request.setTimeout(timeout[, callback])",
               "type": "method",
               "name": "setTimeout",
-              "desc": "<p>Once a socket is assigned to this request and is connected\n[socket.setTimeout()][] will be called.\n\n</p>\n",
+              "desc": "<p>Once a socket is assigned to this request and is connected\n[socket.setTimeout()][] will be called.\n\n</p>\n<p>Returns <code>request</code>.\n\n</p>\n",
               "signatures": [
                 {
                   "params": [

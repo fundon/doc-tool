@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>REPL io.js v2.0.2 Manual &amp; Documentation</title>
-  <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
+  <title>REPL io.js v2.1.0 Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
   <link rel="canonical" href="https://iojs.org/api/repl.html">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="repl" class="interior">
       <header>
-        <h1>io.js v2.0.2 Documentation</h1>
+        <h1>io.js v2.1.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -187,6 +187,10 @@ fail to parse, re-try in strict mode.</li>
 <pre><code>function eval(cmd, context, filename, callback) {
   callback(null, result);
 }</code></pre>
+<p>On tab completion - <code>eval</code> will be called with <code>.scope</code> as an input string. It
+is expected to return an array of scope names to be used for the auto-completion.
+
+</p>
 <p>Multiple REPLs may be started against the same running instance of io.js.  Each
 will share the same global object but will have unique I/O.
 
@@ -343,6 +347,7 @@ multi-line expression.</li>
 <li><code>&lt;ctrl&gt;C</code> - Similar to the <code>.break</code> keyword.  Terminates the current
 command.  Press twice on a blank line to forcibly exit.</li>
 <li><code>&lt;ctrl&gt;D</code> - Similar to the <code>.exit</code> keyword.</li>
+<li><code>&lt;tab&gt;</code> - Show both global and local(scope) variables</li>
 </ul>
 
       </div>

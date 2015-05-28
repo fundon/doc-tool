@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>TLS (SSL) io.js v2.0.2 Manual &amp; Documentation</title>
-  <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
+  <title>TLS (SSL) io.js v2.1.0 Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
   <link rel="canonical" href="https://iojs.org/api/tls.html">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="tls" class="interior">
       <header>
-        <h1>io.js v2.0.2 Documentation</h1>
+        <h1>io.js v2.1.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -326,8 +326,10 @@ or false to disable ECDH.</p>
 </li>
 <li><p><code>dhparam</code>: A string or <code>Buffer</code> containing Diffie Hellman parameters,
 required for Perfect Forward Secrecy. Use <code>openssl dhparam</code> to create it.
-If omitted or invalid, it is silently discarded and DHE ciphers won&#39;t be
-available.</p>
+Its key length should be greater than or equal to 1024 bits, otherwise
+it throws an error. It is strongly recommended to use 2048 bits or
+more for stronger security. If omitted or invalid, it is silently
+discarded and DHE ciphers won&#39;t be available.</p>
 </li>
 <li><p><code>handshakeTimeout</code>: Abort the connection if the SSL/TLS handshake does not
 finish in this many milliseconds. The default is 120 seconds.</p>

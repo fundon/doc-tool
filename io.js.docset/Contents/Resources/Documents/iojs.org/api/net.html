@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>net io.js v2.0.2 Manual &amp; Documentation</title>
-  <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
+  <title>net io.js v2.1.0 Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
   <link rel="canonical" href="https://iojs.org/api/net.html">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="net" class="interior">
       <header>
-        <h1>io.js v2.0.2 Documentation</h1>
+        <h1>io.js v2.1.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -217,8 +217,8 @@ constructor and the <a href="#net_socket_connect_options_connectlistener">&#39;s
 method.
 
 </p>
-<p>The <code>connectListener</code> parameter will be added as an listener for the
-<a href="#net_event_connect">&#39;connect&#39;</a> event.
+<p>The <code>connectListener</code> parameter will be added as a listener for the
+<a href="#net_event_connect">&#39;connect&#39;</a> event once.
 
 </p>
 <p>Here is an example of a client of the previously described echo server:
@@ -252,8 +252,8 @@ supplied <code>port</code> and <code>host</code>.
 <p>If <code>host</code> is omitted, <code>&#39;localhost&#39;</code> will be assumed.
 
 </p>
-<p>The <code>connectListener</code> parameter will be added as an listener for the
-<a href="#net_event_connect">&#39;connect&#39;</a> event.
+<p>The <code>connectListener</code> parameter will be added as a listener for the
+<a href="#net_event_connect">&#39;connect&#39;</a> event once.
 
 </p>
 <h2>net.connect(path[, connectListener])<span><a class="mark" href="#net_net_connect_path_connectlistener" id="net_net_connect_path_connectlistener">#</a></span></h2>
@@ -263,8 +263,8 @@ supplied <code>port</code> and <code>host</code>.
 supplied <code>path</code>.
 
 </p>
-<p>The <code>connectListener</code> parameter will be added as an listener for the
-<a href="#net_event_connect">&#39;connect&#39;</a> event.
+<p>The <code>connectListener</code> parameter will be added as a listener for the
+<a href="#net_event_connect">&#39;connect&#39;</a> event once.
 
 </p>
 <h2>Class: net.Server<span><a class="mark" href="#net_class_net_server" id="net_class_net_server">#</a></span></h2>
@@ -429,10 +429,16 @@ active server in the event system. If the server is already <code>unref</code>d 
 <code>unref</code> again will have no effect.
 
 </p>
+<p>Returns <code>server</code>.
+
+</p>
 <h3>server.ref()<span><a class="mark" href="#net_server_ref" id="net_server_ref">#</a></span></h3>
 <p>Opposite of <code>unref</code>, calling <code>ref</code> on a previously <code>unref</code>d server will <em>not</em>
 let the program exit if it&#39;s the only server left (the default behavior). If
 the server is <code>ref</code>d calling <code>ref</code> again will have no effect.
+
+</p>
+<p>Returns <code>server</code>.
 
 </p>
 <h3>server.maxConnections<span><a class="mark" href="#net_server_maxconnections" id="net_server_maxconnections">#</a></span></h3>
@@ -642,11 +648,17 @@ or <code>destroy()</code> the socket.
 <code>&#39;timeout&#39;</code> event.
 
 </p>
+<p>Returns <code>socket</code>.
+
+</p>
 <h3>socket.setNoDelay([noDelay])<span><a class="mark" href="#net_socket_setnodelay_nodelay" id="net_socket_setnodelay_nodelay">#</a></span></h3>
 <p>Disables the Nagle algorithm. By default TCP connections use the Nagle
 algorithm, they buffer data before sending it off. Setting <code>true</code> for
 <code>noDelay</code> will immediately fire off data each time <code>socket.write()</code> is called.
 <code>noDelay</code> defaults to <code>true</code>.
+
+</p>
+<p>Returns <code>socket</code>.
 
 </p>
 <h3>socket.setKeepAlive([enable][, initialDelay])<span><a class="mark" href="#net_socket_setkeepalive_enable_initialdelay" id="net_socket_setkeepalive_enable_initialdelay">#</a></span></h3>
@@ -659,6 +671,9 @@ delay before the first keepalive probe is sent on an idle socket.
 data packet received and the first keepalive probe. Setting 0 for
 initialDelay will leave the value unchanged from the default
 (or previous) setting. Defaults to <code>0</code>.
+
+</p>
+<p>Returns <code>socket</code>.
 
 </p>
 <h3>socket.address()<span><a class="mark" href="#net_socket_address" id="net_socket_address">#</a></span></h3>
@@ -674,10 +689,16 @@ active socket in the event system. If the socket is already <code>unref</code>d 
 <code>unref</code> again will have no effect.
 
 </p>
+<p>Returns <code>socket</code>.
+
+</p>
 <h3>socket.ref()<span><a class="mark" href="#net_socket_ref" id="net_socket_ref">#</a></span></h3>
 <p>Opposite of <code>unref</code>, calling <code>ref</code> on a previously <code>unref</code>d socket will <em>not</em>
 let the program exit if it&#39;s the only socket left (the default behavior). If
 the socket is <code>ref</code>d calling <code>ref</code> again will have no effect.
+
+</p>
+<p>Returns <code>socket</code>.
 
 </p>
 <h3>socket.remoteAddress<span><a class="mark" href="#net_socket_remoteaddress" id="net_socket_remoteaddress">#</a></span></h3>

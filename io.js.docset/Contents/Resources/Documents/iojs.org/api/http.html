@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>HTTP io.js v2.0.2 Manual &amp; Documentation</title>
-  <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
+  <title>HTTP io.js v2.1.0 Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
   <link rel="canonical" href="https://iojs.org/api/http.html">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="http" class="interior">
       <header>
-        <h1>io.js v2.0.2 Documentation</h1>
+        <h1>io.js v2.1.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -431,6 +431,9 @@ callback to the Server&#39;s <code>&#39;timeout&#39;</code> event, then you are 
 for handling socket timeouts.
 
 </p>
+<p>Returns <code>server</code>.
+
+</p>
 <h3>server.timeout<span><a class="mark" href="#http_server_timeout" id="http_server_timeout">#</a></span></h3>
 <div class="signature"><ul>
 <li><span class="type">Number</span> Default = 120000 (2 minutes)</li>
@@ -528,6 +531,9 @@ the server, then sockets are destroyed when they time out.  If you
 assign a handler on the request, the response, or the server&#39;s
 <code>&#39;timeout&#39;</code> events, then it is your responsibility to handle timed out
 sockets.
+
+</p>
+<p>Returns <code>response</code>.
 
 </p>
 <h3>response.statusCode<span><a class="mark" href="#http_response_statuscode" id="http_response_statuscode">#</a></span></h3>
@@ -1170,6 +1176,9 @@ is finished.
 <a href="net.html#net_socket_settimeout_timeout_callback">socket.setTimeout()</a> will be called.
 
 </p>
+<p>Returns <code>request</code>.
+
+</p>
 <h3>request.setNoDelay([noDelay])<span><a class="mark" href="#http_request_setnodelay_nodelay" id="http_request_setnodelay_nodelay">#</a></span></h3>
 <p>Once a socket is assigned to this request and is connected
 <a href="net.html#net_socket_setnodelay_nodelay">socket.setNoDelay()</a> will be called.
@@ -1262,6 +1271,9 @@ received.  Only populated at the &#39;end&#39; event.
 <li><code>callback</code> <span class="type">Function</span></li>
 </div></ul>
 <p>Calls <code>message.connection.setTimeout(msecs, callback)</code>.
+
+</p>
+<p>Returns <code>message</code>.
 
 </p>
 <h3>message.method<span><a class="mark" href="#http_message_method" id="http_message_method">#</a></span></h3>

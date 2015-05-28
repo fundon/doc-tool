@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>About this Documentation io.js v2.0.2 Manual &amp; Documentation</title>
-  <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
+  <title>About this Documentation io.js v2.1.0 Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
   <link rel="canonical" href="https://iojs.org/api/all.html">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="all" class="interior">
       <header>
-        <h1>io.js v2.0.2 Documentation</h1>
+        <h1>io.js v2.1.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -3849,6 +3849,9 @@ if it runs longer than <code>timeout</code> milliseconds. The child process is k
 amount of data (in bytes) allowed on stdout or stderr - if this value is
 exceeded then the child process is killed.
 
+</p>
+<p><em>Note: Unlike the <code>exec()</code> POSIX system call, <code>child_process.exec()</code> does not replace
+the existing process and uses a shell to execute the command.</em>
 
 </p>
 <h3>child_process.execFile(file[, args][, options][, callback])<span><a class="mark" href="#all_child_process_execfile_file_args_options_callback" id="all_child_process_execfile_file_args_options_callback">#</a></span></h3>
@@ -3917,6 +3920,10 @@ created for the child rather than the current <code>iojs</code> executable. This
 done with care and by default will talk over the fd represented an
 environmental variable <code>NODE_CHANNEL_FD</code> on the child process. The input and
 output on this fd is expected to be line delimited JSON objects.
+
+</p>
+<p><em>Note: Unlike the <code>fork()</code> POSIX system call, <code>child_process.fork()</code> does not clone the
+current process.</em>
 
 </p>
 <h2>Synchronous Process Creation<span><a class="mark" href="#all_synchronous_process_creation" id="all_synchronous_process_creation">#</a></span></h2>
@@ -6218,10 +6225,16 @@ active socket in the event system. If the socket is already <code>unref</code>d 
 <code>unref</code> again will have no effect.
 
 </p>
+<p>Returns <code>socket</code>.
+
+</p>
 <h3>socket.ref()<span><a class="mark" href="#all_socket_ref" id="all_socket_ref">#</a></span></h3>
 <p>Opposite of <code>unref</code>, calling <code>ref</code> on a previously <code>unref</code>d socket will <em>not</em>
 let the program exit if it&#39;s the only socket left (the default behavior). If
 the socket is <code>ref</code>d calling <code>ref</code> again will have no effect.
+
+</p>
+<p>Returns <code>socket</code>.
 
 </p>
 <h1>DNS<span><a class="mark" href="#all_dns" id="all_dns">#</a></span></h1>
@@ -9028,6 +9041,9 @@ callback to the Server&#39;s <code>&#39;timeout&#39;</code> event, then you are 
 for handling socket timeouts.
 
 </p>
+<p>Returns <code>server</code>.
+
+</p>
 <h3>server.timeout<span><a class="mark" href="#all_server_timeout" id="all_server_timeout">#</a></span></h3>
 <div class="signature"><ul>
 <li><span class="type">Number</span> Default = 120000 (2 minutes)</li>
@@ -9125,6 +9141,9 @@ the server, then sockets are destroyed when they time out.  If you
 assign a handler on the request, the response, or the server&#39;s
 <code>&#39;timeout&#39;</code> events, then it is your responsibility to handle timed out
 sockets.
+
+</p>
+<p>Returns <code>response</code>.
 
 </p>
 <h3>response.statusCode<span><a class="mark" href="#all_response_statuscode" id="all_response_statuscode">#</a></span></h3>
@@ -9767,6 +9786,9 @@ is finished.
 <a href="net.html#net_socket_settimeout_timeout_callback">socket.setTimeout()</a> will be called.
 
 </p>
+<p>Returns <code>request</code>.
+
+</p>
 <h3>request.setNoDelay([noDelay])<span><a class="mark" href="#all_request_setnodelay_nodelay" id="all_request_setnodelay_nodelay">#</a></span></h3>
 <p>Once a socket is assigned to this request and is connected
 <a href="net.html#net_socket_setnodelay_nodelay">socket.setNoDelay()</a> will be called.
@@ -9859,6 +9881,9 @@ received.  Only populated at the &#39;end&#39; event.
 <li><code>callback</code> <span class="type">Function</span></li>
 </div></ul>
 <p>Calls <code>message.connection.setTimeout(msecs, callback)</code>.
+
+</p>
+<p>Returns <code>message</code>.
 
 </p>
 <h3>message.method<span><a class="mark" href="#all_message_method" id="all_message_method">#</a></span></h3>
@@ -10616,6 +10641,20 @@ are not found elsewhere.  (Note: On Windows, <code>NODE_PATH</code> is delimited
 semicolons instead of colons.)
 
 </p>
+<p><code>NODE_PATH</code> was originally created to support loading modules from
+varying paths before the current
+<a href="https://iojs.org/api/modules.html#modules_all_together">module resolution</a>
+algorithm was frozen.
+
+</p>
+<p><code>NODE_PATH</code> is still supported, but is less necessary now that the io.js
+ecosystem has settled on a convention for locating dependent modules.
+Sometimes deployments that rely on <code>NODE_PATH</code> show surprising behavior
+when people are unaware that <code>NODE_PATH</code> must be set.  Sometimes a
+module&#39;s dependencies change, causing a different version (or even a
+different module) to be loaded as the <code>NODE_PATH</code> is searched.
+
+</p>
 <p>Additionally, io.js will search in the following locations:
 
 </p>
@@ -10628,9 +10667,9 @@ semicolons instead of colons.)
 configured <code>node_prefix</code>.
 
 </p>
-<p>These are mostly for historic reasons.  You are highly encouraged to
-place your dependencies locally in <code>node_modules</code> folders.  They will be
-loaded faster, and more reliably.
+<p>These are mostly for historic reasons.  <strong>You are highly encouraged
+to place your dependencies locally in <code>node_modules</code> folders.</strong>  They
+will be loaded faster, and more reliably.
 
 </p>
 <h2>Accessing the main module<span><a class="mark" href="#all_accessing_the_main_module" id="all_accessing_the_main_module">#</a></span></h2>
@@ -10784,8 +10823,8 @@ constructor and the <a href="#net_socket_connect_options_connectlistener">&#39;s
 method.
 
 </p>
-<p>The <code>connectListener</code> parameter will be added as an listener for the
-<a href="#net_event_connect">&#39;connect&#39;</a> event.
+<p>The <code>connectListener</code> parameter will be added as a listener for the
+<a href="#net_event_connect">&#39;connect&#39;</a> event once.
 
 </p>
 <p>Here is an example of a client of the previously described echo server:
@@ -10819,8 +10858,8 @@ supplied <code>port</code> and <code>host</code>.
 <p>If <code>host</code> is omitted, <code>&#39;localhost&#39;</code> will be assumed.
 
 </p>
-<p>The <code>connectListener</code> parameter will be added as an listener for the
-<a href="#net_event_connect">&#39;connect&#39;</a> event.
+<p>The <code>connectListener</code> parameter will be added as a listener for the
+<a href="#net_event_connect">&#39;connect&#39;</a> event once.
 
 </p>
 <h2>net.connect(path[, connectListener])<span><a class="mark" href="#all_net_connect_path_connectlistener" id="all_net_connect_path_connectlistener">#</a></span></h2>
@@ -10830,8 +10869,8 @@ supplied <code>port</code> and <code>host</code>.
 supplied <code>path</code>.
 
 </p>
-<p>The <code>connectListener</code> parameter will be added as an listener for the
-<a href="#net_event_connect">&#39;connect&#39;</a> event.
+<p>The <code>connectListener</code> parameter will be added as a listener for the
+<a href="#net_event_connect">&#39;connect&#39;</a> event once.
 
 </p>
 <h2>Class: net.Server<span><a class="mark" href="#all_class_net_server" id="all_class_net_server">#</a></span></h2>
@@ -10996,10 +11035,16 @@ active server in the event system. If the server is already <code>unref</code>d 
 <code>unref</code> again will have no effect.
 
 </p>
+<p>Returns <code>server</code>.
+
+</p>
 <h3>server.ref()<span><a class="mark" href="#all_server_ref" id="all_server_ref">#</a></span></h3>
 <p>Opposite of <code>unref</code>, calling <code>ref</code> on a previously <code>unref</code>d server will <em>not</em>
 let the program exit if it&#39;s the only server left (the default behavior). If
 the server is <code>ref</code>d calling <code>ref</code> again will have no effect.
+
+</p>
+<p>Returns <code>server</code>.
 
 </p>
 <h3>server.maxConnections<span><a class="mark" href="#all_server_maxconnections" id="all_server_maxconnections">#</a></span></h3>
@@ -11209,11 +11254,17 @@ or <code>destroy()</code> the socket.
 <code>&#39;timeout&#39;</code> event.
 
 </p>
+<p>Returns <code>socket</code>.
+
+</p>
 <h3>socket.setNoDelay([noDelay])<span><a class="mark" href="#all_socket_setnodelay_nodelay" id="all_socket_setnodelay_nodelay">#</a></span></h3>
 <p>Disables the Nagle algorithm. By default TCP connections use the Nagle
 algorithm, they buffer data before sending it off. Setting <code>true</code> for
 <code>noDelay</code> will immediately fire off data each time <code>socket.write()</code> is called.
 <code>noDelay</code> defaults to <code>true</code>.
+
+</p>
+<p>Returns <code>socket</code>.
 
 </p>
 <h3>socket.setKeepAlive([enable][, initialDelay])<span><a class="mark" href="#all_socket_setkeepalive_enable_initialdelay" id="all_socket_setkeepalive_enable_initialdelay">#</a></span></h3>
@@ -11226,6 +11277,9 @@ delay before the first keepalive probe is sent on an idle socket.
 data packet received and the first keepalive probe. Setting 0 for
 initialDelay will leave the value unchanged from the default
 (or previous) setting. Defaults to <code>0</code>.
+
+</p>
+<p>Returns <code>socket</code>.
 
 </p>
 <h3>socket.address()<span><a class="mark" href="#all_socket_address_1" id="all_socket_address_1">#</a></span></h3>
@@ -11241,10 +11295,16 @@ active socket in the event system. If the socket is already <code>unref</code>d 
 <code>unref</code> again will have no effect.
 
 </p>
+<p>Returns <code>socket</code>.
+
+</p>
 <h3>socket.ref()<span><a class="mark" href="#all_socket_ref_1" id="all_socket_ref_1">#</a></span></h3>
 <p>Opposite of <code>unref</code>, calling <code>ref</code> on a previously <code>unref</code>d socket will <em>not</em>
 let the program exit if it&#39;s the only socket left (the default behavior). If
 the socket is <code>ref</code>d calling <code>ref</code> again will have no effect.
+
+</p>
+<p>Returns <code>socket</code>.
 
 </p>
 <h3>socket.remoteAddress<span><a class="mark" href="#all_socket_remoteaddress" id="all_socket_remoteaddress">#</a></span></h3>
@@ -13274,6 +13334,10 @@ fail to parse, re-try in strict mode.</li>
 <pre><code>function eval(cmd, context, filename, callback) {
   callback(null, result);
 }</code></pre>
+<p>On tab completion - <code>eval</code> will be called with <code>.scope</code> as an input string. It
+is expected to return an array of scope names to be used for the auto-completion.
+
+</p>
 <p>Multiple REPLs may be started against the same running instance of io.js.  Each
 will share the same global object but will have unique I/O.
 
@@ -13430,6 +13494,7 @@ multi-line expression.</li>
 <li><code>&lt;ctrl&gt;C</code> - Similar to the <code>.break</code> keyword.  Terminates the current
 command.  Press twice on a blank line to forcibly exit.</li>
 <li><code>&lt;ctrl&gt;D</code> - Similar to the <code>.exit</code> keyword.</li>
+<li><code>&lt;tab&gt;</code> - Show both global and local(scope) variables</li>
 </ul>
 <h1>Smalloc<span><a class="mark" href="#all_smalloc" id="all_smalloc">#</a></span></h1>
 <pre class="api_stability_0">Stability: 0 - Deprecated</pre><p>This module has been deprecated for technical reasons and will be removed when
@@ -15503,8 +15568,10 @@ or false to disable ECDH.</p>
 </li>
 <li><p><code>dhparam</code>: A string or <code>Buffer</code> containing Diffie Hellman parameters,
 required for Perfect Forward Secrecy. Use <code>openssl dhparam</code> to create it.
-If omitted or invalid, it is silently discarded and DHE ciphers won&#39;t be
-available.</p>
+Its key length should be greater than or equal to 1024 bits, otherwise
+it throws an error. It is strongly recommended to use 2048 bits or
+more for stronger security. If omitted or invalid, it is silently
+discarded and DHE ciphers won&#39;t be available.</p>
 </li>
 <li><p><code>handshakeTimeout</code>: Abort the connection if the SSL/TLS handshake does not
 finish in this many milliseconds. The default is 120 seconds.</p>
@@ -16322,6 +16389,7 @@ empty) string.  Defaults to <code>false</code>.
 </p>
 <ul>
 <li><code>href</code> will be ignored.</li>
+<li><code>path</code> will be ignored.</li>
 <li><code>protocol</code> is treated the same with or without the trailing <code>:</code> (colon).<ul>
 <li>The protocols <code>http</code>, <code>https</code>, <code>ftp</code>, <code>gopher</code>, <code>file</code> will be
 postfixed with <code>://</code> (colon-slash-slash).</li>
@@ -16413,7 +16481,7 @@ argument. Supported placeholders are:
 <li><code>%d</code> - Number (both integer and float).</li>
 <li><code>%j</code> - JSON.  Replaced with the string <code>&#39;[Circular]&#39;</code> if the argument
 contains circular references.</li>
-<li><code>%</code> - single percent sign (<code>&#39;%&#39;</code>). This does not consume an argument.</li>
+<li><code>%%</code> - single percent sign (<code>&#39;%&#39;</code>). This does not consume an argument.</li>
 </ul>
 <p>If the placeholder does not have a corresponding argument, the placeholder is
 not replaced.

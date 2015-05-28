@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Modules io.js v2.0.2 Manual &amp; Documentation</title>
-  <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
+  <title>Modules io.js v2.1.0 Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
   <link rel="canonical" href="https://iojs.org/api/modules.html">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="modules" class="interior">
       <header>
-        <h1>io.js v2.0.2 Documentation</h1>
+        <h1>io.js v2.1.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -574,6 +574,20 @@ are not found elsewhere.  (Note: On Windows, <code>NODE_PATH</code> is delimited
 semicolons instead of colons.)
 
 </p>
+<p><code>NODE_PATH</code> was originally created to support loading modules from
+varying paths before the current
+<a href="https://iojs.org/api/modules.html#modules_all_together">module resolution</a>
+algorithm was frozen.
+
+</p>
+<p><code>NODE_PATH</code> is still supported, but is less necessary now that the io.js
+ecosystem has settled on a convention for locating dependent modules.
+Sometimes deployments that rely on <code>NODE_PATH</code> show surprising behavior
+when people are unaware that <code>NODE_PATH</code> must be set.  Sometimes a
+module&#39;s dependencies change, causing a different version (or even a
+different module) to be loaded as the <code>NODE_PATH</code> is searched.
+
+</p>
 <p>Additionally, io.js will search in the following locations:
 
 </p>
@@ -586,9 +600,9 @@ semicolons instead of colons.)
 configured <code>node_prefix</code>.
 
 </p>
-<p>These are mostly for historic reasons.  You are highly encouraged to
-place your dependencies locally in <code>node_modules</code> folders.  They will be
-loaded faster, and more reliably.
+<p>These are mostly for historic reasons.  <strong>You are highly encouraged
+to place your dependencies locally in <code>node_modules</code> folders.</strong>  They
+will be loaded faster, and more reliably.
 
 </p>
 <h2>Accessing the main module<span><a class="mark" href="#modules_accessing_the_main_module" id="modules_accessing_the_main_module">#</a></span></h2>

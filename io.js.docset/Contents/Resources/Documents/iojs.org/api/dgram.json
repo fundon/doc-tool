@@ -485,7 +485,7 @@
               "textRaw": "socket.unref()",
               "type": "method",
               "name": "unref",
-              "desc": "<p>Calling <code>unref</code> on a socket will allow the program to exit if this is the only\nactive socket in the event system. If the socket is already <code>unref</code>d calling\n<code>unref</code> again will have no effect.\n\n</p>\n",
+              "desc": "<p>Calling <code>unref</code> on a socket will allow the program to exit if this is the only\nactive socket in the event system. If the socket is already <code>unref</code>d calling\n<code>unref</code> again will have no effect.\n\n</p>\n<p>Returns <code>socket</code>.\n\n</p>\n",
               "signatures": [
                 {
                   "params": []
@@ -496,7 +496,7 @@
               "textRaw": "socket.ref()",
               "type": "method",
               "name": "ref",
-              "desc": "<p>Opposite of <code>unref</code>, calling <code>ref</code> on a previously <code>unref</code>d socket will <em>not</em>\nlet the program exit if it&#39;s the only socket left (the default behavior). If\nthe socket is <code>ref</code>d calling <code>ref</code> again will have no effect.\n</p>\n",
+              "desc": "<p>Opposite of <code>unref</code>, calling <code>ref</code> on a previously <code>unref</code>d socket will <em>not</em>\nlet the program exit if it&#39;s the only socket left (the default behavior). If\nthe socket is <code>ref</code>d calling <code>ref</code> again will have no effect.\n\n</p>\n<p>Returns <code>socket</code>.\n</p>\n",
               "signatures": [
                 {
                   "params": []

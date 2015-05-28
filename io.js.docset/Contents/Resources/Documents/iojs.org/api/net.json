@@ -32,7 +32,7 @@
           "textRaw": "net.connect(options[, connectionListener])",
           "type": "method",
           "name": "connect",
-          "desc": "<p>A factory function, which returns a new <a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a>\nand automatically connects with the supplied <code>options</code>.\n\n</p>\n<p>The options are passed to both the <a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a>\nconstructor and the <a href=\"#net_socket_connect_options_connectlistener\">&#39;socket.connect&#39;</a>\nmethod.\n\n</p>\n<p>The <code>connectListener</code> parameter will be added as an listener for the\n[&#39;connect&#39;][] event.\n\n</p>\n<p>Here is an example of a client of the previously described echo server:\n\n</p>\n<pre><code>var net = require(&#39;net&#39;);\nvar client = net.connect({port: 8124},\n    function() { //&#39;connect&#39; listener\n  console.log(&#39;connected to server!&#39;);\n  client.write(&#39;world!\\r\\n&#39;);\n});\nclient.on(&#39;data&#39;, function(data) {\n  console.log(data.toString());\n  client.end();\n});\nclient.on(&#39;end&#39;, function() {\n  console.log(&#39;disconnected from server&#39;);\n});</code></pre>\n<p>To connect on the socket <code>/tmp/echo.sock</code> the second line would just be\nchanged to\n\n</p>\n<pre><code>var client = net.connect({path: &#39;/tmp/echo.sock&#39;});</code></pre>\n",
+          "desc": "<p>A factory function, which returns a new <a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a>\nand automatically connects with the supplied <code>options</code>.\n\n</p>\n<p>The options are passed to both the <a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a>\nconstructor and the <a href=\"#net_socket_connect_options_connectlistener\">&#39;socket.connect&#39;</a>\nmethod.\n\n</p>\n<p>The <code>connectListener</code> parameter will be added as a listener for the\n[&#39;connect&#39;][] event once.\n\n</p>\n<p>Here is an example of a client of the previously described echo server:\n\n</p>\n<pre><code>var net = require(&#39;net&#39;);\nvar client = net.connect({port: 8124},\n    function() { //&#39;connect&#39; listener\n  console.log(&#39;connected to server!&#39;);\n  client.write(&#39;world!\\r\\n&#39;);\n});\nclient.on(&#39;data&#39;, function(data) {\n  console.log(data.toString());\n  client.end();\n});\nclient.on(&#39;end&#39;, function() {\n  console.log(&#39;disconnected from server&#39;);\n});</code></pre>\n<p>To connect on the socket <code>/tmp/echo.sock</code> the second line would just be\nchanged to\n\n</p>\n<pre><code>var client = net.connect({path: &#39;/tmp/echo.sock&#39;});</code></pre>\n",
           "signatures": [
             {
               "params": [
@@ -62,7 +62,7 @@
           "textRaw": "net.createConnection(options[, connectionListener])",
           "type": "method",
           "name": "createConnection",
-          "desc": "<p>A factory function, which returns a new <a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a>\nand automatically connects with the supplied <code>options</code>.\n\n</p>\n<p>The options are passed to both the <a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a>\nconstructor and the <a href=\"#net_socket_connect_options_connectlistener\">&#39;socket.connect&#39;</a>\nmethod.\n\n</p>\n<p>The <code>connectListener</code> parameter will be added as an listener for the\n[&#39;connect&#39;][] event.\n\n</p>\n<p>Here is an example of a client of the previously described echo server:\n\n</p>\n<pre><code>var net = require(&#39;net&#39;);\nvar client = net.connect({port: 8124},\n    function() { //&#39;connect&#39; listener\n  console.log(&#39;connected to server!&#39;);\n  client.write(&#39;world!\\r\\n&#39;);\n});\nclient.on(&#39;data&#39;, function(data) {\n  console.log(data.toString());\n  client.end();\n});\nclient.on(&#39;end&#39;, function() {\n  console.log(&#39;disconnected from server&#39;);\n});</code></pre>\n<p>To connect on the socket <code>/tmp/echo.sock</code> the second line would just be\nchanged to\n\n</p>\n<pre><code>var client = net.connect({path: &#39;/tmp/echo.sock&#39;});</code></pre>\n",
+          "desc": "<p>A factory function, which returns a new <a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a>\nand automatically connects with the supplied <code>options</code>.\n\n</p>\n<p>The options are passed to both the <a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a>\nconstructor and the <a href=\"#net_socket_connect_options_connectlistener\">&#39;socket.connect&#39;</a>\nmethod.\n\n</p>\n<p>The <code>connectListener</code> parameter will be added as a listener for the\n[&#39;connect&#39;][] event once.\n\n</p>\n<p>Here is an example of a client of the previously described echo server:\n\n</p>\n<pre><code>var net = require(&#39;net&#39;);\nvar client = net.connect({port: 8124},\n    function() { //&#39;connect&#39; listener\n  console.log(&#39;connected to server!&#39;);\n  client.write(&#39;world!\\r\\n&#39;);\n});\nclient.on(&#39;data&#39;, function(data) {\n  console.log(data.toString());\n  client.end();\n});\nclient.on(&#39;end&#39;, function() {\n  console.log(&#39;disconnected from server&#39;);\n});</code></pre>\n<p>To connect on the socket <code>/tmp/echo.sock</code> the second line would just be\nchanged to\n\n</p>\n<pre><code>var client = net.connect({path: &#39;/tmp/echo.sock&#39;});</code></pre>\n",
           "signatures": [
             {
               "params": [
@@ -81,7 +81,7 @@
           "textRaw": "net.connect(port[, host][, connectListener])",
           "type": "method",
           "name": "connect",
-          "desc": "<p>A factory function, which returns a new\n<a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a> and automatically connects to the\nsupplied <code>port</code> and <code>host</code>.\n\n</p>\n<p>If <code>host</code> is omitted, <code>&#39;localhost&#39;</code> will be assumed.\n\n</p>\n<p>The <code>connectListener</code> parameter will be added as an listener for the\n[&#39;connect&#39;][] event.\n\n</p>\n",
+          "desc": "<p>A factory function, which returns a new\n<a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a> and automatically connects to the\nsupplied <code>port</code> and <code>host</code>.\n\n</p>\n<p>If <code>host</code> is omitted, <code>&#39;localhost&#39;</code> will be assumed.\n\n</p>\n<p>The <code>connectListener</code> parameter will be added as a listener for the\n[&#39;connect&#39;][] event once.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -119,7 +119,7 @@
           "textRaw": "net.createConnection(port[, host][, connectListener])",
           "type": "method",
           "name": "createConnection",
-          "desc": "<p>A factory function, which returns a new\n<a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a> and automatically connects to the\nsupplied <code>port</code> and <code>host</code>.\n\n</p>\n<p>If <code>host</code> is omitted, <code>&#39;localhost&#39;</code> will be assumed.\n\n</p>\n<p>The <code>connectListener</code> parameter will be added as an listener for the\n[&#39;connect&#39;][] event.\n\n</p>\n",
+          "desc": "<p>A factory function, which returns a new\n<a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a> and automatically connects to the\nsupplied <code>port</code> and <code>host</code>.\n\n</p>\n<p>If <code>host</code> is omitted, <code>&#39;localhost&#39;</code> will be assumed.\n\n</p>\n<p>The <code>connectListener</code> parameter will be added as a listener for the\n[&#39;connect&#39;][] event once.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -142,7 +142,7 @@
           "textRaw": "net.connect(path[, connectListener])",
           "type": "method",
           "name": "connect",
-          "desc": "<p>A factory function, which returns a new unix\n<a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a> and automatically connects to the\nsupplied <code>path</code>.\n\n</p>\n<p>The <code>connectListener</code> parameter will be added as an listener for the\n[&#39;connect&#39;][] event.\n\n</p>\n",
+          "desc": "<p>A factory function, which returns a new unix\n<a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a> and automatically connects to the\nsupplied <code>path</code>.\n\n</p>\n<p>The <code>connectListener</code> parameter will be added as a listener for the\n[&#39;connect&#39;][] event once.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -172,7 +172,7 @@
           "textRaw": "net.createConnection(path[, connectListener])",
           "type": "method",
           "name": "createConnection",
-          "desc": "<p>A factory function, which returns a new unix\n<a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a> and automatically connects to the\nsupplied <code>path</code>.\n\n</p>\n<p>The <code>connectListener</code> parameter will be added as an listener for the\n[&#39;connect&#39;][] event.\n\n</p>\n",
+          "desc": "<p>A factory function, which returns a new unix\n<a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a> and automatically connects to the\nsupplied <code>path</code>.\n\n</p>\n<p>The <code>connectListener</code> parameter will be added as a listener for the\n[&#39;connect&#39;][] event once.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -434,7 +434,7 @@
               "textRaw": "server.unref()",
               "type": "method",
               "name": "unref",
-              "desc": "<p>Calling <code>unref</code> on a server will allow the program to exit if this is the only\nactive server in the event system. If the server is already <code>unref</code>d calling\n<code>unref</code> again will have no effect.\n\n</p>\n",
+              "desc": "<p>Calling <code>unref</code> on a server will allow the program to exit if this is the only\nactive server in the event system. If the server is already <code>unref</code>d calling\n<code>unref</code> again will have no effect.\n\n</p>\n<p>Returns <code>server</code>.\n\n</p>\n",
               "signatures": [
                 {
                   "params": []
@@ -445,7 +445,7 @@
               "textRaw": "server.ref()",
               "type": "method",
               "name": "ref",
-              "desc": "<p>Opposite of <code>unref</code>, calling <code>ref</code> on a previously <code>unref</code>d server will <em>not</em>\nlet the program exit if it&#39;s the only server left (the default behavior). If\nthe server is <code>ref</code>d calling <code>ref</code> again will have no effect.\n\n</p>\n",
+              "desc": "<p>Opposite of <code>unref</code>, calling <code>ref</code> on a previously <code>unref</code>d server will <em>not</em>\nlet the program exit if it&#39;s the only server left (the default behavior). If\nthe server is <code>ref</code>d calling <code>ref</code> again will have no effect.\n\n</p>\n<p>Returns <code>server</code>.\n\n</p>\n",
               "signatures": [
                 {
                   "params": []
@@ -701,7 +701,7 @@
               "textRaw": "socket.setTimeout(timeout[, callback])",
               "type": "method",
               "name": "setTimeout",
-              "desc": "<p>Sets the socket to timeout after <code>timeout</code> milliseconds of inactivity on\nthe socket. By default <code>net.Socket</code> do not have a timeout.\n\n</p>\n<p>When an idle timeout is triggered the socket will receive a <code>&#39;timeout&#39;</code>\nevent but the connection will not be severed. The user must manually <code>end()</code>\nor <code>destroy()</code> the socket.\n\n</p>\n<p>If <code>timeout</code> is 0, then the existing idle timeout is disabled.\n\n</p>\n<p>The optional <code>callback</code> parameter will be added as a one time listener for the\n<code>&#39;timeout&#39;</code> event.\n\n</p>\n",
+              "desc": "<p>Sets the socket to timeout after <code>timeout</code> milliseconds of inactivity on\nthe socket. By default <code>net.Socket</code> do not have a timeout.\n\n</p>\n<p>When an idle timeout is triggered the socket will receive a <code>&#39;timeout&#39;</code>\nevent but the connection will not be severed. The user must manually <code>end()</code>\nor <code>destroy()</code> the socket.\n\n</p>\n<p>If <code>timeout</code> is 0, then the existing idle timeout is disabled.\n\n</p>\n<p>The optional <code>callback</code> parameter will be added as a one time listener for the\n<code>&#39;timeout&#39;</code> event.\n\n</p>\n<p>Returns <code>socket</code>.\n\n</p>\n",
               "signatures": [
                 {
                   "params": [
@@ -720,7 +720,7 @@
               "textRaw": "socket.setNoDelay([noDelay])",
               "type": "method",
               "name": "setNoDelay",
-              "desc": "<p>Disables the Nagle algorithm. By default TCP connections use the Nagle\nalgorithm, they buffer data before sending it off. Setting <code>true</code> for\n<code>noDelay</code> will immediately fire off data each time <code>socket.write()</code> is called.\n<code>noDelay</code> defaults to <code>true</code>.\n\n</p>\n",
+              "desc": "<p>Disables the Nagle algorithm. By default TCP connections use the Nagle\nalgorithm, they buffer data before sending it off. Setting <code>true</code> for\n<code>noDelay</code> will immediately fire off data each time <code>socket.write()</code> is called.\n<code>noDelay</code> defaults to <code>true</code>.\n\n</p>\n<p>Returns <code>socket</code>.\n\n</p>\n",
               "signatures": [
                 {
                   "params": [
@@ -736,7 +736,7 @@
               "textRaw": "socket.setKeepAlive([enable][, initialDelay])",
               "type": "method",
               "name": "setKeepAlive",
-              "desc": "<p>Enable/disable keep-alive functionality, and optionally set the initial\ndelay before the first keepalive probe is sent on an idle socket.\n<code>enable</code> defaults to <code>false</code>.\n\n</p>\n<p>Set <code>initialDelay</code> (in milliseconds) to set the delay between the last\ndata packet received and the first keepalive probe. Setting 0 for\ninitialDelay will leave the value unchanged from the default\n(or previous) setting. Defaults to <code>0</code>.\n\n</p>\n",
+              "desc": "<p>Enable/disable keep-alive functionality, and optionally set the initial\ndelay before the first keepalive probe is sent on an idle socket.\n<code>enable</code> defaults to <code>false</code>.\n\n</p>\n<p>Set <code>initialDelay</code> (in milliseconds) to set the delay between the last\ndata packet received and the first keepalive probe. Setting 0 for\ninitialDelay will leave the value unchanged from the default\n(or previous) setting. Defaults to <code>0</code>.\n\n</p>\n<p>Returns <code>socket</code>.\n\n</p>\n",
               "signatures": [
                 {
                   "params": [
@@ -767,7 +767,7 @@
               "textRaw": "socket.unref()",
               "type": "method",
               "name": "unref",
-              "desc": "<p>Calling <code>unref</code> on a socket will allow the program to exit if this is the only\nactive socket in the event system. If the socket is already <code>unref</code>d calling\n<code>unref</code> again will have no effect.\n\n</p>\n",
+              "desc": "<p>Calling <code>unref</code> on a socket will allow the program to exit if this is the only\nactive socket in the event system. If the socket is already <code>unref</code>d calling\n<code>unref</code> again will have no effect.\n\n</p>\n<p>Returns <code>socket</code>.\n\n</p>\n",
               "signatures": [
                 {
                   "params": []
@@ -778,7 +778,7 @@
               "textRaw": "socket.ref()",
               "type": "method",
               "name": "ref",
-              "desc": "<p>Opposite of <code>unref</code>, calling <code>ref</code> on a previously <code>unref</code>d socket will <em>not</em>\nlet the program exit if it&#39;s the only socket left (the default behavior). If\nthe socket is <code>ref</code>d calling <code>ref</code> again will have no effect.\n\n</p>\n",
+              "desc": "<p>Opposite of <code>unref</code>, calling <code>ref</code> on a previously <code>unref</code>d socket will <em>not</em>\nlet the program exit if it&#39;s the only socket left (the default behavior). If\nthe socket is <code>ref</code>d calling <code>ref</code> again will have no effect.\n\n</p>\n<p>Returns <code>socket</code>.\n\n</p>\n",
               "signatures": [
                 {
                   "params": []

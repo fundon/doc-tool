@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Child Process io.js v2.0.2 Manual &amp; Documentation</title>
-  <link rel="stylesheet" href="../../fonts.googleapis.com/css?family=Lato:400,700,400italic">
+  <title>Child Process io.js v2.1.0 Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
   <link rel="canonical" href="https://iojs.org/api/child_process.html">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="child_process" class="interior">
       <header>
-        <h1>io.js v2.0.2 Documentation</h1>
+        <h1>io.js v2.1.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -761,6 +761,9 @@ if it runs longer than <code>timeout</code> milliseconds. The child process is k
 amount of data (in bytes) allowed on stdout or stderr - if this value is
 exceeded then the child process is killed.
 
+</p>
+<p><em>Note: Unlike the <code>exec()</code> POSIX system call, <code>child_process.exec()</code> does not replace
+the existing process and uses a shell to execute the command.</em>
 
 </p>
 <h3>child_process.execFile(file[, args][, options][, callback])<span><a class="mark" href="#child_process_child_process_execfile_file_args_options_callback" id="child_process_child_process_execfile_file_args_options_callback">#</a></span></h3>
@@ -829,6 +832,10 @@ created for the child rather than the current <code>iojs</code> executable. This
 done with care and by default will talk over the fd represented an
 environmental variable <code>NODE_CHANNEL_FD</code> on the child process. The input and
 output on this fd is expected to be line delimited JSON objects.
+
+</p>
+<p><em>Note: Unlike the <code>fork()</code> POSIX system call, <code>child_process.fork()</code> does not clone the
+current process.</em>
 
 </p>
 <h2>Synchronous Process Creation<span><a class="mark" href="#child_process_synchronous_process_creation" id="child_process_synchronous_process_creation">#</a></span></h2>
