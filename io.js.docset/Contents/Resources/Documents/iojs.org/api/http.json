@@ -85,7 +85,7 @@
             {
               "textRaw": "message.socket",
               "name": "socket",
-              "desc": "<p>The <code>net.Socket</code> object associated with the connection.\n\n</p>\n<p>With HTTPS support, use request.connection.verifyPeer() and\nrequest.connection.getPeerCertificate() to obtain the client&#39;s\nauthentication details.\n\n\n</p>\n"
+              "desc": "<p>The <code>net.Socket</code> object associated with the connection.\n\n</p>\n<p>With HTTPS support, use [request.socket.getPeerCertificate()][] to obtain the\nclient&#39;s authentication details.\n\n\n</p>\n"
             }
           ],
           "methods": [

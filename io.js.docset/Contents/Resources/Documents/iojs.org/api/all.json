@@ -1012,6 +1012,21 @@
               "desc": "<p>In addition to wrapping and returning C++ objects, you can pass them around\nby unwrapping them with io.js&#39;s <code>node::ObjectWrap::Unwrap</code> helper function.\nIn the following <code>addon.cc</code> we introduce a function <code>add()</code> that can take on two\n<code>MyObject</code> objects:\n\n</p>\n<pre><code>// addon.cc\n#include &lt;node.h&gt;\n#include &lt;node_object_wrap.h&gt;\n#include &quot;myobject.h&quot;\n\nnamespace demo {\n\nusing v8::FunctionCallbackInfo;\nusing v8::HandleScope;\nusing v8::Isolate;\nusing v8::Local;\nusing v8::Number;\nusing v8::Object;\nusing v8::String;\nusing v8::Value;\n\nvoid CreateObject(const FunctionCallbackInfo&lt;Value&gt;&amp; args) {\n  MyObject::NewInstance(args);\n}\n\nvoid Add(const FunctionCallbackInfo&lt;Value&gt;&amp; args) {\n  Isolate* isolate = args.GetIsolate();\n\n  MyObject* obj1 = node::ObjectWrap::Unwrap&lt;MyObject&gt;(\n      args[0]-&gt;ToObject());\n  MyObject* obj2 = node::ObjectWrap::Unwrap&lt;MyObject&gt;(\n      args[1]-&gt;ToObject());\n\n  double sum = obj1-&gt;value() + obj2-&gt;value();\n  args.GetReturnValue().Set(Number::New(isolate, sum));\n}\n\nvoid InitAll(Local&lt;Object&gt; exports) {\n  MyObject::Init(exports-&gt;GetIsolate());\n\n  NODE_SET_METHOD(exports, &quot;createObject&quot;, CreateObject);\n  NODE_SET_METHOD(exports, &quot;add&quot;, Add);\n}\n\nNODE_MODULE(addon, InitAll)\n\n}  // namespace demo</code></pre>\n<p>To make things interesting we introduce a public method in <code>myobject.h</code> so we\ncan probe private values after unwrapping the object:\n\n</p>\n<pre><code>// myobject.h\n#ifndef MYOBJECT_H\n#define MYOBJECT_H\n\n#include &lt;node.h&gt;\n#include &lt;node_object_wrap.h&gt;\n\nnamespace demo {\n\nclass MyObject : public node::ObjectWrap {\n public:\n  static void Init(v8::Isolate* isolate);\n  static void NewInstance(const v8::FunctionCallbackInfo&lt;v8::Value&gt;&amp; args);\n  inline double value() const { return value_; }\n\n private:\n  explicit MyObject(double value = 0);\n  ~MyObject();\n\n  static void New(const v8::FunctionCallbackInfo&lt;v8::Value&gt;&amp; args);\n  static v8::Persistent&lt;v8::Function&gt; constructor;\n  double value_;\n};\n\n}  // namespace demo\n\n#endif</code></pre>\n<p>The implementation of <code>myobject.cc</code> is similar as before:\n\n</p>\n<pre><code>// myobject.cc\n#include &lt;node.h&gt;\n#include &quot;myobject.h&quot;\n\nnamespace demo {\n\nusing v8::Function;\nusing v8::FunctionCallbackInfo;\nusing v8::FunctionTemplate;\nusing v8::HandleScope;\nusing v8::Isolate;\nusing v8::Local;\nusing v8::Object;\nusing v8::Persistent;\nusing v8::String;\nusing v8::Value;\n\nPersistent&lt;Function&gt; MyObject::constructor;\n\nMyObject::MyObject(double value) : value_(value) {\n}\n\nMyObject::~MyObject() {\n}\n\nvoid MyObject::Init(Isolate* isolate) {\n  // Prepare constructor template\n  Local&lt;FunctionTemplate&gt; tpl = FunctionTemplate::New(isolate, New);\n  tpl-&gt;SetClassName(String::NewFromUtf8(isolate, &quot;MyObject&quot;));\n  tpl-&gt;InstanceTemplate()-&gt;SetInternalFieldCount(1);\n\n  constructor.Reset(isolate, tpl-&gt;GetFunction());\n}\n\nvoid MyObject::New(const FunctionCallbackInfo&lt;Value&gt;&amp; args) {\n  Isolate* isolate = args.GetIsolate();\n\n  if (args.IsConstructCall()) {\n    // Invoked as constructor: `new MyObject(...)`\n    double value = args[0]-&gt;IsUndefined() ? 0 : args[0]-&gt;NumberValue();\n    MyObject* obj = new MyObject(value);\n    obj-&gt;Wrap(args.This());\n    args.GetReturnValue().Set(args.This());\n  } else {\n    // Invoked as plain function `MyObject(...)`, turn into construct call.\n    const int argc = 1;\n    Local&lt;Value&gt; argv[argc] = { args[0] };\n    Local&lt;Function&gt; cons = Local&lt;Function&gt;::New(isolate, constructor);\n    args.GetReturnValue().Set(cons-&gt;NewInstance(argc, argv));\n  }\n}\n\nvoid MyObject::NewInstance(const FunctionCallbackInfo&lt;Value&gt;&amp; args) {\n  Isolate* isolate = args.GetIsolate();\n\n  const unsigned argc = 1;\n  Local&lt;Value&gt; argv[argc] = { args[0] };\n  Local&lt;Function&gt; cons = Local&lt;Function&gt;::New(isolate, constructor);\n  Local&lt;Object&gt; instance = cons-&gt;NewInstance(argc, argv);\n\n  args.GetReturnValue().Set(instance);\n}\n\n}  // namespace demo</code></pre>\n<p>Test it with:\n\n</p>\n<pre><code>// test.js\nvar addon = require(&#39;./build/Release/addon&#39;);\n\nvar obj1 = addon.createObject(10);\nvar obj2 = addon.createObject(20);\nvar result = addon.add(obj1, obj2);\n\nconsole.log(result); // 30</code></pre>\n",
               "type": "module",
               "displayName": "Passing wrapped objects around"
+            },
+            {
+              "textRaw": "AtExit hooks",
+              "name": "atexit_hooks",
+              "modules": [
+                {
+                  "textRaw": "void AtExit(callback, args)",
+                  "name": "void_atexit(callback,_args)",
+                  "desc": "<p>Registers exit hooks that run after the event loop has ended, but before the VM\nis killed.\n\n</p>\n<p>Callbacks are run in last-in, first-out order. AtExit takes two parameters:\na pointer to a callback function to run at exit, and a pointer to untyped\ncontext data to be passed to that callback.\n\n</p>\n<p>The file <code>addon.cc</code> implements AtExit below:\n\n</p>\n<pre><code>// addon.cc\n#undef NDEBUG\n#include &lt;assert.h&gt;\n#include &lt;stdlib.h&gt;\n#include &lt;node.h&gt;\n\nnamespace demo {\n\nusing node::AtExit;\nusing v8::HandleScope;\nusing v8::Isolate;\nusing v8::Local;\nusing v8::Object;\n\nstatic char cookie[] = &quot;yum yum&quot;;\nstatic int at_exit_cb1_called = 0;\nstatic int at_exit_cb2_called = 0;\n\nstatic void at_exit_cb1(void* arg) {\n  Isolate* isolate = static_cast&lt;Isolate*&gt;(arg);\n  HandleScope scope(isolate);\n  Local&lt;Object&gt; obj = Object::New(isolate);\n  assert(!obj.IsEmpty()); // assert VM is still alive\n  assert(obj-&gt;IsObject());\n  at_exit_cb1_called++;\n}\n\nstatic void at_exit_cb2(void* arg) {\n  assert(arg == static_cast&lt;void*&gt;(cookie));\n  at_exit_cb2_called++;\n}\n\nstatic void sanity_check(void*) {\n  assert(at_exit_cb1_called == 1);\n  assert(at_exit_cb2_called == 2);\n}\n\nvoid init(Local&lt;Object&gt; exports) {\n  AtExit(sanity_check);\n  AtExit(at_exit_cb2, cookie);\n  AtExit(at_exit_cb2, cookie);\n  AtExit(at_exit_cb1, exports-&gt;GetIsolate());\n}\n\nNODE_MODULE(addon, init);\n\n}  // namespace demo</code></pre>\n<p>Test in JavaScript by running:\n\n</p>\n<pre><code>// test.js\nvar addon = require(&#39;./build/Release/addon&#39;);</code></pre>\n",
+                  "type": "module",
+                  "displayName": "void AtExit(callback, args)"
+                }
+              ],
+              "type": "module",
+              "displayName": "AtExit hooks"
             }
           ],
           "type": "module",
@@ -3654,7 +3669,7 @@
                   ]
                 }
               ],
-              "desc": "<p>When using <code>child_process.fork()</code> you can write to the child using\n<code>child.send(message, [sendHandle])</code> and messages are received by\na <code>&#39;message&#39;</code> event on the child.\n\n</p>\n<p>For example:\n\n</p>\n<pre><code>var cp = require(&#39;child_process&#39;);\n\nvar n = cp.fork(__dirname + &#39;/sub.js&#39;);\n\nn.on(&#39;message&#39;, function(m) {\n  console.log(&#39;PARENT got message:&#39;, m);\n});\n\nn.send({ hello: &#39;world&#39; });</code></pre>\n<p>And then the child script, <code>&#39;sub.js&#39;</code> might look like this:\n\n</p>\n<pre><code>process.on(&#39;message&#39;, function(m) {\n  console.log(&#39;CHILD got message:&#39;, m);\n});\n\nprocess.send({ foo: &#39;bar&#39; });</code></pre>\n<p>In the child the <code>process</code> object will have a <code>send()</code> method, and <code>process</code>\nwill emit objects each time it receives a message on its channel.\n\n</p>\n<p>Please note that the <code>send()</code> method on both the parent and child are\nsynchronous - sending large chunks of data is not advised (pipes can be used\ninstead, see\n<a href=\"#child_process_child_process_spawn_command_args_options\"><code>child_process.spawn</code></a>).\n\n</p>\n<p>There is a special case when sending a <code>{cmd: &#39;NODE_foo&#39;}</code> message. All messages\ncontaining a <code>NODE_</code> prefix in its <code>cmd</code> property will not be emitted in\nthe <code>message</code> event, since they are internal messages used by io.js core.\nMessages containing the prefix are emitted in the <code>internalMessage</code> event, you\nshould by all means avoid using this feature, it is subject to change without notice.\n\n</p>\n<p>The <code>sendHandle</code> option to <code>child.send()</code> is for sending a TCP server or\nsocket object to another process. The child will receive the object as its\nsecond argument to the <code>message</code> event.\n\n</p>\n<p>Emits an <code>&#39;error&#39;</code> event if the message cannot be sent, for example because\nthe child process has already exited.\n\n</p>\n<h4>Example: sending server object</h4>\n<p>Here is an example of sending a server:\n\n</p>\n<pre><code>var child = require(&#39;child_process&#39;).fork(&#39;child.js&#39;);\n\n// Open up the server object and send the handle.\nvar server = require(&#39;net&#39;).createServer();\nserver.on(&#39;connection&#39;, function (socket) {\n  socket.end(&#39;handled by parent&#39;);\n});\nserver.listen(1337, function() {\n  child.send(&#39;server&#39;, server);\n});</code></pre>\n<p>And the child would the receive the server object as:\n\n</p>\n<pre><code>process.on(&#39;message&#39;, function(m, server) {\n  if (m === &#39;server&#39;) {\n    server.on(&#39;connection&#39;, function (socket) {\n      socket.end(&#39;handled by child&#39;);\n    });\n  }\n});</code></pre>\n<p>Note that the server is now shared between the parent and child, this means\nthat some connections will be handled by the parent and some by the child.\n\n</p>\n<p>For <code>dgram</code> servers the workflow is exactly the same.  Here you listen on\na <code>message</code> event instead of <code>connection</code> and use <code>server.bind</code> instead of\n<code>server.listen</code>.  (Currently only supported on UNIX platforms.)\n\n</p>\n<h4>Example: sending socket object</h4>\n<p>Here is an example of sending a socket. It will spawn two children and handle\nconnections with the remote address <code>74.125.127.100</code> as VIP by sending the\nsocket to a &quot;special&quot; child process. Other sockets will go to a &quot;normal&quot; process.\n\n</p>\n<pre><code>var normal = require(&#39;child_process&#39;).fork(&#39;child.js&#39;, [&#39;normal&#39;]);\nvar special = require(&#39;child_process&#39;).fork(&#39;child.js&#39;, [&#39;special&#39;]);\n\n// Open up the server and send sockets to child\nvar server = require(&#39;net&#39;).createServer();\nserver.on(&#39;connection&#39;, function (socket) {\n\n  // if this is a VIP\n  if (socket.remoteAddress === &#39;74.125.127.100&#39;) {\n    special.send(&#39;socket&#39;, socket);\n    return;\n  }\n  // just the usual dudes\n  normal.send(&#39;socket&#39;, socket);\n});\nserver.listen(1337);</code></pre>\n<p>The <code>child.js</code> could look like this:\n\n</p>\n<pre><code>process.on(&#39;message&#39;, function(m, socket) {\n  if (m === &#39;socket&#39;) {\n    socket.end(&#39;You were handled as a &#39; + process.argv[2] + &#39; person&#39;);\n  }\n});</code></pre>\n<p>Note that once a single socket has been sent to a child the parent can no\nlonger keep track of when the socket is destroyed. To indicate this condition\nthe <code>.connections</code> property becomes <code>null</code>.\nIt is also recommended not to use <code>.maxConnections</code> in this condition.\n\n</p>\n"
+              "desc": "<p>When using <code>child_process.fork()</code> you can write to the child using\n<code>child.send(message, [sendHandle])</code> and messages are received by\na <code>&#39;message&#39;</code> event on the child.\n\n</p>\n<p>For example:\n\n</p>\n<pre><code>var cp = require(&#39;child_process&#39;);\n\nvar n = cp.fork(__dirname + &#39;/sub.js&#39;);\n\nn.on(&#39;message&#39;, function(m) {\n  console.log(&#39;PARENT got message:&#39;, m);\n});\n\nn.send({ hello: &#39;world&#39; });</code></pre>\n<p>And then the child script, <code>&#39;sub.js&#39;</code> might look like this:\n\n</p>\n<pre><code>process.on(&#39;message&#39;, function(m) {\n  console.log(&#39;CHILD got message:&#39;, m);\n});\n\nprocess.send({ foo: &#39;bar&#39; });</code></pre>\n<p>In the child the <code>process</code> object will have a <code>send()</code> method, and <code>process</code>\nwill emit objects each time it receives a message on its channel.\n\n</p>\n<p>Please note that the <code>send()</code> method on both the parent and child are\nsynchronous - sending large chunks of data is not advised (pipes can be used\ninstead, see\n<a href=\"#child_process_child_process_spawn_command_args_options\"><code>child_process.spawn</code></a>).\n\n</p>\n<p>There is a special case when sending a <code>{cmd: &#39;NODE_foo&#39;}</code> message. All messages\ncontaining a <code>NODE_</code> prefix in its <code>cmd</code> property will not be emitted in\nthe <code>message</code> event, since they are internal messages used by io.js core.\nMessages containing the prefix are emitted in the <code>internalMessage</code> event.\nAvoid using this feature; it is subject to change without notice.\n\n</p>\n<p>The <code>sendHandle</code> option to <code>child.send()</code> is for sending a TCP server or\nsocket object to another process. The child will receive the object as its\nsecond argument to the <code>message</code> event.\n\n</p>\n<p>Emits an <code>&#39;error&#39;</code> event if the message cannot be sent, for example because\nthe child process has already exited.\n\n</p>\n<h4>Example: sending server object</h4>\n<p>Here is an example of sending a server:\n\n</p>\n<pre><code>var child = require(&#39;child_process&#39;).fork(&#39;child.js&#39;);\n\n// Open up the server object and send the handle.\nvar server = require(&#39;net&#39;).createServer();\nserver.on(&#39;connection&#39;, function (socket) {\n  socket.end(&#39;handled by parent&#39;);\n});\nserver.listen(1337, function() {\n  child.send(&#39;server&#39;, server);\n});</code></pre>\n<p>And the child would the receive the server object as:\n\n</p>\n<pre><code>process.on(&#39;message&#39;, function(m, server) {\n  if (m === &#39;server&#39;) {\n    server.on(&#39;connection&#39;, function (socket) {\n      socket.end(&#39;handled by child&#39;);\n    });\n  }\n});</code></pre>\n<p>Note that the server is now shared between the parent and child, this means\nthat some connections will be handled by the parent and some by the child.\n\n</p>\n<p>For <code>dgram</code> servers the workflow is exactly the same.  Here you listen on\na <code>message</code> event instead of <code>connection</code> and use <code>server.bind</code> instead of\n<code>server.listen</code>.  (Currently only supported on UNIX platforms.)\n\n</p>\n<h4>Example: sending socket object</h4>\n<p>Here is an example of sending a socket. It will spawn two children and handle\nconnections with the remote address <code>74.125.127.100</code> as VIP by sending the\nsocket to a &quot;special&quot; child process. Other sockets will go to a &quot;normal&quot; process.\n\n</p>\n<pre><code>var normal = require(&#39;child_process&#39;).fork(&#39;child.js&#39;, [&#39;normal&#39;]);\nvar special = require(&#39;child_process&#39;).fork(&#39;child.js&#39;, [&#39;special&#39;]);\n\n// Open up the server and send sockets to child\nvar server = require(&#39;net&#39;).createServer();\nserver.on(&#39;connection&#39;, function (socket) {\n\n  // if this is a VIP\n  if (socket.remoteAddress === &#39;74.125.127.100&#39;) {\n    special.send(&#39;socket&#39;, socket);\n    return;\n  }\n  // just the usual dudes\n  normal.send(&#39;socket&#39;, socket);\n});\nserver.listen(1337);</code></pre>\n<p>The <code>child.js</code> could look like this:\n\n</p>\n<pre><code>process.on(&#39;message&#39;, function(m, socket) {\n  if (m === &#39;socket&#39;) {\n    socket.end(&#39;You were handled as a &#39; + process.argv[2] + &#39; person&#39;);\n  }\n});</code></pre>\n<p>Note that once a single socket has been sent to a child the parent can no\nlonger keep track of when the socket is destroyed. To indicate this condition\nthe <code>.connections</code> property becomes <code>null</code>.\nIt is also recommended not to use <code>.maxConnections</code> in this condition.\n\n</p>\n"
             },
             {
               "textRaw": "child.disconnect()",
@@ -5217,7 +5232,7 @@
           "textRaw": "crypto.getCiphers()",
           "type": "method",
           "name": "getCiphers",
-          "desc": "<p>Returns an array with the names of the supported ciphers.\n\n</p>\n<p>Example:\n\n</p>\n<pre><code>var ciphers = crypto.getCiphers();\nconsole.log(ciphers); // [&#39;AES-128-CBC&#39;, &#39;AES-128-CBC-HMAC-SHA1&#39;, ...]</code></pre>\n",
+          "desc": "<p>Returns an array with the names of the supported ciphers.\n\n</p>\n<p>Example:\n\n</p>\n<pre><code>var ciphers = crypto.getCiphers();\nconsole.log(ciphers); // [&#39;aes-128-cbc&#39;, &#39;aes-128-ccm&#39;, ...]</code></pre>\n",
           "signatures": [
             {
               "params": []
@@ -5229,6 +5244,17 @@
           "type": "method",
           "name": "getHashes",
           "desc": "<p>Returns an array with the names of the supported hash algorithms.\n\n</p>\n<p>Example:\n\n</p>\n<pre><code>var hashes = crypto.getHashes();\nconsole.log(hashes); // [&#39;sha&#39;, &#39;sha1&#39;, &#39;sha1WithRSAEncryption&#39;, ...]</code></pre>\n",
+          "signatures": [
+            {
+              "params": []
+            }
+          ]
+        },
+        {
+          "textRaw": "crypto.getCurves()",
+          "type": "method",
+          "name": "getCurves",
+          "desc": "<p>Returns an array with the names of the supported elliptic curves.\n\n</p>\n<p>Example:\n\n</p>\n<pre><code>var curves = crypto.getCurves();\nconsole.log(curves); // [&#39;secp256k1&#39;, &#39;secp384r1&#39;, ...]</code></pre>\n",
           "signatures": [
             {
               "params": []
@@ -5458,7 +5484,7 @@
           "textRaw": "crypto.createECDH(curve_name)",
           "type": "method",
           "name": "createECDH",
-          "desc": "<p>Creates a Elliptic Curve (EC) Diffie-Hellman key exchange object using a\npredefined curve specified by <code>curve_name</code> string.\n\n</p>\n",
+          "desc": "<p>Creates an Elliptic Curve (EC) Diffie-Hellman key exchange object using a\npredefined curve specified by the <code>curve_name</code> string. Use [getCurves()][] to\nobtain a list of available curve names. On recent releases,\n<code>openssl ecparam -list_curves</code> will also display the name and description of\neach available elliptic curve.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -7652,7 +7678,7 @@
           "textRaw": "fs.renameSync(oldPath, newPath)",
           "type": "method",
           "name": "renameSync",
-          "desc": "<p>Synchronous rename(2).\n\n</p>\n",
+          "desc": "<p>Synchronous rename(2). Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -7691,7 +7717,7 @@
           "textRaw": "fs.ftruncateSync(fd, len)",
           "type": "method",
           "name": "ftruncateSync",
-          "desc": "<p>Synchronous ftruncate(2).\n\n</p>\n",
+          "desc": "<p>Synchronous ftruncate(2). Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -7730,7 +7756,7 @@
           "textRaw": "fs.truncateSync(path, len)",
           "type": "method",
           "name": "truncateSync",
-          "desc": "<p>Synchronous truncate(2).\n\n</p>\n",
+          "desc": "<p>Synchronous truncate(2). Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -7772,7 +7798,7 @@
           "textRaw": "fs.chownSync(path, uid, gid)",
           "type": "method",
           "name": "chownSync",
-          "desc": "<p>Synchronous chown(2).\n\n</p>\n",
+          "desc": "<p>Synchronous chown(2). Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -7817,7 +7843,7 @@
           "textRaw": "fs.fchownSync(fd, uid, gid)",
           "type": "method",
           "name": "fchownSync",
-          "desc": "<p>Synchronous fchown(2).\n\n</p>\n",
+          "desc": "<p>Synchronous fchown(2). Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -7862,7 +7888,7 @@
           "textRaw": "fs.lchownSync(path, uid, gid)",
           "type": "method",
           "name": "lchownSync",
-          "desc": "<p>Synchronous lchown(2).\n\n</p>\n",
+          "desc": "<p>Synchronous lchown(2). Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -7904,7 +7930,7 @@
           "textRaw": "fs.chmodSync(path, mode)",
           "type": "method",
           "name": "chmodSync",
-          "desc": "<p>Synchronous chmod(2).\n\n</p>\n",
+          "desc": "<p>Synchronous chmod(2). Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -7943,7 +7969,7 @@
           "textRaw": "fs.fchmodSync(fd, mode)",
           "type": "method",
           "name": "fchmodSync",
-          "desc": "<p>Synchronous fchmod(2).\n\n</p>\n",
+          "desc": "<p>Synchronous fchmod(2). Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -7982,7 +8008,7 @@
           "textRaw": "fs.lchmodSync(path, mode)",
           "type": "method",
           "name": "lchmodSync",
-          "desc": "<p>Synchronous lchmod(2).\n\n</p>\n",
+          "desc": "<p>Synchronous lchmod(2). Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -8120,7 +8146,7 @@
           "textRaw": "fs.linkSync(srcpath, dstpath)",
           "type": "method",
           "name": "linkSync",
-          "desc": "<p>Synchronous link(2).\n\n</p>\n",
+          "desc": "<p>Synchronous link(2). Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -8163,7 +8189,7 @@
           "textRaw": "fs.symlinkSync(destination, path[, type])",
           "type": "method",
           "name": "symlinkSync",
-          "desc": "<p>Synchronous symlink(2).\n\n</p>\n",
+          "desc": "<p>Synchronous symlink(2). Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -8277,7 +8303,7 @@
           "textRaw": "fs.unlinkSync(path)",
           "type": "method",
           "name": "unlinkSync",
-          "desc": "<p>Synchronous unlink(2).\n\n</p>\n",
+          "desc": "<p>Synchronous unlink(2). Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -8310,7 +8336,7 @@
           "textRaw": "fs.rmdirSync(path)",
           "type": "method",
           "name": "rmdirSync",
-          "desc": "<p>Synchronous rmdir(2).\n\n</p>\n",
+          "desc": "<p>Synchronous rmdir(2). Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -8347,7 +8373,7 @@
           "textRaw": "fs.mkdirSync(path[, mode])",
           "type": "method",
           "name": "mkdirSync",
-          "desc": "<p>Synchronous mkdir(2).\n\n</p>\n",
+          "desc": "<p>Synchronous mkdir(2). Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -8417,7 +8443,7 @@
           "textRaw": "fs.closeSync(fd)",
           "type": "method",
           "name": "closeSync",
-          "desc": "<p>Synchronous close(2).\n\n</p>\n",
+          "desc": "<p>Synchronous close(2). Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -8457,7 +8483,7 @@
           "textRaw": "fs.openSync(path, flags[, mode])",
           "type": "method",
           "name": "openSync",
-          "desc": "<p>Synchronous version of <code>fs.open()</code>.\n\n</p>\n",
+          "desc": "<p>Synchronous version of <code>fs.open()</code>. Returns an integer representing the file\ndescriptor.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -8491,19 +8517,6 @@
                 },
                 {
                   "name": "mtime"
-                }
-              ]
-            },
-            {
-              "params": [
-                {
-                  "name": "path"
-                },
-                {
-                  "name": "atime"
-                },
-                {
-                  "name": "mtime"
                 },
                 {
                   "name": "callback"
@@ -8516,7 +8529,7 @@
           "textRaw": "fs.utimesSync(path, atime, mtime)",
           "type": "method",
           "name": "utimesSync",
-          "desc": "<p>Change file timestamps of the file referenced by the supplied path.\n\n</p>\n",
+          "desc": "<p>Synchronous version of <code>fs.utimes()</code>. Returns <code>undefined</code>.\n\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -8549,19 +8562,6 @@
                 },
                 {
                   "name": "mtime"
-                }
-              ]
-            },
-            {
-              "params": [
-                {
-                  "name": "fd"
-                },
-                {
-                  "name": "atime"
-                },
-                {
-                  "name": "mtime"
                 },
                 {
                   "name": "callback"
@@ -8574,7 +8574,7 @@
           "textRaw": "fs.futimesSync(fd, atime, mtime)",
           "type": "method",
           "name": "futimesSync",
-          "desc": "<p>Change the file timestamps of a file referenced by the supplied file\ndescriptor.\n\n</p>\n",
+          "desc": "<p>Synchronous version of <code>fs.futimes()</code>. Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -8613,7 +8613,7 @@
           "textRaw": "fs.fsyncSync(fd)",
           "type": "method",
           "name": "fsyncSync",
-          "desc": "<p>Synchronous fsync(2).\n\n</p>\n",
+          "desc": "<p>Synchronous fsync(2). Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -8823,7 +8823,7 @@
                   "type": "String"
                 },
                 {
-                  "textRaw": "`options` {Object} ",
+                  "textRaw": "`options` {Object | String} ",
                   "options": [
                     {
                       "textRaw": "`encoding` {String | Null} default = `null` ",
@@ -8839,7 +8839,7 @@
                     }
                   ],
                   "name": "options",
-                  "type": "Object",
+                  "type": "Object | String",
                   "optional": true
                 },
                 {
@@ -8864,7 +8864,7 @@
               ]
             }
           ],
-          "desc": "<p>Asynchronously reads the entire contents of a file. Example:\n\n</p>\n<pre><code>fs.readFile(&#39;/etc/passwd&#39;, function (err, data) {\n  if (err) throw err;\n  console.log(data);\n});</code></pre>\n<p>The callback is passed two arguments <code>(err, data)</code>, where <code>data</code> is the\ncontents of the file.\n\n</p>\n<p>If no encoding is specified, then the raw buffer is returned.\n\n\n</p>\n"
+          "desc": "<p>Asynchronously reads the entire contents of a file. Example:\n\n</p>\n<pre><code>fs.readFile(&#39;/etc/passwd&#39;, function (err, data) {\n  if (err) throw err;\n  console.log(data);\n});</code></pre>\n<p>The callback is passed two arguments <code>(err, data)</code>, where <code>data</code> is the\ncontents of the file.\n\n</p>\n<p>If no encoding is specified, then the raw buffer is returned.\n\n</p>\n<p>If <code>options</code> is a string, then it specifies the encoding. Example:\n\n</p>\n<pre><code>fs.readFile(&#39;/etc/passwd&#39;, &#39;utf8&#39;, callback);</code></pre>\n"
         },
         {
           "textRaw": "fs.readFileSync(filename[, options])",
@@ -8903,7 +8903,7 @@
                   "type": "String | Buffer"
                 },
                 {
-                  "textRaw": "`options` {Object} ",
+                  "textRaw": "`options` {Object | String} ",
                   "options": [
                     {
                       "textRaw": "`encoding` {String | Null} default = `'utf8'` ",
@@ -8925,7 +8925,7 @@
                     }
                   ],
                   "name": "options",
-                  "type": "Object",
+                  "type": "Object | String",
                   "optional": true
                 },
                 {
@@ -8953,13 +8953,13 @@
               ]
             }
           ],
-          "desc": "<p>Asynchronously writes data to a file, replacing the file if it already exists.\n<code>data</code> can be a string or a buffer.\n\n</p>\n<p>The <code>encoding</code> option is ignored if <code>data</code> is a buffer. It defaults\nto <code>&#39;utf8&#39;</code>.\n\n</p>\n<p>Example:\n\n</p>\n<pre><code>fs.writeFile(&#39;message.txt&#39;, &#39;Hello io.js&#39;, function (err) {\n  if (err) throw err;\n  console.log(&#39;It\\&#39;s saved!&#39;);\n});</code></pre>\n"
+          "desc": "<p>Asynchronously writes data to a file, replacing the file if it already exists.\n<code>data</code> can be a string or a buffer.\n\n</p>\n<p>The <code>encoding</code> option is ignored if <code>data</code> is a buffer. It defaults\nto <code>&#39;utf8&#39;</code>.\n\n</p>\n<p>Example:\n\n</p>\n<pre><code>fs.writeFile(&#39;message.txt&#39;, &#39;Hello io.js&#39;, function (err) {\n  if (err) throw err;\n  console.log(&#39;It\\&#39;s saved!&#39;);\n});</code></pre>\n<p>If <code>options</code> is a string, then it specifies the encoding. Example:\n\n</p>\n<pre><code>fs.writeFile(&#39;message.txt&#39;, &#39;Hello io.js&#39;, &#39;utf8&#39;, callback);</code></pre>\n"
         },
         {
           "textRaw": "fs.writeFileSync(filename, data[, options])",
           "type": "method",
           "name": "writeFileSync",
-          "desc": "<p>The synchronous version of <code>fs.writeFile</code>.\n\n</p>\n",
+          "desc": "<p>The synchronous version of <code>fs.writeFile</code>. Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -8995,7 +8995,7 @@
                   "type": "String | Buffer"
                 },
                 {
-                  "textRaw": "`options` {Object} ",
+                  "textRaw": "`options` {Object | String} ",
                   "options": [
                     {
                       "textRaw": "`encoding` {String | Null} default = `'utf8'` ",
@@ -9017,7 +9017,7 @@
                     }
                   ],
                   "name": "options",
-                  "type": "Object",
+                  "type": "Object | String",
                   "optional": true
                 },
                 {
@@ -9045,13 +9045,13 @@
               ]
             }
           ],
-          "desc": "<p>Asynchronously append data to a file, creating the file if it does not yet exist.\n<code>data</code> can be a string or a buffer.\n\n</p>\n<p>Example:\n\n</p>\n<pre><code>fs.appendFile(&#39;message.txt&#39;, &#39;data to append&#39;, function (err) {\n  if (err) throw err;\n  console.log(&#39;The &quot;data to append&quot; was appended to file!&#39;);\n});</code></pre>\n"
+          "desc": "<p>Asynchronously append data to a file, creating the file if it does not yet exist.\n<code>data</code> can be a string or a buffer.\n\n</p>\n<p>Example:\n\n</p>\n<pre><code>fs.appendFile(&#39;message.txt&#39;, &#39;data to append&#39;, function (err) {\n  if (err) throw err;\n  console.log(&#39;The &quot;data to append&quot; was appended to file!&#39;);\n});</code></pre>\n<p>If <code>options</code> is a string, then it specifies the encoding. Example:\n\n</p>\n<pre><code>fs.appendFile(&#39;message.txt&#39;, &#39;data to append&#39;, &#39;utf8&#39;, callback);</code></pre>\n"
         },
         {
           "textRaw": "fs.appendFileSync(filename, data[, options])",
           "type": "method",
           "name": "appendFileSync",
-          "desc": "<p>The synchronous version of <code>fs.appendFile</code>.\n\n</p>\n",
+          "desc": "<p>The synchronous version of <code>fs.appendFile</code>. Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -9073,9 +9073,7 @@
           "textRaw": "fs.watchFile(filename[, options], listener)",
           "type": "method",
           "name": "watchFile",
-          "stability": 2,
-          "stabilityText": "Unstable.  Use fs.watch instead, if possible.",
-          "desc": "<p>Watch for changes on <code>filename</code>. The callback <code>listener</code> will be called each\ntime the file is accessed.\n\n</p>\n<p>The second argument is optional. The <code>options</code> if provided should be an object\ncontaining two members a boolean, <code>persistent</code>, and <code>interval</code>. <code>persistent</code>\nindicates whether the process should continue to run as long as files are\nbeing watched. <code>interval</code> indicates how often the target should be polled,\nin milliseconds. The default is <code>{ persistent: true, interval: 5007 }</code>.\n\n</p>\n<p>The <code>listener</code> gets two arguments the current stat object and the previous\nstat object:\n\n</p>\n<pre><code>fs.watchFile(&#39;message.text&#39;, function (curr, prev) {\n  console.log(&#39;the current mtime is: &#39; + curr.mtime);\n  console.log(&#39;the previous mtime was: &#39; + prev.mtime);\n});</code></pre>\n<p>These stat objects are instances of <code>fs.Stat</code>.\n\n</p>\n<p>If you want to be notified when the file was modified, not just accessed\nyou need to compare <code>curr.mtime</code> and <code>prev.mtime</code>.\n\n</p>\n",
+          "desc": "<p>Watch for changes on <code>filename</code>. The callback <code>listener</code> will be called each\ntime the file is accessed.\n\n</p>\n<p>The second argument is optional. The <code>options</code> if provided should be an object\ncontaining two members a boolean, <code>persistent</code>, and <code>interval</code>. <code>persistent</code>\nindicates whether the process should continue to run as long as files are\nbeing watched. <code>interval</code> indicates how often the target should be polled,\nin milliseconds. The default is <code>{ persistent: true, interval: 5007 }</code>.\n\n</p>\n<p>The <code>listener</code> gets two arguments the current stat object and the previous\nstat object:\n\n</p>\n<pre><code>fs.watchFile(&#39;message.text&#39;, function (curr, prev) {\n  console.log(&#39;the current mtime is: &#39; + curr.mtime);\n  console.log(&#39;the previous mtime was: &#39; + prev.mtime);\n});</code></pre>\n<p>These stat objects are instances of <code>fs.Stat</code>.\n\n</p>\n<p>If you want to be notified when the file was modified, not just accessed\nyou need to compare <code>curr.mtime</code> and <code>prev.mtime</code>.\n\n</p>\n<p><em>Note: <code>fs.watch</code> is more efficient than <code>fs.watchFile</code> and <code>fs.unwatchFile</code>.\n<code>fs.watch</code> should be used instead of <code>fs.watchFile</code> and <code>fs.unwatchFile</code>\nwhen possible.</em>\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -9097,9 +9095,7 @@
           "textRaw": "fs.unwatchFile(filename[, listener])",
           "type": "method",
           "name": "unwatchFile",
-          "stability": 2,
-          "stabilityText": "Unstable.  Use fs.watch instead, if possible.",
-          "desc": "<p>Stop watching for changes on <code>filename</code>. If <code>listener</code> is specified, only that\nparticular listener is removed. Otherwise, <em>all</em> listeners are removed and you\nhave effectively stopped watching <code>filename</code>.\n\n</p>\n<p>Calling <code>fs.unwatchFile()</code> with a filename that is not being watched is a\nno-op, not an error.\n\n</p>\n",
+          "desc": "<p>Stop watching for changes on <code>filename</code>. If <code>listener</code> is specified, only that\nparticular listener is removed. Otherwise, <em>all</em> listeners are removed and you\nhave effectively stopped watching <code>filename</code>.\n\n</p>\n<p>Calling <code>fs.unwatchFile()</code> with a filename that is not being watched is a\nno-op, not an error.\n\n</p>\n<p><em>Note: <code>fs.watch</code> is more efficient than <code>fs.watchFile</code> and <code>fs.unwatchFile</code>.\n<code>fs.watch</code> should be used instead of <code>fs.watchFile</code> and <code>fs.unwatchFile</code>\nwhen possible.</em>\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -9118,8 +9114,6 @@
           "textRaw": "fs.watch(filename[, options][, listener])",
           "type": "method",
           "name": "watch",
-          "stability": 2,
-          "stabilityText": "Unstable.",
           "desc": "<p>Watch for changes on <code>filename</code>, where <code>filename</code> is either a file or a\ndirectory.  The returned object is a <a href=\"#fs_class_fs_fswatcher\">fs.FSWatcher</a>.\n\n</p>\n<p>The second argument is optional. The <code>options</code> if provided should be an object.\nThe supported boolean members are <code>persistent</code> and <code>recursive</code>. <code>persistent</code>\nindicates whether the process should continue to run as long as files are being\nwatched. <code>recursive</code> indicates whether all subdirectories should be watched, or\nonly the current directory. This applies when a directory is specified, and only\non supported platforms (See Caveats below).\n\n</p>\n<p>The default is <code>{ persistent: true, recursive: false }</code>.\n\n</p>\n<p>The listener callback gets two arguments <code>(event, filename)</code>.  <code>event</code> is either\n&#39;rename&#39; or &#39;change&#39;, and <code>filename</code> is the name of the file which triggered\nthe event.\n\n</p>\n",
           "miscs": [
             {
@@ -9183,7 +9177,7 @@
           "textRaw": "fs.existsSync(path)",
           "type": "method",
           "name": "existsSync",
-          "desc": "<p>Synchronous version of <a href=\"fs.html#fs_fs_exists_path_callback\"><code>fs.exists</code></a>.\n\n</p>\n<p><code>fs.existsSync()</code> is <strong>deprecated</strong>. For supported alternatives please check\nout <a href=\"fs.html#fs_fs_statsync_path\"><code>fs.statSync</code></a> or\n<a href=\"fs.html#fs_fs_accesssync_path_mode\"><code>fs.accessSync</code></a>.\n\n</p>\n",
+          "desc": "<p>Synchronous version of <a href=\"fs.html#fs_fs_exists_path_callback\"><code>fs.exists</code></a>.\nReturns <code>true</code> if the file exists, <code>false</code> otherwise.\n\n</p>\n<p><code>fs.existsSync()</code> is <strong>deprecated</strong>. For supported alternatives please check\nout <a href=\"fs.html#fs_fs_statsync_path\"><code>fs.statSync</code></a> or\n<a href=\"fs.html#fs_fs_accesssync_path_mode\"><code>fs.accessSync</code></a>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -9239,7 +9233,7 @@
           "textRaw": "fs.createReadStream(path[, options])",
           "type": "method",
           "name": "createReadStream",
-          "desc": "<p>Returns a new ReadStream object (See <code>Readable Stream</code>).\n\n</p>\n<p><code>options</code> is an object with the following defaults:\n\n</p>\n<pre><code>{ flags: &#39;r&#39;,\n  encoding: null,\n  fd: null,\n  mode: 0o666,\n  autoClose: true\n}</code></pre>\n<p><code>options</code> can include <code>start</code> and <code>end</code> values to read a range of bytes from\nthe file instead of the entire file.  Both <code>start</code> and <code>end</code> are inclusive and\nstart at 0. The <code>encoding</code> can be <code>&#39;utf8&#39;</code>, <code>&#39;ascii&#39;</code>, or <code>&#39;base64&#39;</code>.\n\n</p>\n<p>If <code>fd</code> is specified, <code>ReadStream</code> will ignore the <code>path</code> argument and will use\nthe specified file descriptor. This means that no <code>open</code> event will be emitted.\n\n</p>\n<p>If <code>autoClose</code> is false, then the file descriptor won&#39;t be closed, even if\nthere&#39;s an error.  It is your responsibility to close it and make sure\nthere&#39;s no file descriptor leak.  If <code>autoClose</code> is set to true (default\nbehavior), on <code>error</code> or <code>end</code> the file descriptor will be closed\nautomatically.\n\n</p>\n<p>An example to read the last 10 bytes of a file which is 100 bytes long:\n\n</p>\n<pre><code>fs.createReadStream(&#39;sample.txt&#39;, {start: 90, end: 99});</code></pre>\n",
+          "desc": "<p>Returns a new ReadStream object (See <code>Readable Stream</code>).\n\n</p>\n<p><code>options</code> is an object or string with the following defaults:\n\n</p>\n<pre><code>{ flags: &#39;r&#39;,\n  encoding: null,\n  fd: null,\n  mode: 0o666,\n  autoClose: true\n}</code></pre>\n<p><code>options</code> can include <code>start</code> and <code>end</code> values to read a range of bytes from\nthe file instead of the entire file.  Both <code>start</code> and <code>end</code> are inclusive and\nstart at 0. The <code>encoding</code> can be <code>&#39;utf8&#39;</code>, <code>&#39;ascii&#39;</code>, or <code>&#39;base64&#39;</code>.\n\n</p>\n<p>If <code>fd</code> is specified, <code>ReadStream</code> will ignore the <code>path</code> argument and will use\nthe specified file descriptor. This means that no <code>open</code> event will be emitted.\n\n</p>\n<p>If <code>autoClose</code> is false, then the file descriptor won&#39;t be closed, even if\nthere&#39;s an error.  It is your responsibility to close it and make sure\nthere&#39;s no file descriptor leak.  If <code>autoClose</code> is set to true (default\nbehavior), on <code>error</code> or <code>end</code> the file descriptor will be closed\nautomatically.\n\n</p>\n<p>An example to read the last 10 bytes of a file which is 100 bytes long:\n\n</p>\n<pre><code>fs.createReadStream(&#39;sample.txt&#39;, {start: 90, end: 99});</code></pre>\n<p>If <code>options</code> is a string, then it specifies the encoding.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -9258,7 +9252,7 @@
           "textRaw": "fs.createWriteStream(path[, options])",
           "type": "method",
           "name": "createWriteStream",
-          "desc": "<p>Returns a new WriteStream object (See <code>Writable Stream</code>).\n\n</p>\n<p><code>options</code> is an object with the following defaults:\n\n</p>\n<pre><code>{ flags: &#39;w&#39;,\n  encoding: null,\n  fd: null,\n  mode: 0o666 }</code></pre>\n<p><code>options</code> may also include a <code>start</code> option to allow writing data at\nsome position past the beginning of the file.  Modifying a file rather\nthan replacing it may require a <code>flags</code> mode of <code>r+</code> rather than the\ndefault mode <code>w</code>.\n\n</p>\n<p>Like <code>ReadStream</code> above, if <code>fd</code> is specified, <code>WriteStream</code> will ignore the\n<code>path</code> argument and will use the specified file descriptor. This means that no\n<code>open</code> event will be emitted.\n\n\n</p>\n",
+          "desc": "<p>Returns a new WriteStream object (See <code>Writable Stream</code>).\n\n</p>\n<p><code>options</code> is an object or string with the following defaults:\n\n</p>\n<pre><code>{ flags: &#39;w&#39;,\n  encoding: null,\n  fd: null,\n  mode: 0o666 }</code></pre>\n<p><code>options</code> may also include a <code>start</code> option to allow writing data at\nsome position past the beginning of the file.  Modifying a file rather\nthan replacing it may require a <code>flags</code> mode of <code>r+</code> rather than the\ndefault mode <code>w</code>. The <code>encoding</code> can be <code>&#39;utf8&#39;</code>, <code>&#39;ascii&#39;</code>, <code>binary</code>,\nor <code>&#39;base64&#39;</code>.\n\n</p>\n<p>Like <code>ReadStream</code> above, if <code>fd</code> is specified, <code>WriteStream</code> will ignore the\n<code>path</code> argument and will use the specified file descriptor. This means that no\n<code>open</code> event will be emitted.\n\n</p>\n<p>If <code>options</code> is a string, then it specifies the encoding.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -9450,7 +9444,7 @@
             {
               "textRaw": "message.socket",
               "name": "socket",
-              "desc": "<p>The <code>net.Socket</code> object associated with the connection.\n\n</p>\n<p>With HTTPS support, use request.connection.verifyPeer() and\nrequest.connection.getPeerCertificate() to obtain the client&#39;s\nauthentication details.\n\n\n</p>\n"
+              "desc": "<p>The <code>net.Socket</code> object associated with the connection.\n\n</p>\n<p>With HTTPS support, use [request.socket.getPeerCertificate()][] to obtain the\nclient&#39;s authentication details.\n\n\n</p>\n"
             }
           ],
           "methods": [
@@ -11521,6 +11515,17 @@
           "type": "method",
           "name": "tmpdir",
           "desc": "<p>Returns the operating system&#39;s default directory for temporary files.\n\n</p>\n",
+          "signatures": [
+            {
+              "params": []
+            }
+          ]
+        },
+        {
+          "textRaw": "os.homedir()",
+          "type": "method",
+          "name": "homedir",
+          "desc": "<p>Returns the home directory of the current user.\n\n</p>\n",
           "signatures": [
             {
               "params": []
@@ -14378,7 +14383,7 @@
           "textRaw": "tls.createServer(options[, secureConnectionListener])",
           "type": "method",
           "name": "createServer",
-          "desc": "<p>Creates a new [tls.Server][].  The <code>connectionListener</code> argument is\nautomatically set as a listener for the [secureConnection][] event.  The\n<code>options</code> object has these possibilities:\n\n</p>\n<ul>\n<li><p><code>pfx</code>: A string or <code>Buffer</code> containing the private key, certificate and\nCA certs of the server in PFX or PKCS12 format. (Mutually exclusive with\nthe <code>key</code>, <code>cert</code> and <code>ca</code> options.)</p>\n</li>\n<li><p><code>key</code>: A string or <code>Buffer</code> containing the private key of the server in\nPEM format. (Could be an array of keys). (Required)</p>\n</li>\n<li><p><code>passphrase</code>: A string of passphrase for the private key or pfx.</p>\n</li>\n<li><p><code>cert</code>: A string or <code>Buffer</code> containing the certificate key of the server in\nPEM format. (Could be an array of certs). (Required)</p>\n</li>\n<li><p><code>ca</code>: An array of strings or <code>Buffer</code>s of trusted certificates in PEM\nformat. If this is omitted several well known &quot;root&quot; CAs will be used,\nlike VeriSign. These are used to authorize connections.</p>\n</li>\n<li><p><code>crl</code> : Either a string or list of strings of PEM encoded CRLs (Certificate\nRevocation List)</p>\n</li>\n<li><p><code>ciphers</code>: A string describing the ciphers to use or exclude, seperated by\n<code>:</code>. The default cipher suite is:</p>\n<pre><code>ECDHE-RSA-AES128-GCM-SHA256:\nECDHE-ECDSA-AES128-GCM-SHA256:\nECDHE-RSA-AES256-GCM-SHA384:\nECDHE-ECDSA-AES256-GCM-SHA384:\nDHE-RSA-AES128-GCM-SHA256:\nECDHE-RSA-AES128-SHA256:\nDHE-RSA-AES128-SHA256:\nECDHE-RSA-AES256-SHA384:\nDHE-RSA-AES256-SHA384:\nECDHE-RSA-AES256-SHA256:\nDHE-RSA-AES256-SHA256:\nHIGH:\n!aNULL:\n!eNULL:\n!EXPORT:\n!DES:\n!RC4:\n!MD5:\n!PSK:\n!SRP:\n!CAMELLIA</code></pre>\n<p>The default cipher suite prefers GCM ciphers for [Chrome&#39;s &#39;modern\ncryptography&#39; setting] and also prefers ECDHE and DHE ciphers for Perfect\nForward secrecy, while offering <em>some</em> backward compatibiltity.</p>\n<p>128 bit AES is preferred over 192 and 256 bit AES in light of [specific\nattacks affecting larger AES key sizes].</p>\n<p>Old clients that rely on insecure and deprecated RC4 or DES-based ciphers\n(like Internet Explorer 6) aren&#39;t able to complete the handshake with the default\nconfiguration. If you absolutely must support these clients, the\n[TLS recommendations] may offer a compatible cipher suite. For more details\non the format, see the [OpenSSL cipher list format documentation].</p>\n</li>\n<li><p><code>ecdhCurve</code>: A string describing a named curve to use for ECDH key agreement\nor false to disable ECDH.</p>\n<p>Defaults to <code>prime256v1</code>. Consult [RFC 4492] for more details.</p>\n</li>\n<li><p><code>dhparam</code>: A string or <code>Buffer</code> containing Diffie Hellman parameters,\nrequired for Perfect Forward Secrecy. Use <code>openssl dhparam</code> to create it.\nIts key length should be greater than or equal to 1024 bits, otherwise\nit throws an error. It is strongly recommended to use 2048 bits or\nmore for stronger security. If omitted or invalid, it is silently\ndiscarded and DHE ciphers won&#39;t be available.</p>\n</li>\n<li><p><code>handshakeTimeout</code>: Abort the connection if the SSL/TLS handshake does not\nfinish in this many milliseconds. The default is 120 seconds.</p>\n<p>A <code>&#39;clientError&#39;</code> is emitted on the <code>tls.Server</code> object whenever a handshake\ntimes out.</p>\n</li>\n<li><p><code>honorCipherOrder</code> : When choosing a cipher, use the server&#39;s preferences\ninstead of the client preferences. Default: <code>true</code>.</p>\n</li>\n<li><p><code>requestCert</code>: If <code>true</code> the server will request a certificate from\nclients that connect and attempt to verify that certificate. Default:\n<code>false</code>.</p>\n</li>\n<li><p><code>rejectUnauthorized</code>: If <code>true</code> the server will reject any connection\nwhich is not authorized with the list of supplied CAs. This option only\nhas an effect if <code>requestCert</code> is <code>true</code>. Default: <code>false</code>.</p>\n</li>\n<li><p><code>NPNProtocols</code>: An array or <code>Buffer</code> of possible NPN protocols. (Protocols\nshould be ordered by their priority).</p>\n</li>\n<li><p><code>SNICallback(servername, cb)</code>: A function that will be called if client\nsupports SNI TLS extension. Two argument will be passed to it: <code>servername</code>,\nand <code>cb</code>. <code>SNICallback</code> should invoke <code>cb(null, ctx)</code>, where <code>ctx</code> is a\nSecureContext instance.\n(You can use <code>tls.createSecureContext(...)</code> to get proper\nSecureContext). If <code>SNICallback</code> wasn&#39;t provided - default callback with\nhigh-level API will be used (see below).</p>\n</li>\n<li><p><code>sessionTimeout</code>: An integer specifying the seconds after which TLS\nsession identifiers and TLS session tickets created by the server are\ntimed out. See [SSL_CTX_set_timeout] for more details.</p>\n</li>\n<li><p><code>ticketKeys</code>: A 48-byte <code>Buffer</code> instance consisting of 16-byte prefix,\n16-byte hmac key, 16-byte AES key. You could use it to accept tls session\ntickets on multiple instances of tls server.</p>\n<p>NOTE: Automatically shared between <code>cluster</code> module workers.</p>\n</li>\n<li><p><code>sessionIdContext</code>: A string containing an opaque identifier for session\nresumption. If <code>requestCert</code> is <code>true</code>, the default is MD5 hash value\ngenerated from command-line. Otherwise, the default is not provided.</p>\n</li>\n<li><p><code>secureProtocol</code>: The SSL method to use, e.g. <code>SSLv3_method</code> to force\nSSL version 3. The possible values depend on your installation of\nOpenSSL and are defined in the constant [SSL_METHODS][].</p>\n</li>\n</ul>\n<p>Here is a simple example echo server:\n\n</p>\n<pre><code>var tls = require(&#39;tls&#39;);\nvar fs = require(&#39;fs&#39;);\n\nvar options = {\n  key: fs.readFileSync(&#39;server-key.pem&#39;),\n  cert: fs.readFileSync(&#39;server-cert.pem&#39;),\n\n  // This is necessary only if using the client certificate authentication.\n  requestCert: true,\n\n  // This is necessary only if the client uses the self-signed certificate.\n  ca: [ fs.readFileSync(&#39;client-cert.pem&#39;) ]\n};\n\nvar server = tls.createServer(options, function(socket) {\n  console.log(&#39;server connected&#39;,\n              socket.authorized ? &#39;authorized&#39; : &#39;unauthorized&#39;);\n  socket.write(&quot;welcome!\\n&quot;);\n  socket.setEncoding(&#39;utf8&#39;);\n  socket.pipe(socket);\n});\nserver.listen(8000, function() {\n  console.log(&#39;server bound&#39;);\n});</code></pre>\n<p>Or\n\n</p>\n<pre><code>var tls = require(&#39;tls&#39;);\nvar fs = require(&#39;fs&#39;);\n\nvar options = {\n  pfx: fs.readFileSync(&#39;server.pfx&#39;),\n\n  // This is necessary only if using the client certificate authentication.\n  requestCert: true,\n\n};\n\nvar server = tls.createServer(options, function(socket) {\n  console.log(&#39;server connected&#39;,\n              socket.authorized ? &#39;authorized&#39; : &#39;unauthorized&#39;);\n  socket.write(&quot;welcome!\\n&quot;);\n  socket.setEncoding(&#39;utf8&#39;);\n  socket.pipe(socket);\n});\nserver.listen(8000, function() {\n  console.log(&#39;server bound&#39;);\n});</code></pre>\n<p>You can test this server by connecting to it with <code>openssl s_client</code>:\n\n\n</p>\n<pre><code>openssl s_client -connect 127.0.0.1:8000</code></pre>\n",
+          "desc": "<p>Creates a new [tls.Server][].  The <code>connectionListener</code> argument is\nautomatically set as a listener for the [secureConnection][] event.  The\n<code>options</code> object has these possibilities:\n\n</p>\n<ul>\n<li><p><code>pfx</code>: A string or <code>Buffer</code> containing the private key, certificate and\nCA certs of the server in PFX or PKCS12 format. (Mutually exclusive with\nthe <code>key</code>, <code>cert</code> and <code>ca</code> options.)</p>\n</li>\n<li><p><code>key</code>: A string or <code>Buffer</code> containing the private key of the server in\nPEM format. (Could be an array of keys). (Required)</p>\n</li>\n<li><p><code>passphrase</code>: A string of passphrase for the private key or pfx.</p>\n</li>\n<li><p><code>cert</code>: A string or <code>Buffer</code> containing the certificate key of the server in\nPEM format. (Could be an array of certs). (Required)</p>\n</li>\n<li><p><code>ca</code>: An array of strings or <code>Buffer</code>s of trusted certificates in PEM\nformat. If this is omitted several well known &quot;root&quot; CAs will be used,\nlike VeriSign. These are used to authorize connections.</p>\n</li>\n<li><p><code>crl</code> : Either a string or list of strings of PEM encoded CRLs (Certificate\nRevocation List)</p>\n</li>\n<li><p><code>ciphers</code>: A string describing the ciphers to use or exclude, seperated by\n<code>:</code>. The default cipher suite is:</p>\n<pre><code>ECDHE-RSA-AES128-GCM-SHA256:\nECDHE-ECDSA-AES128-GCM-SHA256:\nECDHE-RSA-AES256-GCM-SHA384:\nECDHE-ECDSA-AES256-GCM-SHA384:\nDHE-RSA-AES128-GCM-SHA256:\nECDHE-RSA-AES128-SHA256:\nDHE-RSA-AES128-SHA256:\nECDHE-RSA-AES256-SHA384:\nDHE-RSA-AES256-SHA384:\nECDHE-RSA-AES256-SHA256:\nDHE-RSA-AES256-SHA256:\nHIGH:\n!aNULL:\n!eNULL:\n!EXPORT:\n!DES:\n!RC4:\n!MD5:\n!PSK:\n!SRP:\n!CAMELLIA</code></pre>\n<p>The default cipher suite prefers GCM ciphers for [Chrome&#39;s &#39;modern\ncryptography&#39; setting] and also prefers ECDHE and DHE ciphers for Perfect\nForward secrecy, while offering <em>some</em> backward compatibiltity.</p>\n<p>128 bit AES is preferred over 192 and 256 bit AES in light of [specific\nattacks affecting larger AES key sizes].</p>\n<p>Old clients that rely on insecure and deprecated RC4 or DES-based ciphers\n(like Internet Explorer 6) aren&#39;t able to complete the handshake with the default\nconfiguration. If you absolutely must support these clients, the\n[TLS recommendations] may offer a compatible cipher suite. For more details\non the format, see the [OpenSSL cipher list format documentation].</p>\n</li>\n<li><p><code>ecdhCurve</code>: A string describing a named curve to use for ECDH key agreement\nor false to disable ECDH.</p>\n<p>Defaults to <code>prime256v1</code> (NIST P-256). Use [crypto.getCurves()][] to obtain\na list of available curve names. On recent releases,\n<code>openssl ecparam -list_curves</code> will also display the name and description of\neach available elliptic curve.</p>\n</li>\n<li><p><code>dhparam</code>: A string or <code>Buffer</code> containing Diffie Hellman parameters,\nrequired for Perfect Forward Secrecy. Use <code>openssl dhparam</code> to create it.\nIts key length should be greater than or equal to 1024 bits, otherwise\nit throws an error. It is strongly recommended to use 2048 bits or\nmore for stronger security. If omitted or invalid, it is silently\ndiscarded and DHE ciphers won&#39;t be available.</p>\n</li>\n<li><p><code>handshakeTimeout</code>: Abort the connection if the SSL/TLS handshake does not\nfinish in this many milliseconds. The default is 120 seconds.</p>\n<p>A <code>&#39;clientError&#39;</code> is emitted on the <code>tls.Server</code> object whenever a handshake\ntimes out.</p>\n</li>\n<li><p><code>honorCipherOrder</code> : When choosing a cipher, use the server&#39;s preferences\ninstead of the client preferences. Default: <code>true</code>.</p>\n</li>\n<li><p><code>requestCert</code>: If <code>true</code> the server will request a certificate from\nclients that connect and attempt to verify that certificate. Default:\n<code>false</code>.</p>\n</li>\n<li><p><code>rejectUnauthorized</code>: If <code>true</code> the server will reject any connection\nwhich is not authorized with the list of supplied CAs. This option only\nhas an effect if <code>requestCert</code> is <code>true</code>. Default: <code>false</code>.</p>\n</li>\n<li><p><code>NPNProtocols</code>: An array or <code>Buffer</code> of possible NPN protocols. (Protocols\nshould be ordered by their priority).</p>\n</li>\n<li><p><code>SNICallback(servername, cb)</code>: A function that will be called if client\nsupports SNI TLS extension. Two argument will be passed to it: <code>servername</code>,\nand <code>cb</code>. <code>SNICallback</code> should invoke <code>cb(null, ctx)</code>, where <code>ctx</code> is a\nSecureContext instance.\n(You can use <code>tls.createSecureContext(...)</code> to get proper\nSecureContext). If <code>SNICallback</code> wasn&#39;t provided - default callback with\nhigh-level API will be used (see below).</p>\n</li>\n<li><p><code>sessionTimeout</code>: An integer specifying the seconds after which TLS\nsession identifiers and TLS session tickets created by the server are\ntimed out. See [SSL_CTX_set_timeout] for more details.</p>\n</li>\n<li><p><code>ticketKeys</code>: A 48-byte <code>Buffer</code> instance consisting of 16-byte prefix,\n16-byte hmac key, 16-byte AES key. You could use it to accept tls session\ntickets on multiple instances of tls server.</p>\n<p>NOTE: Automatically shared between <code>cluster</code> module workers.</p>\n</li>\n<li><p><code>sessionIdContext</code>: A string containing an opaque identifier for session\nresumption. If <code>requestCert</code> is <code>true</code>, the default is MD5 hash value\ngenerated from command-line. Otherwise, the default is not provided.</p>\n</li>\n<li><p><code>secureProtocol</code>: The SSL method to use, e.g. <code>SSLv3_method</code> to force\nSSL version 3. The possible values depend on your installation of\nOpenSSL and are defined in the constant [SSL_METHODS][].</p>\n</li>\n</ul>\n<p>Here is a simple example echo server:\n\n</p>\n<pre><code>var tls = require(&#39;tls&#39;);\nvar fs = require(&#39;fs&#39;);\n\nvar options = {\n  key: fs.readFileSync(&#39;server-key.pem&#39;),\n  cert: fs.readFileSync(&#39;server-cert.pem&#39;),\n\n  // This is necessary only if using the client certificate authentication.\n  requestCert: true,\n\n  // This is necessary only if the client uses the self-signed certificate.\n  ca: [ fs.readFileSync(&#39;client-cert.pem&#39;) ]\n};\n\nvar server = tls.createServer(options, function(socket) {\n  console.log(&#39;server connected&#39;,\n              socket.authorized ? &#39;authorized&#39; : &#39;unauthorized&#39;);\n  socket.write(&quot;welcome!\\n&quot;);\n  socket.setEncoding(&#39;utf8&#39;);\n  socket.pipe(socket);\n});\nserver.listen(8000, function() {\n  console.log(&#39;server bound&#39;);\n});</code></pre>\n<p>Or\n\n</p>\n<pre><code>var tls = require(&#39;tls&#39;);\nvar fs = require(&#39;fs&#39;);\n\nvar options = {\n  pfx: fs.readFileSync(&#39;server.pfx&#39;),\n\n  // This is necessary only if using the client certificate authentication.\n  requestCert: true,\n\n};\n\nvar server = tls.createServer(options, function(socket) {\n  console.log(&#39;server connected&#39;,\n              socket.authorized ? &#39;authorized&#39; : &#39;unauthorized&#39;);\n  socket.write(&quot;welcome!\\n&quot;);\n  socket.setEncoding(&#39;utf8&#39;);\n  socket.pipe(socket);\n});\nserver.listen(8000, function() {\n  console.log(&#39;server bound&#39;);\n});</code></pre>\n<p>You can test this server by connecting to it with <code>openssl s_client</code>:\n\n\n</p>\n<pre><code>openssl s_client -connect 127.0.0.1:8000</code></pre>\n",
           "signatures": [
             {
               "params": [
@@ -14950,13 +14955,13 @@
       "name": "url",
       "stability": 2,
       "stabilityText": "Stable",
-      "desc": "<p>This module has utilities for URL resolution and parsing.\nCall <code>require(&#39;url&#39;)</code> to use it.\n\n</p>\n<p>Parsed URL objects have some or all of the following fields, depending on\nwhether or not they exist in the URL string. Any parts that are not in the URL\nstring will not be in the parsed object. Examples are shown for the URL\n\n</p>\n<p><code>&#39;http://user:pass@host.com:8080/p/a/t/h?query=string#hash&#39;</code>\n\n</p>\n<ul>\n<li><p><code>href</code>: The full URL that was originally parsed. Both the protocol and host are lowercased.</p>\n<p>  Example: <code>&#39;http://user:pass@host.com:8080/p/a/t/h?query=string#hash&#39;</code></p>\n</li>\n<li><p><code>protocol</code>: The request protocol, lowercased.</p>\n<p>  Example: <code>&#39;http:&#39;</code></p>\n</li>\n<li><p><code>slashes</code>: The protocol requires slashes after the colon.</p>\n<p>  Example: true or false</p>\n</li>\n<li><p><code>host</code>: The full lowercased host portion of the URL, including port\ninformation.</p>\n<p>  Example: <code>&#39;host.com:8080&#39;</code></p>\n</li>\n<li><p><code>auth</code>: The authentication information portion of a URL.</p>\n<p>  Example: <code>&#39;user:pass&#39;</code></p>\n</li>\n<li><p><code>hostname</code>: Just the lowercased hostname portion of the host.</p>\n<p>  Example: <code>&#39;host.com&#39;</code></p>\n</li>\n<li><p><code>port</code>: The port number portion of the host.</p>\n<p>  Example: <code>&#39;8080&#39;</code></p>\n</li>\n<li><p><code>pathname</code>: The path section of the URL, that comes after the host and\nbefore the query, including the initial slash if present.</p>\n<p>  Example: <code>&#39;/p/a/t/h&#39;</code></p>\n</li>\n<li><p><code>search</code>: The &#39;query string&#39; portion of the URL, including the leading\nquestion mark.</p>\n<p>  Example: <code>&#39;?query=string&#39;</code></p>\n</li>\n<li><p><code>path</code>: Concatenation of <code>pathname</code> and <code>search</code>.</p>\n<p>  Example: <code>&#39;/p/a/t/h?query=string&#39;</code></p>\n</li>\n<li><p><code>query</code>: Either the &#39;params&#39; portion of the query string, or a\nquerystring-parsed object.</p>\n<p>  Example: <code>&#39;query=string&#39;</code> or <code>{&#39;query&#39;:&#39;string&#39;}</code></p>\n</li>\n<li><p><code>hash</code>: The &#39;fragment&#39; portion of the URL including the pound-sign.</p>\n<p>  Example: <code>&#39;#hash&#39;</code></p>\n</li>\n</ul>\n<p>The following methods are provided by the URL module:\n\n</p>\n",
+      "desc": "<p>This module has utilities for URL resolution and parsing.\nCall <code>require(&#39;url&#39;)</code> to use it.\n\n</p>\n<p>Parsed URL objects have some or all of the following fields, depending on\nwhether or not they exist in the URL string. Any parts that are not in the URL\nstring will not be in the parsed object. Examples are shown for the URL\n\n</p>\n<p><code>&#39;http://user:pass@host.com:8080/p/a/t/h?query=string#hash&#39;</code>\n\n</p>\n<ul>\n<li><p><code>href</code>: The full URL that was originally parsed. Both the protocol and host are lowercased.</p>\n<p>  Example: <code>&#39;http://user:pass@host.com:8080/p/a/t/h?query=string#hash&#39;</code></p>\n</li>\n<li><p><code>protocol</code>: The request protocol, lowercased.</p>\n<p>  Example: <code>&#39;http:&#39;</code></p>\n</li>\n<li><p><code>slashes</code>: The protocol requires slashes after the colon.</p>\n<p>  Example: true or false</p>\n</li>\n<li><p><code>host</code>: The full lowercased host portion of the URL, including port\ninformation.</p>\n<p>  Example: <code>&#39;host.com:8080&#39;</code></p>\n</li>\n<li><p><code>auth</code>: The authentication information portion of a URL.</p>\n<p>  Example: <code>&#39;user:pass&#39;</code></p>\n</li>\n<li><p><code>hostname</code>: Just the lowercased hostname portion of the host.</p>\n<p>  Example: <code>&#39;host.com&#39;</code></p>\n</li>\n<li><p><code>port</code>: The port number portion of the host.</p>\n<p>  Example: <code>&#39;8080&#39;</code></p>\n</li>\n<li><p><code>pathname</code>: The path section of the URL, that comes after the host and\nbefore the query, including the initial slash if present. No decoding is\nperformed.</p>\n<p>  Example: <code>&#39;/p/a/t/h&#39;</code></p>\n</li>\n<li><p><code>search</code>: The &#39;query string&#39; portion of the URL, including the leading\nquestion mark.</p>\n<p>  Example: <code>&#39;?query=string&#39;</code></p>\n</li>\n<li><p><code>path</code>: Concatenation of <code>pathname</code> and <code>search</code>. No decoding is performed.</p>\n<p>  Example: <code>&#39;/p/a/t/h?query=string&#39;</code></p>\n</li>\n<li><p><code>query</code>: Either the &#39;params&#39; portion of the query string, or a\nquerystring-parsed object.</p>\n<p>  Example: <code>&#39;query=string&#39;</code> or <code>{&#39;query&#39;:&#39;string&#39;}</code></p>\n</li>\n<li><p><code>hash</code>: The &#39;fragment&#39; portion of the URL including the pound-sign.</p>\n<p>  Example: <code>&#39;#hash&#39;</code></p>\n</li>\n</ul>\n<p>The following methods are provided by the URL module:\n\n</p>\n",
       "methods": [
         {
           "textRaw": "url.parse(urlStr[, parseQueryString][, slashesDenoteHost])",
           "type": "method",
           "name": "parse",
-          "desc": "<p>Take a URL string, and return an object.\n\n</p>\n<p>Pass <code>true</code> as the second argument to also parse the query string using the\n<code>querystring</code> module. If <code>true</code> then the <code>query</code> property will always be\nassigned an object, and the <code>search</code> property will always be a (possibly\nempty) string.  Defaults to <code>false</code>.\n\n</p>\n<p>Pass <code>true</code> as the third argument to treat <code>//foo/bar</code> as\n<code>{ host: &#39;foo&#39;, pathname: &#39;/bar&#39; }</code> rather than\n<code>{ pathname: &#39;//foo/bar&#39; }</code>. Defaults to <code>false</code>.\n\n</p>\n",
+          "desc": "<p>Take a URL string, and return an object.\n\n</p>\n<p>Pass <code>true</code> as the second argument to also parse the query string using the\n<code>querystring</code> module. If <code>true</code> then the <code>query</code> property will always be\nassigned an object, and the <code>search</code> property will always be a (possibly\nempty) string. If <code>false</code> then the <code>query</code> property will not be parsed or\ndecoded. Defaults to <code>false</code>.\n\n</p>\n<p>Pass <code>true</code> as the third argument to treat <code>//foo/bar</code> as\n<code>{ host: &#39;foo&#39;, pathname: &#39;/bar&#39; }</code> rather than\n<code>{ pathname: &#39;//foo/bar&#39; }</code>. Defaults to <code>false</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [

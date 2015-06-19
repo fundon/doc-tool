@@ -31,7 +31,7 @@
           "textRaw": "crypto.getCiphers()",
           "type": "method",
           "name": "getCiphers",
-          "desc": "<p>Returns an array with the names of the supported ciphers.\n\n</p>\n<p>Example:\n\n</p>\n<pre><code>var ciphers = crypto.getCiphers();\nconsole.log(ciphers); // [&#39;AES-128-CBC&#39;, &#39;AES-128-CBC-HMAC-SHA1&#39;, ...]</code></pre>\n",
+          "desc": "<p>Returns an array with the names of the supported ciphers.\n\n</p>\n<p>Example:\n\n</p>\n<pre><code>var ciphers = crypto.getCiphers();\nconsole.log(ciphers); // [&#39;aes-128-cbc&#39;, &#39;aes-128-ccm&#39;, ...]</code></pre>\n",
           "signatures": [
             {
               "params": []
@@ -43,6 +43,17 @@
           "type": "method",
           "name": "getHashes",
           "desc": "<p>Returns an array with the names of the supported hash algorithms.\n\n</p>\n<p>Example:\n\n</p>\n<pre><code>var hashes = crypto.getHashes();\nconsole.log(hashes); // [&#39;sha&#39;, &#39;sha1&#39;, &#39;sha1WithRSAEncryption&#39;, ...]</code></pre>\n",
+          "signatures": [
+            {
+              "params": []
+            }
+          ]
+        },
+        {
+          "textRaw": "crypto.getCurves()",
+          "type": "method",
+          "name": "getCurves",
+          "desc": "<p>Returns an array with the names of the supported elliptic curves.\n\n</p>\n<p>Example:\n\n</p>\n<pre><code>var curves = crypto.getCurves();\nconsole.log(curves); // [&#39;secp256k1&#39;, &#39;secp384r1&#39;, ...]</code></pre>\n",
           "signatures": [
             {
               "params": []
@@ -272,7 +283,7 @@
           "textRaw": "crypto.createECDH(curve_name)",
           "type": "method",
           "name": "createECDH",
-          "desc": "<p>Creates a Elliptic Curve (EC) Diffie-Hellman key exchange object using a\npredefined curve specified by <code>curve_name</code> string.\n\n</p>\n",
+          "desc": "<p>Creates an Elliptic Curve (EC) Diffie-Hellman key exchange object using a\npredefined curve specified by the <code>curve_name</code> string. Use [getCurves()][] to\nobtain a list of available curve names. On recent releases,\n<code>openssl ecparam -list_curves</code> will also display the name and description of\neach available elliptic curve.\n\n</p>\n",
           "signatures": [
             {
               "params": [

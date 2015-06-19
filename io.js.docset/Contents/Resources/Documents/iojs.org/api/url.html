@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>URL io.js v2.1.0 Manual &amp; Documentation</title>
+  <title>URL io.js v2.3.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="url" class="interior">
       <header>
-        <h1>io.js v2.1.0 Documentation</h1>
+        <h1>io.js v2.3.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -124,14 +124,15 @@ information.</p>
 <p>  Example: <code>&#39;8080&#39;</code></p>
 </li>
 <li><p><code>pathname</code>: The path section of the URL, that comes after the host and
-before the query, including the initial slash if present.</p>
+before the query, including the initial slash if present. No decoding is
+performed.</p>
 <p>  Example: <code>&#39;/p/a/t/h&#39;</code></p>
 </li>
 <li><p><code>search</code>: The &#39;query string&#39; portion of the URL, including the leading
 question mark.</p>
 <p>  Example: <code>&#39;?query=string&#39;</code></p>
 </li>
-<li><p><code>path</code>: Concatenation of <code>pathname</code> and <code>search</code>.</p>
+<li><p><code>path</code>: Concatenation of <code>pathname</code> and <code>search</code>. No decoding is performed.</p>
 <p>  Example: <code>&#39;/p/a/t/h?query=string&#39;</code></p>
 </li>
 <li><p><code>query</code>: Either the &#39;params&#39; portion of the query string, or a
@@ -152,7 +153,8 @@ querystring-parsed object.</p>
 <p>Pass <code>true</code> as the second argument to also parse the query string using the
 <code>querystring</code> module. If <code>true</code> then the <code>query</code> property will always be
 assigned an object, and the <code>search</code> property will always be a (possibly
-empty) string.  Defaults to <code>false</code>.
+empty) string. If <code>false</code> then the <code>query</code> property will not be parsed or
+decoded. Defaults to <code>false</code>.
 
 </p>
 <p>Pass <code>true</code> as the third argument to treat <code>//foo/bar</code> as

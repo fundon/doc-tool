@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>About this Documentation io.js v2.1.0 Manual &amp; Documentation</title>
+  <title>About this Documentation io.js v2.3.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="all" class="interior">
       <header>
-        <h1>io.js v2.1.0 Documentation</h1>
+        <h1>io.js v2.3.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -92,6 +92,10 @@
 <li><a href="#all_wrapping_c_objects">Wrapping C++ objects</a></li>
 <li><a href="#all_factory_of_wrapped_objects">Factory of wrapped objects</a></li>
 <li><a href="#all_passing_wrapped_objects_around">Passing wrapped objects around</a></li>
+<li><a href="#all_atexit_hooks">AtExit hooks</a><ul>
+<li><a href="#all_void_atexit_callback_args">void AtExit(callback, args)</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -280,6 +284,7 @@
 <li><a href="#all_crypto_setengine_engine_flags">crypto.setEngine(engine[, flags])</a></li>
 <li><a href="#all_crypto_getciphers">crypto.getCiphers()</a></li>
 <li><a href="#all_crypto_gethashes">crypto.getHashes()</a></li>
+<li><a href="#all_crypto_getcurves">crypto.getCurves()</a></li>
 <li><a href="#all_crypto_createcredentials_details">crypto.createCredentials(details)</a></li>
 <li><a href="#all_crypto_createhash_algorithm">crypto.createHash(algorithm)</a></li>
 <li><a href="#all_class_hash">Class: Hash</a><ul>
@@ -847,6 +852,7 @@
 </li>
 <li><a href="#all_os">OS</a><ul>
 <li><a href="#all_os_tmpdir">os.tmpdir()</a></li>
+<li><a href="#all_os_homedir">os.homedir()</a></li>
 <li><a href="#all_os_endianness">os.endianness()</a></li>
 <li><a href="#all_os_hostname">os.hostname()</a></li>
 <li><a href="#all_os_type">os.type()</a></li>
@@ -2169,6 +2175,76 @@ var obj2 = addon.createObject(20);
 var result = addon.add(obj1, obj2);
 
 console.log(result); // 30</code></pre>
+<h3>AtExit hooks<span><a class="mark" href="#all_atexit_hooks" id="all_atexit_hooks">#</a></span></h3>
+<h4>void AtExit(callback, args)<span><a class="mark" href="#all_void_atexit_callback_args" id="all_void_atexit_callback_args">#</a></span></h4>
+<ul>
+<li><code>callback</code>: <code>void (*)(void*)</code> - A pointer to the function to call at exit.</li>
+<li><code>args</code>: <code>void*</code> - A pointer to pass to the callback at exit.</li>
+</ul>
+<p>Registers exit hooks that run after the event loop has ended, but before the VM
+is killed.
+
+</p>
+<p>Callbacks are run in last-in, first-out order. AtExit takes two parameters:
+a pointer to a callback function to run at exit, and a pointer to untyped
+context data to be passed to that callback.
+
+</p>
+<p>The file <code>addon.cc</code> implements AtExit below:
+
+</p>
+<pre><code>// addon.cc
+#undef NDEBUG
+#include &lt;assert.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;node.h&gt;
+
+namespace demo {
+
+using node::AtExit;
+using v8::HandleScope;
+using v8::Isolate;
+using v8::Local;
+using v8::Object;
+
+static char cookie[] = &quot;yum yum&quot;;
+static int at_exit_cb1_called = 0;
+static int at_exit_cb2_called = 0;
+
+static void at_exit_cb1(void* arg) {
+  Isolate* isolate = static_cast&lt;Isolate*&gt;(arg);
+  HandleScope scope(isolate);
+  Local&lt;Object&gt; obj = Object::New(isolate);
+  assert(!obj.IsEmpty()); // assert VM is still alive
+  assert(obj-&gt;IsObject());
+  at_exit_cb1_called++;
+}
+
+static void at_exit_cb2(void* arg) {
+  assert(arg == static_cast&lt;void*&gt;(cookie));
+  at_exit_cb2_called++;
+}
+
+static void sanity_check(void*) {
+  assert(at_exit_cb1_called == 1);
+  assert(at_exit_cb2_called == 2);
+}
+
+void init(Local&lt;Object&gt; exports) {
+  AtExit(sanity_check);
+  AtExit(at_exit_cb2, cookie);
+  AtExit(at_exit_cb2, cookie);
+  AtExit(at_exit_cb1, exports-&gt;GetIsolate());
+}
+
+NODE_MODULE(addon, init);
+
+}  // namespace demo</code></pre>
+<p>Test in JavaScript by running:
+
+</p>
+<pre><code>// test.js
+var addon = require(&#39;./build/Release/addon&#39;);</code></pre>
 <h1>Assert<span><a class="mark" href="#all_assert" id="all_assert">#</a></span></h1>
 <pre class="api_stability_2">Stability: 2 - Stable</pre><p>This module is used for writing unit tests for your applications, you can
 access it with <code>require(&#39;assert&#39;)</code>.
@@ -3497,8 +3573,8 @@ instead, see
 <p>There is a special case when sending a <code>{cmd: &#39;NODE_foo&#39;}</code> message. All messages
 containing a <code>NODE_</code> prefix in its <code>cmd</code> property will not be emitted in
 the <code>message</code> event, since they are internal messages used by io.js core.
-Messages containing the prefix are emitted in the <code>internalMessage</code> event, you
-should by all means avoid using this feature, it is subject to change without notice.
+Messages containing the prefix are emitted in the <code>internalMessage</code> event.
+Avoid using this feature; it is subject to change without notice.
 
 </p>
 <p>The <code>sendHandle</code> option to <code>child.send()</code> is for sending a TCP server or
@@ -4937,7 +5013,7 @@ one of or mix of following flags (defined in <code>constants</code> module):
 
 </p>
 <pre><code>var ciphers = crypto.getCiphers();
-console.log(ciphers); // [&#39;AES-128-CBC&#39;, &#39;AES-128-CBC-HMAC-SHA1&#39;, ...]</code></pre>
+console.log(ciphers); // [&#39;aes-128-cbc&#39;, &#39;aes-128-ccm&#39;, ...]</code></pre>
 <h2>crypto.getHashes()<span><a class="mark" href="#all_crypto_gethashes" id="all_crypto_gethashes">#</a></span></h2>
 <p>Returns an array with the names of the supported hash algorithms.
 
@@ -4947,6 +5023,15 @@ console.log(ciphers); // [&#39;AES-128-CBC&#39;, &#39;AES-128-CBC-HMAC-SHA1&#39;
 </p>
 <pre><code>var hashes = crypto.getHashes();
 console.log(hashes); // [&#39;sha&#39;, &#39;sha1&#39;, &#39;sha1WithRSAEncryption&#39;, ...]</code></pre>
+<h2>crypto.getCurves()<span><a class="mark" href="#all_crypto_getcurves" id="all_crypto_getcurves">#</a></span></h2>
+<p>Returns an array with the names of the supported elliptic curves.
+
+</p>
+<p>Example:
+
+</p>
+<pre><code>var curves = crypto.getCurves();
+console.log(curves); // [&#39;secp256k1&#39;, &#39;secp384r1&#39;, ...]</code></pre>
 <h2>crypto.createCredentials(details)<span><a class="mark" href="#all_crypto_createcredentials_details" id="all_crypto_createcredentials_details">#</a></span></h2>
 <pre class="api_stability_0">Stability: 0 - Deprecated. Use <a href="tls.html#tls_tls_createsecurecontext_details">tls.createSecureContext</a> instead.</pre><p>Creates a credentials object, with the optional details being a
 dictionary with keys:
@@ -5458,8 +5543,11 @@ var bob_secret = bob.computeSecret(alice.getPublicKey(), null, &#39;hex&#39;);
 /* alice_secret and bob_secret should be the same */
 console.log(alice_secret == bob_secret);</code></pre>
 <h2>crypto.createECDH(curve_name)<span><a class="mark" href="#all_crypto_createecdh_curve_name" id="all_crypto_createecdh_curve_name">#</a></span></h2>
-<p>Creates a Elliptic Curve (EC) Diffie-Hellman key exchange object using a
-predefined curve specified by <code>curve_name</code> string.
+<p>Creates an Elliptic Curve (EC) Diffie-Hellman key exchange object using a
+predefined curve specified by the <code>curve_name</code> string. Use <a href="#crypto_crypto_getcurves">getCurves()</a> to
+obtain a list of available curve names. On recent releases,
+<code>openssl ecparam -list_curves</code> will also display the name and description of
+each available elliptic curve.
 
 </p>
 <h2>Class: ECDH<span><a class="mark" href="#all_class_ecdh" id="all_class_ecdh">#</a></span></h2>
@@ -7746,7 +7834,7 @@ to the completion callback.
 
 </p>
 <h2>fs.renameSync(oldPath, newPath)<span><a class="mark" href="#all_fs_renamesync_oldpath_newpath" id="all_fs_renamesync_oldpath_newpath">#</a></span></h2>
-<p>Synchronous rename(2).
+<p>Synchronous rename(2). Returns <code>undefined</code>.
 
 </p>
 <h2>fs.ftruncate(fd, len, callback)<span><a class="mark" href="#all_fs_ftruncate_fd_len_callback" id="all_fs_ftruncate_fd_len_callback">#</a></span></h2>
@@ -7755,7 +7843,7 @@ given to the completion callback.
 
 </p>
 <h2>fs.ftruncateSync(fd, len)<span><a class="mark" href="#all_fs_ftruncatesync_fd_len" id="all_fs_ftruncatesync_fd_len">#</a></span></h2>
-<p>Synchronous ftruncate(2).
+<p>Synchronous ftruncate(2). Returns <code>undefined</code>.
 
 </p>
 <h2>fs.truncate(path, len, callback)<span><a class="mark" href="#all_fs_truncate_path_len_callback" id="all_fs_truncate_path_len_callback">#</a></span></h2>
@@ -7765,7 +7853,7 @@ first argument. In this case, <code>fs.ftruncate()</code> is called.
 
 </p>
 <h2>fs.truncateSync(path, len)<span><a class="mark" href="#all_fs_truncatesync_path_len" id="all_fs_truncatesync_path_len">#</a></span></h2>
-<p>Synchronous truncate(2).
+<p>Synchronous truncate(2). Returns <code>undefined</code>.
 
 </p>
 <h2>fs.chown(path, uid, gid, callback)<span><a class="mark" href="#all_fs_chown_path_uid_gid_callback" id="all_fs_chown_path_uid_gid_callback">#</a></span></h2>
@@ -7774,7 +7862,7 @@ to the completion callback.
 
 </p>
 <h2>fs.chownSync(path, uid, gid)<span><a class="mark" href="#all_fs_chownsync_path_uid_gid" id="all_fs_chownsync_path_uid_gid">#</a></span></h2>
-<p>Synchronous chown(2).
+<p>Synchronous chown(2). Returns <code>undefined</code>.
 
 </p>
 <h2>fs.fchown(fd, uid, gid, callback)<span><a class="mark" href="#all_fs_fchown_fd_uid_gid_callback" id="all_fs_fchown_fd_uid_gid_callback">#</a></span></h2>
@@ -7783,7 +7871,7 @@ to the completion callback.
 
 </p>
 <h2>fs.fchownSync(fd, uid, gid)<span><a class="mark" href="#all_fs_fchownsync_fd_uid_gid" id="all_fs_fchownsync_fd_uid_gid">#</a></span></h2>
-<p>Synchronous fchown(2).
+<p>Synchronous fchown(2). Returns <code>undefined</code>.
 
 </p>
 <h2>fs.lchown(path, uid, gid, callback)<span><a class="mark" href="#all_fs_lchown_path_uid_gid_callback" id="all_fs_lchown_path_uid_gid_callback">#</a></span></h2>
@@ -7792,7 +7880,7 @@ to the completion callback.
 
 </p>
 <h2>fs.lchownSync(path, uid, gid)<span><a class="mark" href="#all_fs_lchownsync_path_uid_gid" id="all_fs_lchownsync_path_uid_gid">#</a></span></h2>
-<p>Synchronous lchown(2).
+<p>Synchronous lchown(2). Returns <code>undefined</code>.
 
 </p>
 <h2>fs.chmod(path, mode, callback)<span><a class="mark" href="#all_fs_chmod_path_mode_callback" id="all_fs_chmod_path_mode_callback">#</a></span></h2>
@@ -7801,7 +7889,7 @@ to the completion callback.
 
 </p>
 <h2>fs.chmodSync(path, mode)<span><a class="mark" href="#all_fs_chmodsync_path_mode" id="all_fs_chmodsync_path_mode">#</a></span></h2>
-<p>Synchronous chmod(2).
+<p>Synchronous chmod(2). Returns <code>undefined</code>.
 
 </p>
 <h2>fs.fchmod(fd, mode, callback)<span><a class="mark" href="#all_fs_fchmod_fd_mode_callback" id="all_fs_fchmod_fd_mode_callback">#</a></span></h2>
@@ -7810,7 +7898,7 @@ are given to the completion callback.
 
 </p>
 <h2>fs.fchmodSync(fd, mode)<span><a class="mark" href="#all_fs_fchmodsync_fd_mode" id="all_fs_fchmodsync_fd_mode">#</a></span></h2>
-<p>Synchronous fchmod(2).
+<p>Synchronous fchmod(2). Returns <code>undefined</code>.
 
 </p>
 <h2>fs.lchmod(path, mode, callback)<span><a class="mark" href="#all_fs_lchmod_path_mode_callback" id="all_fs_lchmod_path_mode_callback">#</a></span></h2>
@@ -7822,7 +7910,7 @@ are given to the completion callback.
 
 </p>
 <h2>fs.lchmodSync(path, mode)<span><a class="mark" href="#all_fs_lchmodsync_path_mode" id="all_fs_lchmodsync_path_mode">#</a></span></h2>
-<p>Synchronous lchmod(2).
+<p>Synchronous lchmod(2). Returns <code>undefined</code>.
 
 </p>
 <h2>fs.stat(path, callback)<span><a class="mark" href="#all_fs_stat_path_callback" id="all_fs_stat_path_callback">#</a></span></h2>
@@ -7862,7 +7950,7 @@ the completion callback.
 
 </p>
 <h2>fs.linkSync(srcpath, dstpath)<span><a class="mark" href="#all_fs_linksync_srcpath_dstpath" id="all_fs_linksync_srcpath_dstpath">#</a></span></h2>
-<p>Synchronous link(2).
+<p>Synchronous link(2). Returns <code>undefined</code>.
 
 </p>
 <h2>fs.symlink(destination, path[, type], callback)<span><a class="mark" href="#all_fs_symlink_destination_path_type_callback" id="all_fs_symlink_destination_path_type_callback">#</a></span></h2>
@@ -7875,7 +7963,7 @@ Note that Windows junction points require the destination path to be absolute.  
 
 </p>
 <h2>fs.symlinkSync(destination, path[, type])<span><a class="mark" href="#all_fs_symlinksync_destination_path_type" id="all_fs_symlinksync_destination_path_type">#</a></span></h2>
-<p>Synchronous symlink(2).
+<p>Synchronous symlink(2). Returns <code>undefined</code>.
 
 </p>
 <h2>fs.readlink(path, callback)<span><a class="mark" href="#all_fs_readlink_path_callback" id="all_fs_readlink_path_callback">#</a></span></h2>
@@ -7912,7 +8000,7 @@ to the completion callback.
 
 </p>
 <h2>fs.unlinkSync(path)<span><a class="mark" href="#all_fs_unlinksync_path" id="all_fs_unlinksync_path">#</a></span></h2>
-<p>Synchronous unlink(2).
+<p>Synchronous unlink(2). Returns <code>undefined</code>.
 
 </p>
 <h2>fs.rmdir(path, callback)<span><a class="mark" href="#all_fs_rmdir_path_callback" id="all_fs_rmdir_path_callback">#</a></span></h2>
@@ -7921,7 +8009,7 @@ to the completion callback.
 
 </p>
 <h2>fs.rmdirSync(path)<span><a class="mark" href="#all_fs_rmdirsync_path" id="all_fs_rmdirsync_path">#</a></span></h2>
-<p>Synchronous rmdir(2).
+<p>Synchronous rmdir(2). Returns <code>undefined</code>.
 
 </p>
 <h2>fs.mkdir(path[, mode], callback)<span><a class="mark" href="#all_fs_mkdir_path_mode_callback" id="all_fs_mkdir_path_mode_callback">#</a></span></h2>
@@ -7930,7 +8018,7 @@ to the completion callback. <code>mode</code> defaults to <code>0o777</code>.
 
 </p>
 <h2>fs.mkdirSync(path[, mode])<span><a class="mark" href="#all_fs_mkdirsync_path_mode" id="all_fs_mkdirsync_path_mode">#</a></span></h2>
-<p>Synchronous mkdir(2).
+<p>Synchronous mkdir(2). Returns <code>undefined</code>.
 
 </p>
 <h2>fs.readdir(path, callback)<span><a class="mark" href="#all_fs_readdir_path_callback" id="all_fs_readdir_path_callback">#</a></span></h2>
@@ -7950,7 +8038,7 @@ to the completion callback.
 
 </p>
 <h2>fs.closeSync(fd)<span><a class="mark" href="#all_fs_closesync_fd" id="all_fs_closesync_fd">#</a></span></h2>
-<p>Synchronous close(2).
+<p>Synchronous close(2). Returns <code>undefined</code>.
 
 </p>
 <h2>fs.open(path, flags[, mode], callback)<span><a class="mark" href="#all_fs_open_path_flags_mode_callback" id="all_fs_open_path_flags_mode_callback">#</a></span></h2>
@@ -8015,18 +8103,26 @@ the end of the file.
 
 </p>
 <h2>fs.openSync(path, flags[, mode])<span><a class="mark" href="#all_fs_opensync_path_flags_mode" id="all_fs_opensync_path_flags_mode">#</a></span></h2>
-<p>Synchronous version of <code>fs.open()</code>.
+<p>Synchronous version of <code>fs.open()</code>. Returns an integer representing the file
+descriptor.
 
 </p>
 <h2>fs.utimes(path, atime, mtime, callback)<span><a class="mark" href="#all_fs_utimes_path_atime_mtime_callback" id="all_fs_utimes_path_atime_mtime_callback">#</a></span></h2>
-<h2>fs.utimesSync(path, atime, mtime)<span><a class="mark" href="#all_fs_utimessync_path_atime_mtime" id="all_fs_utimessync_path_atime_mtime">#</a></span></h2>
 <p>Change file timestamps of the file referenced by the supplied path.
 
 </p>
+<h2>fs.utimesSync(path, atime, mtime)<span><a class="mark" href="#all_fs_utimessync_path_atime_mtime" id="all_fs_utimessync_path_atime_mtime">#</a></span></h2>
+<p>Synchronous version of <code>fs.utimes()</code>. Returns <code>undefined</code>.
+
+
+</p>
 <h2>fs.futimes(fd, atime, mtime, callback)<span><a class="mark" href="#all_fs_futimes_fd_atime_mtime_callback" id="all_fs_futimes_fd_atime_mtime_callback">#</a></span></h2>
-<h2>fs.futimesSync(fd, atime, mtime)<span><a class="mark" href="#all_fs_futimessync_fd_atime_mtime" id="all_fs_futimessync_fd_atime_mtime">#</a></span></h2>
 <p>Change the file timestamps of a file referenced by the supplied file
 descriptor.
+
+</p>
+<h2>fs.futimesSync(fd, atime, mtime)<span><a class="mark" href="#all_fs_futimessync_fd_atime_mtime" id="all_fs_futimessync_fd_atime_mtime">#</a></span></h2>
+<p>Synchronous version of <code>fs.futimes()</code>. Returns <code>undefined</code>.
 
 </p>
 <h2>fs.fsync(fd, callback)<span><a class="mark" href="#all_fs_fsync_fd_callback" id="all_fs_fsync_fd_callback">#</a></span></h2>
@@ -8035,7 +8131,7 @@ to the completion callback.
 
 </p>
 <h2>fs.fsyncSync(fd)<span><a class="mark" href="#all_fs_fsyncsync_fd" id="all_fs_fsyncsync_fd">#</a></span></h2>
-<p>Synchronous fsync(2).
+<p>Synchronous fsync(2). Returns <code>undefined</code>.
 
 </p>
 <h2>fs.write(fd, buffer, offset, length[, position], callback)<span><a class="mark" href="#all_fs_write_fd_buffer_offset_length_position_callback" id="all_fs_write_fd_buffer_offset_length_position_callback">#</a></span></h2>
@@ -8130,7 +8226,7 @@ If <code>position</code> is <code>null</code>, data will be read from the curren
 <h2>fs.readFile(filename[, options], callback)<span><a class="mark" href="#all_fs_readfile_filename_options_callback" id="all_fs_readfile_filename_options_callback">#</a></span></h2>
 <div class="signature"><ul>
 <li><code>filename</code> <span class="type">String</span></li>
-<li><code>options</code> <span class="type">Object</span><ul>
+<li><code>options</code> <span class="type">Object | String</span><ul>
 <li><code>encoding</code> <span class="type">String | Null</span> default = <code>null</code></li>
 <li><code>flag</code> <span class="type">String</span> default = <code>&#39;r&#39;</code></li>
 </ul>
@@ -8150,8 +8246,11 @@ contents of the file.
 </p>
 <p>If no encoding is specified, then the raw buffer is returned.
 
+</p>
+<p>If <code>options</code> is a string, then it specifies the encoding. Example:
 
 </p>
+<pre><code>fs.readFile(&#39;/etc/passwd&#39;, &#39;utf8&#39;, callback);</code></pre>
 <h2>fs.readFileSync(filename[, options])<span><a class="mark" href="#all_fs_readfilesync_filename_options" id="all_fs_readfilesync_filename_options">#</a></span></h2>
 <p>Synchronous version of <code>fs.readFile</code>. Returns the contents of the <code>filename</code>.
 
@@ -8165,7 +8264,7 @@ string. Otherwise it returns a buffer.
 <div class="signature"><ul>
 <li><code>filename</code> <span class="type">String</span></li>
 <li><code>data</code> <span class="type">String | Buffer</span></li>
-<li><code>options</code> <span class="type">Object</span><ul>
+<li><code>options</code> <span class="type">Object | String</span><ul>
 <li><code>encoding</code> <span class="type">String | Null</span> default = <code>&#39;utf8&#39;</code></li>
 <li><code>mode</code> <span class="type">Number</span> default = <code>0o666</code></li>
 <li><code>flag</code> <span class="type">String</span> default = <code>&#39;w&#39;</code></li>
@@ -8188,15 +8287,19 @@ to <code>&#39;utf8&#39;</code>.
   if (err) throw err;
   console.log(&#39;It\&#39;s saved!&#39;);
 });</code></pre>
+<p>If <code>options</code> is a string, then it specifies the encoding. Example:
+
+</p>
+<pre><code>fs.writeFile(&#39;message.txt&#39;, &#39;Hello io.js&#39;, &#39;utf8&#39;, callback);</code></pre>
 <h2>fs.writeFileSync(filename, data[, options])<span><a class="mark" href="#all_fs_writefilesync_filename_data_options" id="all_fs_writefilesync_filename_data_options">#</a></span></h2>
-<p>The synchronous version of <code>fs.writeFile</code>.
+<p>The synchronous version of <code>fs.writeFile</code>. Returns <code>undefined</code>.
 
 </p>
 <h2>fs.appendFile(filename, data[, options], callback)<span><a class="mark" href="#all_fs_appendfile_filename_data_options_callback" id="all_fs_appendfile_filename_data_options_callback">#</a></span></h2>
 <div class="signature"><ul>
 <li><code>filename</code> <span class="type">String</span></li>
 <li><code>data</code> <span class="type">String | Buffer</span></li>
-<li><code>options</code> <span class="type">Object</span><ul>
+<li><code>options</code> <span class="type">Object | String</span><ul>
 <li><code>encoding</code> <span class="type">String | Null</span> default = <code>&#39;utf8&#39;</code></li>
 <li><code>mode</code> <span class="type">Number</span> default = <code>0o666</code></li>
 <li><code>flag</code> <span class="type">String</span> default = <code>&#39;a&#39;</code></li>
@@ -8215,12 +8318,16 @@ to <code>&#39;utf8&#39;</code>.
   if (err) throw err;
   console.log(&#39;The &quot;data to append&quot; was appended to file!&#39;);
 });</code></pre>
+<p>If <code>options</code> is a string, then it specifies the encoding. Example:
+
+</p>
+<pre><code>fs.appendFile(&#39;message.txt&#39;, &#39;data to append&#39;, &#39;utf8&#39;, callback);</code></pre>
 <h2>fs.appendFileSync(filename, data[, options])<span><a class="mark" href="#all_fs_appendfilesync_filename_data_options" id="all_fs_appendfilesync_filename_data_options">#</a></span></h2>
-<p>The synchronous version of <code>fs.appendFile</code>.
+<p>The synchronous version of <code>fs.appendFile</code>. Returns <code>undefined</code>.
 
 </p>
 <h2>fs.watchFile(filename[, options], listener)<span><a class="mark" href="#all_fs_watchfile_filename_options_listener" id="all_fs_watchfile_filename_options_listener">#</a></span></h2>
-<pre class="api_stability_2">Stability: 2 - Unstable.  Use fs.watch instead, if possible.</pre><p>Watch for changes on <code>filename</code>. The callback <code>listener</code> will be called each
+<p>Watch for changes on <code>filename</code>. The callback <code>listener</code> will be called each
 time the file is accessed.
 
 </p>
@@ -8246,8 +8353,13 @@ stat object:
 you need to compare <code>curr.mtime</code> and <code>prev.mtime</code>.
 
 </p>
+<p><em>Note: <code>fs.watch</code> is more efficient than <code>fs.watchFile</code> and <code>fs.unwatchFile</code>.
+<code>fs.watch</code> should be used instead of <code>fs.watchFile</code> and <code>fs.unwatchFile</code>
+when possible.</em>
+
+</p>
 <h2>fs.unwatchFile(filename[, listener])<span><a class="mark" href="#all_fs_unwatchfile_filename_listener" id="all_fs_unwatchfile_filename_listener">#</a></span></h2>
-<pre class="api_stability_2">Stability: 2 - Unstable.  Use fs.watch instead, if possible.</pre><p>Stop watching for changes on <code>filename</code>. If <code>listener</code> is specified, only that
+<p>Stop watching for changes on <code>filename</code>. If <code>listener</code> is specified, only that
 particular listener is removed. Otherwise, <em>all</em> listeners are removed and you
 have effectively stopped watching <code>filename</code>.
 
@@ -8256,8 +8368,13 @@ have effectively stopped watching <code>filename</code>.
 no-op, not an error.
 
 </p>
+<p><em>Note: <code>fs.watch</code> is more efficient than <code>fs.watchFile</code> and <code>fs.unwatchFile</code>.
+<code>fs.watch</code> should be used instead of <code>fs.watchFile</code> and <code>fs.unwatchFile</code>
+when possible.</em>
+
+</p>
 <h2>fs.watch(filename[, options][, listener])<span><a class="mark" href="#all_fs_watch_filename_options_listener" id="all_fs_watch_filename_options_listener">#</a></span></h2>
-<pre class="api_stability_2">Stability: 2 - Unstable.</pre><p>Watch for changes on <code>filename</code>, where <code>filename</code> is either a file or a
+<p>Watch for changes on <code>filename</code>, where <code>filename</code> is either a file or a
 directory.  The returned object is a <a href="#fs_class_fs_fswatcher">fs.FSWatcher</a>.
 
 </p>
@@ -8358,6 +8475,7 @@ and handle the error when it&#39;s not there.
 </p>
 <h2>fs.existsSync(path)<span><a class="mark" href="#all_fs_existssync_path" id="all_fs_existssync_path">#</a></span></h2>
 <p>Synchronous version of <a href="fs.html#fs_fs_exists_path_callback"><code>fs.exists</code></a>.
+Returns <code>true</code> if the file exists, <code>false</code> otherwise.
 
 </p>
 <p><code>fs.existsSync()</code> is <strong>deprecated</strong>. For supported alternatives please check
@@ -8468,7 +8586,7 @@ on Unix systems, it never was.
 <p>Returns a new ReadStream object (See <code>Readable Stream</code>).
 
 </p>
-<p><code>options</code> is an object with the following defaults:
+<p><code>options</code> is an object or string with the following defaults:
 
 </p>
 <pre><code>{ flags: &#39;r&#39;,
@@ -8497,6 +8615,9 @@ automatically.
 
 </p>
 <pre><code>fs.createReadStream(&#39;sample.txt&#39;, {start: 90, end: 99});</code></pre>
+<p>If <code>options</code> is a string, then it specifies the encoding.
+
+</p>
 <h2>Class: fs.ReadStream<span><a class="mark" href="#all_class_fs_readstream" id="all_class_fs_readstream">#</a></span></h2>
 <p><code>ReadStream</code> is a <a href="stream.html#stream_class_stream_readable">Readable Stream</a>.
 
@@ -8513,7 +8634,7 @@ automatically.
 <p>Returns a new WriteStream object (See <code>Writable Stream</code>).
 
 </p>
-<p><code>options</code> is an object with the following defaults:
+<p><code>options</code> is an object or string with the following defaults:
 
 </p>
 <pre><code>{ flags: &#39;w&#39;,
@@ -8523,13 +8644,16 @@ automatically.
 <p><code>options</code> may also include a <code>start</code> option to allow writing data at
 some position past the beginning of the file.  Modifying a file rather
 than replacing it may require a <code>flags</code> mode of <code>r+</code> rather than the
-default mode <code>w</code>.
+default mode <code>w</code>. The <code>encoding</code> can be <code>&#39;utf8&#39;</code>, <code>&#39;ascii&#39;</code>, <code>binary</code>,
+or <code>&#39;base64&#39;</code>.
 
 </p>
 <p>Like <code>ReadStream</code> above, if <code>fd</code> is specified, <code>WriteStream</code> will ignore the
 <code>path</code> argument and will use the specified file descriptor. This means that no
 <code>open</code> event will be emitted.
 
+</p>
+<p>If <code>options</code> is a string, then it specifies the encoding.
 
 </p>
 <h2>Class: fs.WriteStream<span><a class="mark" href="#all_class_fs_writestream" id="all_class_fs_writestream">#</a></span></h2>
@@ -9946,9 +10070,8 @@ you can use the <code>require(&#39;querystring&#39;).parse</code> function, or p
 <p>The <code>net.Socket</code> object associated with the connection.
 
 </p>
-<p>With HTTPS support, use request.connection.verifyPeer() and
-request.connection.getPeerCertificate() to obtain the client&#39;s
-authentication details.
+<p>With HTTPS support, use <a href="tls.html#tls_tlssocket_getpeercertificate_detailed">request.socket.getPeerCertificate()</a> to obtain the
+client&#39;s authentication details.
 
 
 </p>
@@ -11440,6 +11563,10 @@ returns 4 for IP version 4 addresses, and returns 6 for IP version 6 addresses.
 </p>
 <h2>os.tmpdir()<span><a class="mark" href="#all_os_tmpdir" id="all_os_tmpdir">#</a></span></h2>
 <p>Returns the operating system&#39;s default directory for temporary files.
+
+</p>
+<h2>os.homedir()<span><a class="mark" href="#all_os_homedir" id="all_os_homedir">#</a></span></h2>
+<p>Returns the home directory of the current user.
 
 </p>
 <h2>os.endianness()<span><a class="mark" href="#all_os_endianness" id="all_os_endianness">#</a></span></h2>
@@ -15564,7 +15691,10 @@ on the format, see the <a href="http://www.openssl.org/docs/apps/ciphers.html#CI
 </li>
 <li><p><code>ecdhCurve</code>: A string describing a named curve to use for ECDH key agreement
 or false to disable ECDH.</p>
-<p>Defaults to <code>prime256v1</code>. Consult <a href="http://www.rfc-editor.org/rfc/rfc4492.txt">RFC 4492</a> for more details.</p>
+<p>Defaults to <code>prime256v1</code> (NIST P-256). Use <a href="crypto.html#crypto_crypto_getcurves">crypto.getCurves()</a> to obtain
+a list of available curve names. On recent releases,
+<code>openssl ecparam -list_curves</code> will also display the name and description of
+each available elliptic curve.</p>
 </li>
 <li><p><code>dhparam</code>: A string or <code>Buffer</code> containing Diffie Hellman parameters,
 required for Perfect Forward Secrecy. Use <code>openssl dhparam</code> to create it.
@@ -16344,14 +16474,15 @@ information.</p>
 <p>  Example: <code>&#39;8080&#39;</code></p>
 </li>
 <li><p><code>pathname</code>: The path section of the URL, that comes after the host and
-before the query, including the initial slash if present.</p>
+before the query, including the initial slash if present. No decoding is
+performed.</p>
 <p>  Example: <code>&#39;/p/a/t/h&#39;</code></p>
 </li>
 <li><p><code>search</code>: The &#39;query string&#39; portion of the URL, including the leading
 question mark.</p>
 <p>  Example: <code>&#39;?query=string&#39;</code></p>
 </li>
-<li><p><code>path</code>: Concatenation of <code>pathname</code> and <code>search</code>.</p>
+<li><p><code>path</code>: Concatenation of <code>pathname</code> and <code>search</code>. No decoding is performed.</p>
 <p>  Example: <code>&#39;/p/a/t/h?query=string&#39;</code></p>
 </li>
 <li><p><code>query</code>: Either the &#39;params&#39; portion of the query string, or a
@@ -16372,7 +16503,8 @@ querystring-parsed object.</p>
 <p>Pass <code>true</code> as the second argument to also parse the query string using the
 <code>querystring</code> module. If <code>true</code> then the <code>query</code> property will always be
 assigned an object, and the <code>search</code> property will always be a (possibly
-empty) string.  Defaults to <code>false</code>.
+empty) string. If <code>false</code> then the <code>query</code> property will not be parsed or
+decoded. Defaults to <code>false</code>.
 
 </p>
 <p>Pass <code>true</code> as the third argument to treat <code>//foo/bar</code> as

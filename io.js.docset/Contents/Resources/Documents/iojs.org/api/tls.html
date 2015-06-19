@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>TLS (SSL) io.js v2.1.0 Manual &amp; Documentation</title>
+  <title>TLS (SSL) io.js v2.3.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="tls" class="interior">
       <header>
-        <h1>io.js v2.1.0 Documentation</h1>
+        <h1>io.js v2.3.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -322,7 +322,10 @@ on the format, see the <a href="http://www.openssl.org/docs/apps/ciphers.html#CI
 </li>
 <li><p><code>ecdhCurve</code>: A string describing a named curve to use for ECDH key agreement
 or false to disable ECDH.</p>
-<p>Defaults to <code>prime256v1</code>. Consult <a href="http://www.rfc-editor.org/rfc/rfc4492.txt">RFC 4492</a> for more details.</p>
+<p>Defaults to <code>prime256v1</code> (NIST P-256). Use <a href="crypto.html#crypto_crypto_getcurves">crypto.getCurves()</a> to obtain
+a list of available curve names. On recent releases,
+<code>openssl ecparam -list_curves</code> will also display the name and description of
+each available elliptic curve.</p>
 </li>
 <li><p><code>dhparam</code>: A string or <code>Buffer</code> containing Diffie Hellman parameters,
 required for Perfect Forward Secrecy. Use <code>openssl dhparam</code> to create it.

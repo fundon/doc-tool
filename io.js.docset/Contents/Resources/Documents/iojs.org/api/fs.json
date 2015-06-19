@@ -33,7 +33,7 @@
           "textRaw": "fs.renameSync(oldPath, newPath)",
           "type": "method",
           "name": "renameSync",
-          "desc": "<p>Synchronous rename(2).\n\n</p>\n",
+          "desc": "<p>Synchronous rename(2). Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -72,7 +72,7 @@
           "textRaw": "fs.ftruncateSync(fd, len)",
           "type": "method",
           "name": "ftruncateSync",
-          "desc": "<p>Synchronous ftruncate(2).\n\n</p>\n",
+          "desc": "<p>Synchronous ftruncate(2). Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -111,7 +111,7 @@
           "textRaw": "fs.truncateSync(path, len)",
           "type": "method",
           "name": "truncateSync",
-          "desc": "<p>Synchronous truncate(2).\n\n</p>\n",
+          "desc": "<p>Synchronous truncate(2). Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -153,7 +153,7 @@
           "textRaw": "fs.chownSync(path, uid, gid)",
           "type": "method",
           "name": "chownSync",
-          "desc": "<p>Synchronous chown(2).\n\n</p>\n",
+          "desc": "<p>Synchronous chown(2). Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -198,7 +198,7 @@
           "textRaw": "fs.fchownSync(fd, uid, gid)",
           "type": "method",
           "name": "fchownSync",
-          "desc": "<p>Synchronous fchown(2).\n\n</p>\n",
+          "desc": "<p>Synchronous fchown(2). Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -243,7 +243,7 @@
           "textRaw": "fs.lchownSync(path, uid, gid)",
           "type": "method",
           "name": "lchownSync",
-          "desc": "<p>Synchronous lchown(2).\n\n</p>\n",
+          "desc": "<p>Synchronous lchown(2). Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -285,7 +285,7 @@
           "textRaw": "fs.chmodSync(path, mode)",
           "type": "method",
           "name": "chmodSync",
-          "desc": "<p>Synchronous chmod(2).\n\n</p>\n",
+          "desc": "<p>Synchronous chmod(2). Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -324,7 +324,7 @@
           "textRaw": "fs.fchmodSync(fd, mode)",
           "type": "method",
           "name": "fchmodSync",
-          "desc": "<p>Synchronous fchmod(2).\n\n</p>\n",
+          "desc": "<p>Synchronous fchmod(2). Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -363,7 +363,7 @@
           "textRaw": "fs.lchmodSync(path, mode)",
           "type": "method",
           "name": "lchmodSync",
-          "desc": "<p>Synchronous lchmod(2).\n\n</p>\n",
+          "desc": "<p>Synchronous lchmod(2). Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -501,7 +501,7 @@
           "textRaw": "fs.linkSync(srcpath, dstpath)",
           "type": "method",
           "name": "linkSync",
-          "desc": "<p>Synchronous link(2).\n\n</p>\n",
+          "desc": "<p>Synchronous link(2). Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -544,7 +544,7 @@
           "textRaw": "fs.symlinkSync(destination, path[, type])",
           "type": "method",
           "name": "symlinkSync",
-          "desc": "<p>Synchronous symlink(2).\n\n</p>\n",
+          "desc": "<p>Synchronous symlink(2). Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -658,7 +658,7 @@
           "textRaw": "fs.unlinkSync(path)",
           "type": "method",
           "name": "unlinkSync",
-          "desc": "<p>Synchronous unlink(2).\n\n</p>\n",
+          "desc": "<p>Synchronous unlink(2). Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -691,7 +691,7 @@
           "textRaw": "fs.rmdirSync(path)",
           "type": "method",
           "name": "rmdirSync",
-          "desc": "<p>Synchronous rmdir(2).\n\n</p>\n",
+          "desc": "<p>Synchronous rmdir(2). Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -728,7 +728,7 @@
           "textRaw": "fs.mkdirSync(path[, mode])",
           "type": "method",
           "name": "mkdirSync",
-          "desc": "<p>Synchronous mkdir(2).\n\n</p>\n",
+          "desc": "<p>Synchronous mkdir(2). Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -798,7 +798,7 @@
           "textRaw": "fs.closeSync(fd)",
           "type": "method",
           "name": "closeSync",
-          "desc": "<p>Synchronous close(2).\n\n</p>\n",
+          "desc": "<p>Synchronous close(2). Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -838,7 +838,7 @@
           "textRaw": "fs.openSync(path, flags[, mode])",
           "type": "method",
           "name": "openSync",
-          "desc": "<p>Synchronous version of <code>fs.open()</code>.\n\n</p>\n",
+          "desc": "<p>Synchronous version of <code>fs.open()</code>. Returns an integer representing the file\ndescriptor.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -872,19 +872,6 @@
                 },
                 {
                   "name": "mtime"
-                }
-              ]
-            },
-            {
-              "params": [
-                {
-                  "name": "path"
-                },
-                {
-                  "name": "atime"
-                },
-                {
-                  "name": "mtime"
                 },
                 {
                   "name": "callback"
@@ -897,7 +884,7 @@
           "textRaw": "fs.utimesSync(path, atime, mtime)",
           "type": "method",
           "name": "utimesSync",
-          "desc": "<p>Change file timestamps of the file referenced by the supplied path.\n\n</p>\n",
+          "desc": "<p>Synchronous version of <code>fs.utimes()</code>. Returns <code>undefined</code>.\n\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -930,19 +917,6 @@
                 },
                 {
                   "name": "mtime"
-                }
-              ]
-            },
-            {
-              "params": [
-                {
-                  "name": "fd"
-                },
-                {
-                  "name": "atime"
-                },
-                {
-                  "name": "mtime"
                 },
                 {
                   "name": "callback"
@@ -955,7 +929,7 @@
           "textRaw": "fs.futimesSync(fd, atime, mtime)",
           "type": "method",
           "name": "futimesSync",
-          "desc": "<p>Change the file timestamps of a file referenced by the supplied file\ndescriptor.\n\n</p>\n",
+          "desc": "<p>Synchronous version of <code>fs.futimes()</code>. Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -994,7 +968,7 @@
           "textRaw": "fs.fsyncSync(fd)",
           "type": "method",
           "name": "fsyncSync",
-          "desc": "<p>Synchronous fsync(2).\n\n</p>\n",
+          "desc": "<p>Synchronous fsync(2). Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -1204,7 +1178,7 @@
                   "type": "String"
                 },
                 {
-                  "textRaw": "`options` {Object} ",
+                  "textRaw": "`options` {Object | String} ",
                   "options": [
                     {
                       "textRaw": "`encoding` {String | Null} default = `null` ",
@@ -1220,7 +1194,7 @@
                     }
                   ],
                   "name": "options",
-                  "type": "Object",
+                  "type": "Object | String",
                   "optional": true
                 },
                 {
@@ -1245,7 +1219,7 @@
               ]
             }
           ],
-          "desc": "<p>Asynchronously reads the entire contents of a file. Example:\n\n</p>\n<pre><code>fs.readFile(&#39;/etc/passwd&#39;, function (err, data) {\n  if (err) throw err;\n  console.log(data);\n});</code></pre>\n<p>The callback is passed two arguments <code>(err, data)</code>, where <code>data</code> is the\ncontents of the file.\n\n</p>\n<p>If no encoding is specified, then the raw buffer is returned.\n\n\n</p>\n"
+          "desc": "<p>Asynchronously reads the entire contents of a file. Example:\n\n</p>\n<pre><code>fs.readFile(&#39;/etc/passwd&#39;, function (err, data) {\n  if (err) throw err;\n  console.log(data);\n});</code></pre>\n<p>The callback is passed two arguments <code>(err, data)</code>, where <code>data</code> is the\ncontents of the file.\n\n</p>\n<p>If no encoding is specified, then the raw buffer is returned.\n\n</p>\n<p>If <code>options</code> is a string, then it specifies the encoding. Example:\n\n</p>\n<pre><code>fs.readFile(&#39;/etc/passwd&#39;, &#39;utf8&#39;, callback);</code></pre>\n"
         },
         {
           "textRaw": "fs.readFileSync(filename[, options])",
@@ -1284,7 +1258,7 @@
                   "type": "String | Buffer"
                 },
                 {
-                  "textRaw": "`options` {Object} ",
+                  "textRaw": "`options` {Object | String} ",
                   "options": [
                     {
                       "textRaw": "`encoding` {String | Null} default = `'utf8'` ",
@@ -1306,7 +1280,7 @@
                     }
                   ],
                   "name": "options",
-                  "type": "Object",
+                  "type": "Object | String",
                   "optional": true
                 },
                 {
@@ -1334,13 +1308,13 @@
               ]
             }
           ],
-          "desc": "<p>Asynchronously writes data to a file, replacing the file if it already exists.\n<code>data</code> can be a string or a buffer.\n\n</p>\n<p>The <code>encoding</code> option is ignored if <code>data</code> is a buffer. It defaults\nto <code>&#39;utf8&#39;</code>.\n\n</p>\n<p>Example:\n\n</p>\n<pre><code>fs.writeFile(&#39;message.txt&#39;, &#39;Hello io.js&#39;, function (err) {\n  if (err) throw err;\n  console.log(&#39;It\\&#39;s saved!&#39;);\n});</code></pre>\n"
+          "desc": "<p>Asynchronously writes data to a file, replacing the file if it already exists.\n<code>data</code> can be a string or a buffer.\n\n</p>\n<p>The <code>encoding</code> option is ignored if <code>data</code> is a buffer. It defaults\nto <code>&#39;utf8&#39;</code>.\n\n</p>\n<p>Example:\n\n</p>\n<pre><code>fs.writeFile(&#39;message.txt&#39;, &#39;Hello io.js&#39;, function (err) {\n  if (err) throw err;\n  console.log(&#39;It\\&#39;s saved!&#39;);\n});</code></pre>\n<p>If <code>options</code> is a string, then it specifies the encoding. Example:\n\n</p>\n<pre><code>fs.writeFile(&#39;message.txt&#39;, &#39;Hello io.js&#39;, &#39;utf8&#39;, callback);</code></pre>\n"
         },
         {
           "textRaw": "fs.writeFileSync(filename, data[, options])",
           "type": "method",
           "name": "writeFileSync",
-          "desc": "<p>The synchronous version of <code>fs.writeFile</code>.\n\n</p>\n",
+          "desc": "<p>The synchronous version of <code>fs.writeFile</code>. Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -1376,7 +1350,7 @@
                   "type": "String | Buffer"
                 },
                 {
-                  "textRaw": "`options` {Object} ",
+                  "textRaw": "`options` {Object | String} ",
                   "options": [
                     {
                       "textRaw": "`encoding` {String | Null} default = `'utf8'` ",
@@ -1398,7 +1372,7 @@
                     }
                   ],
                   "name": "options",
-                  "type": "Object",
+                  "type": "Object | String",
                   "optional": true
                 },
                 {
@@ -1426,13 +1400,13 @@
               ]
             }
           ],
-          "desc": "<p>Asynchronously append data to a file, creating the file if it does not yet exist.\n<code>data</code> can be a string or a buffer.\n\n</p>\n<p>Example:\n\n</p>\n<pre><code>fs.appendFile(&#39;message.txt&#39;, &#39;data to append&#39;, function (err) {\n  if (err) throw err;\n  console.log(&#39;The &quot;data to append&quot; was appended to file!&#39;);\n});</code></pre>\n"
+          "desc": "<p>Asynchronously append data to a file, creating the file if it does not yet exist.\n<code>data</code> can be a string or a buffer.\n\n</p>\n<p>Example:\n\n</p>\n<pre><code>fs.appendFile(&#39;message.txt&#39;, &#39;data to append&#39;, function (err) {\n  if (err) throw err;\n  console.log(&#39;The &quot;data to append&quot; was appended to file!&#39;);\n});</code></pre>\n<p>If <code>options</code> is a string, then it specifies the encoding. Example:\n\n</p>\n<pre><code>fs.appendFile(&#39;message.txt&#39;, &#39;data to append&#39;, &#39;utf8&#39;, callback);</code></pre>\n"
         },
         {
           "textRaw": "fs.appendFileSync(filename, data[, options])",
           "type": "method",
           "name": "appendFileSync",
-          "desc": "<p>The synchronous version of <code>fs.appendFile</code>.\n\n</p>\n",
+          "desc": "<p>The synchronous version of <code>fs.appendFile</code>. Returns <code>undefined</code>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -1454,9 +1428,7 @@
           "textRaw": "fs.watchFile(filename[, options], listener)",
           "type": "method",
           "name": "watchFile",
-          "stability": 2,
-          "stabilityText": "Unstable.  Use fs.watch instead, if possible.",
-          "desc": "<p>Watch for changes on <code>filename</code>. The callback <code>listener</code> will be called each\ntime the file is accessed.\n\n</p>\n<p>The second argument is optional. The <code>options</code> if provided should be an object\ncontaining two members a boolean, <code>persistent</code>, and <code>interval</code>. <code>persistent</code>\nindicates whether the process should continue to run as long as files are\nbeing watched. <code>interval</code> indicates how often the target should be polled,\nin milliseconds. The default is <code>{ persistent: true, interval: 5007 }</code>.\n\n</p>\n<p>The <code>listener</code> gets two arguments the current stat object and the previous\nstat object:\n\n</p>\n<pre><code>fs.watchFile(&#39;message.text&#39;, function (curr, prev) {\n  console.log(&#39;the current mtime is: &#39; + curr.mtime);\n  console.log(&#39;the previous mtime was: &#39; + prev.mtime);\n});</code></pre>\n<p>These stat objects are instances of <code>fs.Stat</code>.\n\n</p>\n<p>If you want to be notified when the file was modified, not just accessed\nyou need to compare <code>curr.mtime</code> and <code>prev.mtime</code>.\n\n</p>\n",
+          "desc": "<p>Watch for changes on <code>filename</code>. The callback <code>listener</code> will be called each\ntime the file is accessed.\n\n</p>\n<p>The second argument is optional. The <code>options</code> if provided should be an object\ncontaining two members a boolean, <code>persistent</code>, and <code>interval</code>. <code>persistent</code>\nindicates whether the process should continue to run as long as files are\nbeing watched. <code>interval</code> indicates how often the target should be polled,\nin milliseconds. The default is <code>{ persistent: true, interval: 5007 }</code>.\n\n</p>\n<p>The <code>listener</code> gets two arguments the current stat object and the previous\nstat object:\n\n</p>\n<pre><code>fs.watchFile(&#39;message.text&#39;, function (curr, prev) {\n  console.log(&#39;the current mtime is: &#39; + curr.mtime);\n  console.log(&#39;the previous mtime was: &#39; + prev.mtime);\n});</code></pre>\n<p>These stat objects are instances of <code>fs.Stat</code>.\n\n</p>\n<p>If you want to be notified when the file was modified, not just accessed\nyou need to compare <code>curr.mtime</code> and <code>prev.mtime</code>.\n\n</p>\n<p><em>Note: <code>fs.watch</code> is more efficient than <code>fs.watchFile</code> and <code>fs.unwatchFile</code>.\n<code>fs.watch</code> should be used instead of <code>fs.watchFile</code> and <code>fs.unwatchFile</code>\nwhen possible.</em>\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -1478,9 +1450,7 @@
           "textRaw": "fs.unwatchFile(filename[, listener])",
           "type": "method",
           "name": "unwatchFile",
-          "stability": 2,
-          "stabilityText": "Unstable.  Use fs.watch instead, if possible.",
-          "desc": "<p>Stop watching for changes on <code>filename</code>. If <code>listener</code> is specified, only that\nparticular listener is removed. Otherwise, <em>all</em> listeners are removed and you\nhave effectively stopped watching <code>filename</code>.\n\n</p>\n<p>Calling <code>fs.unwatchFile()</code> with a filename that is not being watched is a\nno-op, not an error.\n\n</p>\n",
+          "desc": "<p>Stop watching for changes on <code>filename</code>. If <code>listener</code> is specified, only that\nparticular listener is removed. Otherwise, <em>all</em> listeners are removed and you\nhave effectively stopped watching <code>filename</code>.\n\n</p>\n<p>Calling <code>fs.unwatchFile()</code> with a filename that is not being watched is a\nno-op, not an error.\n\n</p>\n<p><em>Note: <code>fs.watch</code> is more efficient than <code>fs.watchFile</code> and <code>fs.unwatchFile</code>.\n<code>fs.watch</code> should be used instead of <code>fs.watchFile</code> and <code>fs.unwatchFile</code>\nwhen possible.</em>\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -1499,8 +1469,6 @@
           "textRaw": "fs.watch(filename[, options][, listener])",
           "type": "method",
           "name": "watch",
-          "stability": 2,
-          "stabilityText": "Unstable.",
           "desc": "<p>Watch for changes on <code>filename</code>, where <code>filename</code> is either a file or a\ndirectory.  The returned object is a <a href=\"#fs_class_fs_fswatcher\">fs.FSWatcher</a>.\n\n</p>\n<p>The second argument is optional. The <code>options</code> if provided should be an object.\nThe supported boolean members are <code>persistent</code> and <code>recursive</code>. <code>persistent</code>\nindicates whether the process should continue to run as long as files are being\nwatched. <code>recursive</code> indicates whether all subdirectories should be watched, or\nonly the current directory. This applies when a directory is specified, and only\non supported platforms (See Caveats below).\n\n</p>\n<p>The default is <code>{ persistent: true, recursive: false }</code>.\n\n</p>\n<p>The listener callback gets two arguments <code>(event, filename)</code>.  <code>event</code> is either\n&#39;rename&#39; or &#39;change&#39;, and <code>filename</code> is the name of the file which triggered\nthe event.\n\n</p>\n",
           "miscs": [
             {
@@ -1564,7 +1532,7 @@
           "textRaw": "fs.existsSync(path)",
           "type": "method",
           "name": "existsSync",
-          "desc": "<p>Synchronous version of <a href=\"fs.html#fs_fs_exists_path_callback\"><code>fs.exists</code></a>.\n\n</p>\n<p><code>fs.existsSync()</code> is <strong>deprecated</strong>. For supported alternatives please check\nout <a href=\"fs.html#fs_fs_statsync_path\"><code>fs.statSync</code></a> or\n<a href=\"fs.html#fs_fs_accesssync_path_mode\"><code>fs.accessSync</code></a>.\n\n</p>\n",
+          "desc": "<p>Synchronous version of <a href=\"fs.html#fs_fs_exists_path_callback\"><code>fs.exists</code></a>.\nReturns <code>true</code> if the file exists, <code>false</code> otherwise.\n\n</p>\n<p><code>fs.existsSync()</code> is <strong>deprecated</strong>. For supported alternatives please check\nout <a href=\"fs.html#fs_fs_statsync_path\"><code>fs.statSync</code></a> or\n<a href=\"fs.html#fs_fs_accesssync_path_mode\"><code>fs.accessSync</code></a>.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -1620,7 +1588,7 @@
           "textRaw": "fs.createReadStream(path[, options])",
           "type": "method",
           "name": "createReadStream",
-          "desc": "<p>Returns a new ReadStream object (See <code>Readable Stream</code>).\n\n</p>\n<p><code>options</code> is an object with the following defaults:\n\n</p>\n<pre><code>{ flags: &#39;r&#39;,\n  encoding: null,\n  fd: null,\n  mode: 0o666,\n  autoClose: true\n}</code></pre>\n<p><code>options</code> can include <code>start</code> and <code>end</code> values to read a range of bytes from\nthe file instead of the entire file.  Both <code>start</code> and <code>end</code> are inclusive and\nstart at 0. The <code>encoding</code> can be <code>&#39;utf8&#39;</code>, <code>&#39;ascii&#39;</code>, or <code>&#39;base64&#39;</code>.\n\n</p>\n<p>If <code>fd</code> is specified, <code>ReadStream</code> will ignore the <code>path</code> argument and will use\nthe specified file descriptor. This means that no <code>open</code> event will be emitted.\n\n</p>\n<p>If <code>autoClose</code> is false, then the file descriptor won&#39;t be closed, even if\nthere&#39;s an error.  It is your responsibility to close it and make sure\nthere&#39;s no file descriptor leak.  If <code>autoClose</code> is set to true (default\nbehavior), on <code>error</code> or <code>end</code> the file descriptor will be closed\nautomatically.\n\n</p>\n<p>An example to read the last 10 bytes of a file which is 100 bytes long:\n\n</p>\n<pre><code>fs.createReadStream(&#39;sample.txt&#39;, {start: 90, end: 99});</code></pre>\n",
+          "desc": "<p>Returns a new ReadStream object (See <code>Readable Stream</code>).\n\n</p>\n<p><code>options</code> is an object or string with the following defaults:\n\n</p>\n<pre><code>{ flags: &#39;r&#39;,\n  encoding: null,\n  fd: null,\n  mode: 0o666,\n  autoClose: true\n}</code></pre>\n<p><code>options</code> can include <code>start</code> and <code>end</code> values to read a range of bytes from\nthe file instead of the entire file.  Both <code>start</code> and <code>end</code> are inclusive and\nstart at 0. The <code>encoding</code> can be <code>&#39;utf8&#39;</code>, <code>&#39;ascii&#39;</code>, or <code>&#39;base64&#39;</code>.\n\n</p>\n<p>If <code>fd</code> is specified, <code>ReadStream</code> will ignore the <code>path</code> argument and will use\nthe specified file descriptor. This means that no <code>open</code> event will be emitted.\n\n</p>\n<p>If <code>autoClose</code> is false, then the file descriptor won&#39;t be closed, even if\nthere&#39;s an error.  It is your responsibility to close it and make sure\nthere&#39;s no file descriptor leak.  If <code>autoClose</code> is set to true (default\nbehavior), on <code>error</code> or <code>end</code> the file descriptor will be closed\nautomatically.\n\n</p>\n<p>An example to read the last 10 bytes of a file which is 100 bytes long:\n\n</p>\n<pre><code>fs.createReadStream(&#39;sample.txt&#39;, {start: 90, end: 99});</code></pre>\n<p>If <code>options</code> is a string, then it specifies the encoding.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -1639,7 +1607,7 @@
           "textRaw": "fs.createWriteStream(path[, options])",
           "type": "method",
           "name": "createWriteStream",
-          "desc": "<p>Returns a new WriteStream object (See <code>Writable Stream</code>).\n\n</p>\n<p><code>options</code> is an object with the following defaults:\n\n</p>\n<pre><code>{ flags: &#39;w&#39;,\n  encoding: null,\n  fd: null,\n  mode: 0o666 }</code></pre>\n<p><code>options</code> may also include a <code>start</code> option to allow writing data at\nsome position past the beginning of the file.  Modifying a file rather\nthan replacing it may require a <code>flags</code> mode of <code>r+</code> rather than the\ndefault mode <code>w</code>.\n\n</p>\n<p>Like <code>ReadStream</code> above, if <code>fd</code> is specified, <code>WriteStream</code> will ignore the\n<code>path</code> argument and will use the specified file descriptor. This means that no\n<code>open</code> event will be emitted.\n\n\n</p>\n",
+          "desc": "<p>Returns a new WriteStream object (See <code>Writable Stream</code>).\n\n</p>\n<p><code>options</code> is an object or string with the following defaults:\n\n</p>\n<pre><code>{ flags: &#39;w&#39;,\n  encoding: null,\n  fd: null,\n  mode: 0o666 }</code></pre>\n<p><code>options</code> may also include a <code>start</code> option to allow writing data at\nsome position past the beginning of the file.  Modifying a file rather\nthan replacing it may require a <code>flags</code> mode of <code>r+</code> rather than the\ndefault mode <code>w</code>. The <code>encoding</code> can be <code>&#39;utf8&#39;</code>, <code>&#39;ascii&#39;</code>, <code>binary</code>,\nor <code>&#39;base64&#39;</code>.\n\n</p>\n<p>Like <code>ReadStream</code> above, if <code>fd</code> is specified, <code>WriteStream</code> will ignore the\n<code>path</code> argument and will use the specified file descriptor. This means that no\n<code>open</code> event will be emitted.\n\n</p>\n<p>If <code>options</code> is a string, then it specifies the encoding.\n\n</p>\n",
           "signatures": [
             {
               "params": [

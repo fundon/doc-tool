@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Addons io.js v2.1.0 Manual &amp; Documentation</title>
+  <title>Addons io.js v2.3.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="addons" class="interior">
       <header>
-        <h1>io.js v2.1.0 Documentation</h1>
+        <h1>io.js v2.3.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -86,6 +86,10 @@
 <li><a href="#addons_wrapping_c_objects">Wrapping C++ objects</a></li>
 <li><a href="#addons_factory_of_wrapped_objects">Factory of wrapped objects</a></li>
 <li><a href="#addons_passing_wrapped_objects_around">Passing wrapped objects around</a></li>
+<li><a href="#addons_atexit_hooks">AtExit hooks</a><ul>
+<li><a href="#addons_void_atexit_callback_args">void AtExit(callback, args)</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -907,6 +911,76 @@ var obj2 = addon.createObject(20);
 var result = addon.add(obj1, obj2);
 
 console.log(result); // 30</code></pre>
+<h3>AtExit hooks<span><a class="mark" href="#addons_atexit_hooks" id="addons_atexit_hooks">#</a></span></h3>
+<h4>void AtExit(callback, args)<span><a class="mark" href="#addons_void_atexit_callback_args" id="addons_void_atexit_callback_args">#</a></span></h4>
+<ul>
+<li><code>callback</code>: <code>void (*)(void*)</code> - A pointer to the function to call at exit.</li>
+<li><code>args</code>: <code>void*</code> - A pointer to pass to the callback at exit.</li>
+</ul>
+<p>Registers exit hooks that run after the event loop has ended, but before the VM
+is killed.
+
+</p>
+<p>Callbacks are run in last-in, first-out order. AtExit takes two parameters:
+a pointer to a callback function to run at exit, and a pointer to untyped
+context data to be passed to that callback.
+
+</p>
+<p>The file <code>addon.cc</code> implements AtExit below:
+
+</p>
+<pre><code>// addon.cc
+#undef NDEBUG
+#include &lt;assert.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;node.h&gt;
+
+namespace demo {
+
+using node::AtExit;
+using v8::HandleScope;
+using v8::Isolate;
+using v8::Local;
+using v8::Object;
+
+static char cookie[] = &quot;yum yum&quot;;
+static int at_exit_cb1_called = 0;
+static int at_exit_cb2_called = 0;
+
+static void at_exit_cb1(void* arg) {
+  Isolate* isolate = static_cast&lt;Isolate*&gt;(arg);
+  HandleScope scope(isolate);
+  Local&lt;Object&gt; obj = Object::New(isolate);
+  assert(!obj.IsEmpty()); // assert VM is still alive
+  assert(obj-&gt;IsObject());
+  at_exit_cb1_called++;
+}
+
+static void at_exit_cb2(void* arg) {
+  assert(arg == static_cast&lt;void*&gt;(cookie));
+  at_exit_cb2_called++;
+}
+
+static void sanity_check(void*) {
+  assert(at_exit_cb1_called == 1);
+  assert(at_exit_cb2_called == 2);
+}
+
+void init(Local&lt;Object&gt; exports) {
+  AtExit(sanity_check);
+  AtExit(at_exit_cb2, cookie);
+  AtExit(at_exit_cb2, cookie);
+  AtExit(at_exit_cb1, exports-&gt;GetIsolate());
+}
+
+NODE_MODULE(addon, init);
+
+}  // namespace demo</code></pre>
+<p>Test in JavaScript by running:
+
+</p>
+<pre><code>// test.js
+var addon = require(&#39;./build/Release/addon&#39;);</code></pre>
 
       </div>
     </div>

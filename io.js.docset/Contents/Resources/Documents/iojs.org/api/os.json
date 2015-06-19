@@ -20,6 +20,17 @@
           ]
         },
         {
+          "textRaw": "os.homedir()",
+          "type": "method",
+          "name": "homedir",
+          "desc": "<p>Returns the home directory of the current user.\n\n</p>\n",
+          "signatures": [
+            {
+              "params": []
+            }
+          ]
+        },
+        {
           "textRaw": "os.endianness()",
           "type": "method",
           "name": "endianness",
