@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>About this Documentation io.js v2.3.0 Manual &amp; Documentation</title>
+  <title>About this Documentation io.js v2.3.4 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="all" class="interior">
       <header>
-        <h1>io.js v2.3.0 Documentation</h1>
+        <h1>io.js v2.3.4 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -10457,8 +10457,8 @@ That is, <code>circle.js</code> must be in the same directory as <code>foo.js</c
 <code>require(&#39;./circle&#39;)</code> to find it.
 
 </p>
-<p>Without a leading &#39;/&#39; or &#39;./&#39; to indicate a file, the module is either a
-&quot;core module&quot; or is loaded from a <code>node_modules</code> folder.
+<p>Without a leading &#39;/&#39;, &#39;./&#39;, or &#39;../&#39; to indicate a file, the module is either a
+core module or is loaded from a <code>node_modules</code> folder.
 
 </p>
 <p>If the given path does not exist, <code>require()</code> will throw an Error with its
@@ -12101,10 +12101,6 @@ console.log(&#39;This will not run.&#39;);</code></pre>
 handling.
 
 </p>
-<p>Don&#39;t use it, use <a href="domain.html">domains</a> instead. If you do use it, restart
-your application after every unhandled exception!
-
-</p>
 <p>Do <em>not</em> use it as the io.js equivalent of <code>On Error Resume Next</code>. An
 unhandled exception means your application - and by extension io.js itself -
 is in an undefined state. Blindly resuming means <em>anything</em> could happen.
@@ -12112,6 +12108,12 @@ is in an undefined state. Blindly resuming means <em>anything</em> could happen.
 </p>
 <p>Think of resuming as pulling the power cord when you are upgrading your system.
 Nine out of ten times nothing happens - but the 10th time, your system is bust.
+
+</p>
+<p><code>uncaughtException</code> should be used to perform synchronous cleanup before
+shutting down the process. It is not safe to resume normal operation after
+<code>uncaughtException</code>. If you do use it, restart your application after every
+unhandled exception!
 
 </p>
 <p>You have been warned.
@@ -14308,7 +14310,7 @@ event will indicate when it is appropriate to begin writing more data
 to the stream.
 
 </p>
-<pre><code class="javascript">// Write the data to the supplied writable stream 1MM times.
+<pre><code class="javascript">// Write the data to the supplied writable stream one million times.
 // Be attentive to back-pressure.
 function writeOneMillionTimes(writer, data, encoding, callback) {
   var i = 1000000;
