@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>REPL io.js v2.3.4 Manual &amp; Documentation</title>
+  <title>REPL io.js v2.5.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="repl" class="interior">
       <header>
-        <h1>io.js v2.3.4 Documentation</h1>
+        <h1>io.js v2.5.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -82,7 +82,10 @@
 <li><a href="#repl_event_reset">Event: &#39;reset&#39;</a></li>
 </ul>
 </li>
-<li><a href="#repl_repl_features">REPL Features</a></li>
+<li><a href="#repl_repl_features">REPL Features</a><ul>
+<li><a href="#repl_customizing_object_displays_in_the_repl">Customizing Object displays in the REPL</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -349,6 +352,27 @@ command.  Press twice on a blank line to forcibly exit.</li>
 <li><code>&lt;ctrl&gt;D</code> - Similar to the <code>.exit</code> keyword.</li>
 <li><code>&lt;tab&gt;</code> - Show both global and local(scope) variables</li>
 </ul>
+<h3>Customizing Object displays in the REPL<span><a class="mark" href="#repl_customizing_object_displays_in_the_repl" id="repl_customizing_object_displays_in_the_repl">#</a></span></h3>
+<p>The REPL module internally uses
+<a href="util.html#util_util_inspect_object_options">util.inspect()</a>, when printing values. However, <code>util.inspect</code> delegates the
+ call to the object&#39;s <code>inspect()</code> function, if it has one. You can read more
+ about this delegation <a href="util.html#util_custom_inspect_function_on_objects">here</a>.
+
+</p>
+<p>For example, if you have defined an <code>inspect()</code> function on an object, like this:
+
+</p>
+<pre><code>&gt; var obj = { foo: &#39;this will not show up in the inspect() output&#39; };
+undefined
+&gt; obj.inspect = function() {
+...   return { bar: &#39;baz&#39; };
+... };
+[Function]</code></pre>
+<p>and try to print <code>obj</code> in REPL, it will invoke the custom <code>inspect()</code> function:
+
+</p>
+<pre><code>&gt; obj
+{ bar: &#39;baz&#39; }</code></pre>
 
       </div>
     </div>

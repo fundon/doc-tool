@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Cluster io.js v2.3.4 Manual &amp; Documentation</title>
+  <title>Cluster io.js v2.5.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="cluster" class="interior">
       <header>
-        <h1>io.js v2.3.4 Documentation</h1>
+        <h1>io.js v2.5.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -87,6 +87,7 @@
 <li><a href="#cluster_event_listening">Event: &#39;listening&#39;</a></li>
 <li><a href="#cluster_event_disconnect">Event: &#39;disconnect&#39;</a></li>
 <li><a href="#cluster_event_exit">Event: &#39;exit&#39;</a></li>
+<li><a href="#cluster_event_message">Event: &#39;message&#39;</a></li>
 <li><a href="#cluster_event_setup">Event: &#39;setup&#39;</a></li>
 <li><a href="#cluster_cluster_setupmaster_settings">cluster.setupMaster([settings])</a></li>
 <li><a href="#cluster_cluster_fork_env">cluster.fork([env])</a></li>
@@ -102,7 +103,7 @@
 <li><a href="#cluster_worker_disconnect">worker.disconnect()</a></li>
 <li><a href="#cluster_worker_isdead">worker.isDead()</a></li>
 <li><a href="#cluster_worker_isconnected">worker.isConnected()</a></li>
-<li><a href="#cluster_event_message">Event: &#39;message&#39;</a></li>
+<li><a href="#cluster_event_message_1">Event: &#39;message&#39;</a></li>
 <li><a href="#cluster_event_online_1">Event: &#39;online&#39;</a></li>
 <li><a href="#cluster_event_listening_1">Event: &#39;listening&#39;</a></li>
 <li><a href="#cluster_event_disconnect_1">Event: &#39;disconnect&#39;</a></li>
@@ -388,6 +389,18 @@ the process to be killed.</li>
   cluster.fork();
 });</code></pre>
 <p>See <a href="child_process.html#child_process_event_exit">child_process event: &#39;exit&#39;</a>.
+
+</p>
+<h2>Event: &#39;message&#39;<span><a class="mark" href="#cluster_event_message" id="cluster_event_message">#</a></span></h2>
+<div class="signature"><ul>
+<li><code>worker</code> <span class="type">Worker object</span></li>
+<li><code>message</code> <span class="type">Object</span></li>
+</div></ul>
+<p>Emitted when any worker receives a message.
+
+</p>
+<p>See
+<a href="child_process.html#child_process_event_message">child_process event: &#39;message&#39;</a>.
 
 </p>
 <h2>Event: &#39;setup&#39;<span><a class="mark" href="#cluster_event_setup" id="cluster_event_setup">#</a></span></h2>
@@ -701,10 +714,13 @@ channel, <code>false</code> otherwise. A worker is connected to its master after
 created. It is disconnected after the <code>disconnect</code> event is emitted.
 
 </p>
-<h3>Event: &#39;message&#39;<span><a class="mark" href="#cluster_event_message" id="cluster_event_message">#</a></span></h3>
+<h3>Event: &#39;message&#39;<span><a class="mark" href="#cluster_event_message_1" id="cluster_event_message_1">#</a></span></h3>
 <div class="signature"><ul>
 <li><code>message</code> <span class="type">Object</span></li>
 </div></ul>
+<p>Similar to the <code>cluster.on(&#39;message&#39;)</code> event, but specific to this worker.
+
+</p>
 <p>This event is the same as the one provided by <code>child_process.fork()</code>.
 
 </p>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>TLS (SSL) io.js v2.3.4 Manual &amp; Documentation</title>
+  <title>TLS (SSL) io.js v2.5.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="tls" class="interior">
       <header>
-        <h1>io.js v2.3.4 Documentation</h1>
+        <h1>io.js v2.5.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -101,6 +101,8 @@
 <li><a href="#tls_server_listen_port_hostname_callback">server.listen(port[, hostname][, callback])</a></li>
 <li><a href="#tls_server_close_callback">server.close([callback])</a></li>
 <li><a href="#tls_server_address">server.address()</a></li>
+<li><a href="#tls_server_getticketkeys">server.getTicketKeys()</a></li>
+<li><a href="#tls_server_setticketkeys_keys">server.setTicketKeys(keys)</a></li>
 <li><a href="#tls_server_addcontext_hostname_context">server.addContext(hostname, context)</a></li>
 <li><a href="#tls_server_maxconnections">server.maxConnections</a></li>
 <li><a href="#tls_server_connections">server.connections</a></li>
@@ -803,6 +805,23 @@ event.  Optionally, you can pass a callback to listen for the <code>&#39;close&#
 <p>Returns the bound address, the address family name and port of the
 server as reported by the operating system.  See <a href="net.html#net_server_address">net.Server.address()</a> for
 more information.
+
+</p>
+<h3>server.getTicketKeys()<span><a class="mark" href="#tls_server_getticketkeys" id="tls_server_getticketkeys">#</a></span></h3>
+<p>Returns <code>Buffer</code> instance holding the keys currently used for
+encryption/decryption of the <a href="https://www.ietf.org/rfc/rfc5077.txt">TLS Session Tickets</a>
+
+</p>
+<h3>server.setTicketKeys(keys)<span><a class="mark" href="#tls_server_setticketkeys_keys" id="tls_server_setticketkeys_keys">#</a></span></h3>
+<p>Updates the keys for encryption/decryption of the <a href="https://www.ietf.org/rfc/rfc5077.txt">TLS Session Tickets</a>.
+
+</p>
+<p>NOTE: the buffer should be 48 bytes long. See server <code>ticketKeys</code> option for
+more information oh how it is going to be used.
+
+</p>
+<p>NOTE: the change is effective only for the future server connections. Existing
+or currently pending server connections will use previous keys.
 
 </p>
 <h3>server.addContext(hostname, context)<span><a class="mark" href="#tls_server_addcontext_hostname_context" id="tls_server_addcontext_hostname_context">#</a></span></h3>

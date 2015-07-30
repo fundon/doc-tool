@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>File System io.js v2.3.4 Manual &amp; Documentation</title>
+  <title>File System io.js v2.5.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="fs" class="interior">
       <header>
-        <h1>io.js v2.3.4 Documentation</h1>
+        <h1>io.js v2.5.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -794,6 +794,10 @@ stat object:
 you need to compare <code>curr.mtime</code> and <code>prev.mtime</code>.
 
 </p>
+<p><em>Note: when an <code>fs.watchFile</code> operation results in an <code>ENOENT</code> error, it will
+invoke the callback once. This is a change in functionality since v0.10.</em>
+
+</p>
 <p><em>Note: <code>fs.watch</code> is more efficient than <code>fs.watchFile</code> and <code>fs.unwatchFile</code>.
 <code>fs.watch</code> should be used instead of <code>fs.watchFile</code> and <code>fs.unwatchFile</code>
 when possible.</em>
@@ -900,7 +904,7 @@ Then call the <code>callback</code> argument with either true or false.  Example
 
 </p>
 <pre><code>fs.exists(&#39;/etc/passwd&#39;, function (exists) {
-  util.debug(exists ? &quot;it&#39;s there&quot; : &quot;no passwd!&quot;);
+  console.log(exists ? &quot;it&#39;s there&quot; : &#39;no passwd!&#39;);
 });</code></pre>
 <p><code>fs.exists()</code> is an anachronism and exists only for historical reasons.
 There should almost never be a reason to use it in your own code.
@@ -946,8 +950,8 @@ argument will be populated. The following example checks if the file
 <code>/etc/passwd</code> can be read and written by the current process.
 
 </p>
-<pre><code>fs.access(&#39;/etc/passwd&#39;, fs.R_OK | fs.W_OK, function(err) {
-  util.debug(err ? &#39;no access!&#39; : &#39;can read/write&#39;);
+<pre><code>fs.access(&#39;/etc/passwd&#39;, fs.R_OK | fs.W_OK, function (err) {
+  console.log(err ? &#39;no access!&#39; : &#39;can read/write&#39;);
 });</code></pre>
 <h2>fs.accessSync(path[, mode])<span><a class="mark" href="#fs_fs_accesssync_path_mode" id="fs_fs_accesssync_path_mode">#</a></span></h2>
 <p>Synchronous version of <code>fs.access</code>. This throws if any accessibility checks

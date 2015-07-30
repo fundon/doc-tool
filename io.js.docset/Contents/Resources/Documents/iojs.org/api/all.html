@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>About this Documentation io.js v2.3.4 Manual &amp; Documentation</title>
+  <title>About this Documentation io.js v2.5.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -62,7 +62,7 @@
 
     <div id="column1" data-id="all" class="interior">
       <header>
-        <h1>io.js v2.3.4 Documentation</h1>
+        <h1>io.js v2.5.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -236,6 +236,7 @@
 <li><a href="#all_event_listening">Event: &#39;listening&#39;</a></li>
 <li><a href="#all_event_disconnect_1">Event: &#39;disconnect&#39;</a></li>
 <li><a href="#all_event_exit_1">Event: &#39;exit&#39;</a></li>
+<li><a href="#all_event_message_1">Event: &#39;message&#39;</a></li>
 <li><a href="#all_event_setup">Event: &#39;setup&#39;</a></li>
 <li><a href="#all_cluster_setupmaster_settings">cluster.setupMaster([settings])</a></li>
 <li><a href="#all_cluster_fork_env">cluster.fork([env])</a></li>
@@ -251,7 +252,7 @@
 <li><a href="#all_worker_disconnect">worker.disconnect()</a></li>
 <li><a href="#all_worker_isdead">worker.isDead()</a></li>
 <li><a href="#all_worker_isconnected">worker.isConnected()</a></li>
-<li><a href="#all_event_message_1">Event: &#39;message&#39;</a></li>
+<li><a href="#all_event_message_2">Event: &#39;message&#39;</a></li>
 <li><a href="#all_event_online_1">Event: &#39;online&#39;</a></li>
 <li><a href="#all_event_listening_1">Event: &#39;listening&#39;</a></li>
 <li><a href="#all_event_disconnect_2">Event: &#39;disconnect&#39;</a></li>
@@ -389,7 +390,7 @@
 <li><a href="#all_dgram_createsocket_type_callback">dgram.createSocket(type[, callback])</a></li>
 <li><a href="#all_dgram_createsocket_options_callback">dgram.createSocket(options[, callback])</a></li>
 <li><a href="#all_class_dgram_socket">Class: dgram.Socket</a><ul>
-<li><a href="#all_event_message_2">Event: &#39;message&#39;</a></li>
+<li><a href="#all_event_message_3">Event: &#39;message&#39;</a></li>
 <li><a href="#all_event_listening_2">Event: &#39;listening&#39;</a></li>
 <li><a href="#all_event_close_1">Event: &#39;close&#39;</a></li>
 <li><a href="#all_event_error_2">Event: &#39;error&#39;</a></li>
@@ -987,7 +988,10 @@
 <li><a href="#all_event_reset">Event: &#39;reset&#39;</a></li>
 </ul>
 </li>
-<li><a href="#all_repl_features">REPL Features</a></li>
+<li><a href="#all_repl_features">REPL Features</a><ul>
+<li><a href="#all_customizing_object_displays_in_the_repl">Customizing Object displays in the REPL</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#all_smalloc">Smalloc</a><ul>
@@ -1129,6 +1133,8 @@
 <li><a href="#all_server_listen_port_hostname_callback">server.listen(port[, hostname][, callback])</a></li>
 <li><a href="#all_server_close_callback_3">server.close([callback])</a></li>
 <li><a href="#all_server_address_1">server.address()</a></li>
+<li><a href="#all_server_getticketkeys">server.getTicketKeys()</a></li>
+<li><a href="#all_server_setticketkeys_keys">server.setTicketKeys(keys)</a></li>
 <li><a href="#all_server_addcontext_hostname_context">server.addContext(hostname, context)</a></li>
 <li><a href="#all_server_maxconnections_1">server.maxConnections</a></li>
 <li><a href="#all_server_connections_1">server.connections</a></li>
@@ -1374,7 +1380,7 @@ knowledge of several libraries:
 creating objects, calling functions, etc.  Documented mostly in the
 <code>v8.h</code> header file (<code>deps/v8/include/v8.h</code> in the io.js source
 tree), which is also available
-<a href="http://izs.me/v8-docs/main.html">online</a>.</p>
+<a href="https://v8docs.nodesource.com/">online</a>.</p>
 </li>
 <li><p><a href="https://github.com/libuv/libuv">libuv</a>, C event loop library.
 Anytime one needs to wait for a file descriptor to become readable,
@@ -4402,6 +4408,18 @@ the process to be killed.</li>
 <p>See <a href="child_process.html#child_process_event_exit">child_process event: &#39;exit&#39;</a>.
 
 </p>
+<h2>Event: &#39;message&#39;<span><a class="mark" href="#all_event_message_1" id="all_event_message_1">#</a></span></h2>
+<div class="signature"><ul>
+<li><code>worker</code> <span class="type">Worker object</span></li>
+<li><code>message</code> <span class="type">Object</span></li>
+</div></ul>
+<p>Emitted when any worker receives a message.
+
+</p>
+<p>See
+<a href="child_process.html#child_process_event_message">child_process event: &#39;message&#39;</a>.
+
+</p>
 <h2>Event: &#39;setup&#39;<span><a class="mark" href="#all_event_setup" id="all_event_setup">#</a></span></h2>
 <div class="signature"><ul>
 <li><code>settings</code> <span class="type">Object</span></li>
@@ -4713,10 +4731,13 @@ channel, <code>false</code> otherwise. A worker is connected to its master after
 created. It is disconnected after the <code>disconnect</code> event is emitted.
 
 </p>
-<h3>Event: &#39;message&#39;<span><a class="mark" href="#all_event_message_1" id="all_event_message_1">#</a></span></h3>
+<h3>Event: &#39;message&#39;<span><a class="mark" href="#all_event_message_2" id="all_event_message_2">#</a></span></h3>
 <div class="signature"><ul>
 <li><code>message</code> <span class="type">Object</span></li>
 </div></ul>
+<p>Similar to the <code>cluster.on(&#39;message&#39;)</code> event, but specific to this worker.
+
+</p>
 <p>This event is the same as the one provided by <code>child_process.fork()</code>.
 
 </p>
@@ -6045,7 +6066,7 @@ with <code>socket.address().address</code> and <code>socket.address().port</code
 should be created via <code>dgram.createSocket(...)</code>
 
 </p>
-<h3>Event: &#39;message&#39;<span><a class="mark" href="#all_event_message_2" id="all_event_message_2">#</a></span></h3>
+<h3>Event: &#39;message&#39;<span><a class="mark" href="#all_event_message_3" id="all_event_message_3">#</a></span></h3>
 <div class="signature"><ul>
 <li><code>msg</code> Buffer object. The message</li>
 <li><code>rinfo</code> Object. Remote address information</li>
@@ -8353,6 +8374,10 @@ stat object:
 you need to compare <code>curr.mtime</code> and <code>prev.mtime</code>.
 
 </p>
+<p><em>Note: when an <code>fs.watchFile</code> operation results in an <code>ENOENT</code> error, it will
+invoke the callback once. This is a change in functionality since v0.10.</em>
+
+</p>
 <p><em>Note: <code>fs.watch</code> is more efficient than <code>fs.watchFile</code> and <code>fs.unwatchFile</code>.
 <code>fs.watch</code> should be used instead of <code>fs.watchFile</code> and <code>fs.unwatchFile</code>
 when possible.</em>
@@ -8459,7 +8484,7 @@ Then call the <code>callback</code> argument with either true or false.  Example
 
 </p>
 <pre><code>fs.exists(&#39;/etc/passwd&#39;, function (exists) {
-  util.debug(exists ? &quot;it&#39;s there&quot; : &quot;no passwd!&quot;);
+  console.log(exists ? &quot;it&#39;s there&quot; : &#39;no passwd!&#39;);
 });</code></pre>
 <p><code>fs.exists()</code> is an anachronism and exists only for historical reasons.
 There should almost never be a reason to use it in your own code.
@@ -8505,8 +8530,8 @@ argument will be populated. The following example checks if the file
 <code>/etc/passwd</code> can be read and written by the current process.
 
 </p>
-<pre><code>fs.access(&#39;/etc/passwd&#39;, fs.R_OK | fs.W_OK, function(err) {
-  util.debug(err ? &#39;no access!&#39; : &#39;can read/write&#39;);
+<pre><code>fs.access(&#39;/etc/passwd&#39;, fs.R_OK | fs.W_OK, function (err) {
+  console.log(err ? &#39;no access!&#39; : &#39;can read/write&#39;);
 });</code></pre>
 <h2>fs.accessSync(path[, mode])<span><a class="mark" href="#all_fs_accesssync_path_mode" id="all_fs_accesssync_path_mode">#</a></span></h2>
 <p>Synchronous version of <code>fs.access</code>. This throws if any accessibility checks
@@ -11760,6 +11785,10 @@ On Windows backslashes are used.
 <pre><code>path.normalize(&#39;/foo/bar//baz/asdf/quux/..&#39;)
 // returns
 &#39;/foo/bar/baz/asdf&#39;</code></pre>
+<p><em>Note:</em> If the path string passed as argument is a zero-length string then <code>&#39;.&#39;</code>
+        will be returned, which represents the current working directory.
+
+</p>
 <h2>path.join([path1][, path2][, ...])<span><a class="mark" href="#all_path_join_path1_path2" id="all_path_join_path1_path2">#</a></span></h2>
 <p>Join all arguments together and normalize the resulting path.
 
@@ -11778,6 +11807,12 @@ silently ignored.  In v0.10 and up, an exception is thrown.
 path.join(&#39;foo&#39;, {}, &#39;bar&#39;)
 // throws exception
 TypeError: Arguments to path.join must be strings</code></pre>
+<p><em>Note:</em> If the arguments to <code>join</code> have zero-length strings, unlike other path
+        module functions, they will be ignored. If the joined path string is a
+        zero-length string then <code>&#39;.&#39;</code> will be returned, which represents the
+        current working directory.
+
+</p>
 <h2>path.resolve([from ...], to)<span><a class="mark" href="#all_path_resolve_from_to" id="all_path_resolve_from_to">#</a></span></h2>
 <p>Resolves <code>to</code> to an absolute path.
 
@@ -11819,6 +11854,10 @@ path.resolve(&#39;/foo/bar&#39;, &#39;/tmp/file/&#39;)
 path.resolve(&#39;wwwroot&#39;, &#39;static_files/png/&#39;, &#39;../gif/image.gif&#39;)
 // if currently in /home/myself/iojs, it returns
 &#39;/home/myself/iojs/wwwroot/static_files/gif/image.gif&#39;</code></pre>
+<p><em>Note:</em> If the arguments to <code>resolve</code> have zero-length strings then the current
+        working directory will be used instead of them.
+
+</p>
 <h2>path.isAbsolute(path)<span><a class="mark" href="#all_path_isabsolute_path" id="all_path_isabsolute_path">#</a></span></h2>
 <p>Determines whether <code>path</code> is an absolute path. An absolute path will always
 resolve to the same location, regardless of the working directory.
@@ -11836,8 +11875,13 @@ path.isAbsolute(&#39;.&#39;)        // false</code></pre>
 </p>
 <pre><code>path.isAbsolute(&#39;//server&#39;)  // true
 path.isAbsolute(&#39;C:/foo/..&#39;) // true
-path.isAbsolute(&#39;bar\\baz&#39;)   // false
+path.isAbsolute(&#39;bar\\baz&#39;)  // false
 path.isAbsolute(&#39;.&#39;)         // false</code></pre>
+<p><em>Note:</em> If the path string passed as parameter is a zero-length string, unlike
+        other path module functions, it will be used as-is and <code>false</code> will be
+        returned.
+
+</p>
 <h2>path.relative(from, to)<span><a class="mark" href="#all_path_relative_from_to" id="all_path_relative_from_to">#</a></span></h2>
 <p>Solve the relative path from <code>from</code> to <code>to</code>.
 
@@ -11858,6 +11902,11 @@ path from one to the other.  This is actually the reverse transform of
 path.relative(&#39;/data/orandea/test/aaa&#39;, &#39;/data/orandea/impl/bbb&#39;)
 // returns
 &#39;../../impl/bbb&#39;</code></pre>
+<p><em>Note:</em> If the arguments to <code>relative</code> have zero-length strings then the current
+        working directory will be used instead of the zero-length strings. If
+        both the paths are the same then a zero-length string will be returned.
+
+</p>
 <h2>path.dirname(p)<span><a class="mark" href="#all_path_dirname_p" id="all_path_dirname_p">#</a></span></h2>
 <p>Return the directory name of a path.  Similar to the Unix <code>dirname</code> command.
 
@@ -13625,6 +13674,27 @@ command.  Press twice on a blank line to forcibly exit.</li>
 <li><code>&lt;ctrl&gt;D</code> - Similar to the <code>.exit</code> keyword.</li>
 <li><code>&lt;tab&gt;</code> - Show both global and local(scope) variables</li>
 </ul>
+<h3>Customizing Object displays in the REPL<span><a class="mark" href="#all_customizing_object_displays_in_the_repl" id="all_customizing_object_displays_in_the_repl">#</a></span></h3>
+<p>The REPL module internally uses
+<a href="util.html#util_util_inspect_object_options">util.inspect()</a>, when printing values. However, <code>util.inspect</code> delegates the
+ call to the object&#39;s <code>inspect()</code> function, if it has one. You can read more
+ about this delegation <a href="util.html#util_custom_inspect_function_on_objects">here</a>.
+
+</p>
+<p>For example, if you have defined an <code>inspect()</code> function on an object, like this:
+
+</p>
+<pre><code>&gt; var obj = { foo: &#39;this will not show up in the inspect() output&#39; };
+undefined
+&gt; obj.inspect = function() {
+...   return { bar: &#39;baz&#39; };
+... };
+[Function]</code></pre>
+<p>and try to print <code>obj</code> in REPL, it will invoke the custom <code>inspect()</code> function:
+
+</p>
+<pre><code>&gt; obj
+{ bar: &#39;baz&#39; }</code></pre>
 <h1>Smalloc<span><a class="mark" href="#all_smalloc" id="all_smalloc">#</a></span></h1>
 <pre class="api_stability_0">Stability: 0 - Deprecated</pre><p>This module has been deprecated for technical reasons and will be removed when
 the V8 JavaScript engine is upgraded to version 4.3 or 4.4.  It is recommended
@@ -16174,6 +16244,23 @@ event.  Optionally, you can pass a callback to listen for the <code>&#39;close&#
 <p>Returns the bound address, the address family name and port of the
 server as reported by the operating system.  See <a href="net.html#net_server_address">net.Server.address()</a> for
 more information.
+
+</p>
+<h3>server.getTicketKeys()<span><a class="mark" href="#all_server_getticketkeys" id="all_server_getticketkeys">#</a></span></h3>
+<p>Returns <code>Buffer</code> instance holding the keys currently used for
+encryption/decryption of the <a href="https://www.ietf.org/rfc/rfc5077.txt">TLS Session Tickets</a>
+
+</p>
+<h3>server.setTicketKeys(keys)<span><a class="mark" href="#all_server_setticketkeys_keys" id="all_server_setticketkeys_keys">#</a></span></h3>
+<p>Updates the keys for encryption/decryption of the <a href="https://www.ietf.org/rfc/rfc5077.txt">TLS Session Tickets</a>.
+
+</p>
+<p>NOTE: the buffer should be 48 bytes long. See server <code>ticketKeys</code> option for
+more information oh how it is going to be used.
+
+</p>
+<p>NOTE: the change is effective only for the future server connections. Existing
+or currently pending server connections will use previous keys.
 
 </p>
 <h3>server.addContext(hostname, context)<span><a class="mark" href="#all_server_addcontext_hostname_context" id="all_server_addcontext_hostname_context">#</a></span></h3>

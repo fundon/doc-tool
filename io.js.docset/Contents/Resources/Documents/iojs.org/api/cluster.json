@@ -126,6 +126,13 @@
           "desc": "<p>When any of the workers die the cluster module will emit the &#39;exit&#39; event.\n\n</p>\n<p>This can be used to restart the worker by calling <code>.fork()</code> again.\n\n</p>\n<pre><code>cluster.on(&#39;exit&#39;, function(worker, code, signal) {\n  console.log(&#39;worker %d died (%s). restarting...&#39;,\n    worker.process.pid, signal || code);\n  cluster.fork();\n});</code></pre>\n<p>See <a href=\"child_process.html#child_process_event_exit\">child_process event: &#39;exit&#39;</a>.\n\n</p>\n"
         },
         {
+          "textRaw": "Event: 'message'",
+          "type": "event",
+          "name": "message",
+          "params": [],
+          "desc": "<p>Emitted when any worker receives a message.\n\n</p>\n<p>See\n<a href=\"child_process.html#child_process_event_message\">child_process event: &#39;message&#39;</a>.\n\n</p>\n"
+        },
+        {
           "textRaw": "Event: 'setup'",
           "type": "event",
           "name": "setup",
@@ -370,7 +377,7 @@
               "type": "event",
               "name": "message",
               "params": [],
-              "desc": "<p>This event is the same as the one provided by <code>child_process.fork()</code>.\n\n</p>\n<p>In a worker you can also use <code>process.on(&#39;message&#39;)</code>.\n\n</p>\n<p>As an example, here is a cluster that keeps count of the number of requests\nin the master process using the message system:\n\n</p>\n<pre><code>var cluster = require(&#39;cluster&#39;);\nvar http = require(&#39;http&#39;);\n\nif (cluster.isMaster) {\n\n  // Keep track of http requests\n  var numReqs = 0;\n  setInterval(function() {\n    console.log(&quot;numReqs =&quot;, numReqs);\n  }, 1000);\n\n  // Count requestes\n  function messageHandler(msg) {\n    if (msg.cmd &amp;&amp; msg.cmd == &#39;notifyRequest&#39;) {\n      numReqs += 1;\n    }\n  }\n\n  // Start workers and listen for messages containing notifyRequest\n  var numCPUs = require(&#39;os&#39;).cpus().length;\n  for (var i = 0; i &lt; numCPUs; i++) {\n    cluster.fork();\n  }\n\n  Object.keys(cluster.workers).forEach(function(id) {\n    cluster.workers[id].on(&#39;message&#39;, messageHandler);\n  });\n\n} else {\n\n  // Worker processes have a http server.\n  http.Server(function(req, res) {\n    res.writeHead(200);\n    res.end(&quot;hello world\\n&quot;);\n\n    // notify master about the request\n    process.send({ cmd: &#39;notifyRequest&#39; });\n  }).listen(8000);\n}</code></pre>\n"
+              "desc": "<p>Similar to the <code>cluster.on(&#39;message&#39;)</code> event, but specific to this worker.\n\n</p>\n<p>This event is the same as the one provided by <code>child_process.fork()</code>.\n\n</p>\n<p>In a worker you can also use <code>process.on(&#39;message&#39;)</code>.\n\n</p>\n<p>As an example, here is a cluster that keeps count of the number of requests\nin the master process using the message system:\n\n</p>\n<pre><code>var cluster = require(&#39;cluster&#39;);\nvar http = require(&#39;http&#39;);\n\nif (cluster.isMaster) {\n\n  // Keep track of http requests\n  var numReqs = 0;\n  setInterval(function() {\n    console.log(&quot;numReqs =&quot;, numReqs);\n  }, 1000);\n\n  // Count requestes\n  function messageHandler(msg) {\n    if (msg.cmd &amp;&amp; msg.cmd == &#39;notifyRequest&#39;) {\n      numReqs += 1;\n    }\n  }\n\n  // Start workers and listen for messages containing notifyRequest\n  var numCPUs = require(&#39;os&#39;).cpus().length;\n  for (var i = 0; i &lt; numCPUs; i++) {\n    cluster.fork();\n  }\n\n  Object.keys(cluster.workers).forEach(function(id) {\n    cluster.workers[id].on(&#39;message&#39;, messageHandler);\n  });\n\n} else {\n\n  // Worker processes have a http server.\n  http.Server(function(req, res) {\n    res.writeHead(200);\n    res.end(&quot;hello world\\n&quot;);\n\n    // notify master about the request\n    process.send({ cmd: &#39;notifyRequest&#39; });\n  }).listen(8000);\n}</code></pre>\n"
             },
             {
               "textRaw": "Event: 'online'",

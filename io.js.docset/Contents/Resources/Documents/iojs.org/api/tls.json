@@ -301,6 +301,32 @@
               ]
             },
             {
+              "textRaw": "server.getTicketKeys()",
+              "type": "method",
+              "name": "getTicketKeys",
+              "desc": "<p>Returns <code>Buffer</code> instance holding the keys currently used for\nencryption/decryption of the [TLS Session Tickets][]\n\n</p>\n",
+              "signatures": [
+                {
+                  "params": []
+                }
+              ]
+            },
+            {
+              "textRaw": "server.setTicketKeys(keys)",
+              "type": "method",
+              "name": "setTicketKeys",
+              "desc": "<p>Updates the keys for encryption/decryption of the [TLS Session Tickets][].\n\n</p>\n<p>NOTE: the buffer should be 48 bytes long. See server <code>ticketKeys</code> option for\nmore information oh how it is going to be used.\n\n</p>\n<p>NOTE: the change is effective only for the future server connections. Existing\nor currently pending server connections will use previous keys.\n\n</p>\n",
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "name": "keys"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
               "textRaw": "server.addContext(hostname, context)",
               "type": "method",
               "name": "addContext",
