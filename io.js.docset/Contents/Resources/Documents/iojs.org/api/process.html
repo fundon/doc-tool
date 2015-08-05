@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>process io.js v2.5.0 Manual &amp; Documentation</title>
+  <title>process io.js v3.0.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -44,7 +44,6 @@
 <li><a class="nav-querystring" href="querystring.html">Query Strings</a></li>
 <li><a class="nav-readline" href="readline.html">Readline</a></li>
 <li><a class="nav-repl" href="repl.html">REPL</a></li>
-<li><a class="nav-smalloc" href="smalloc.html">Smalloc</a></li>
 <li><a class="nav-stream" href="stream.html">Stream</a></li>
 <li><a class="nav-string_decoder" href="string_decoder.html">String Decoder</a></li>
 <li><a class="nav-timers" href="timers.html">Timers</a></li>
@@ -62,7 +61,7 @@
 
     <div id="column1" data-id="process" class="interior">
       <header>
-        <h1>io.js v2.5.0 Documentation</h1>
+        <h1>io.js v3.0.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -110,6 +109,7 @@
 <li><a href="#process_process_version">process.version</a></li>
 <li><a href="#process_process_versions">process.versions</a></li>
 <li><a href="#process_process_config">process.config</a></li>
+<li><a href="#process_process_release">process.release</a></li>
 <li><a href="#process_process_kill_pid_signal">process.kill(pid[, signal])</a></li>
 <li><a href="#process_process_pid">process.pid</a></li>
 <li><a href="#process_process_title">process.title</a></li>
@@ -813,6 +813,39 @@ the &quot;config.gypi&quot; file that was produced when running the <code>./conf
      strict_aliasing: &#39;true&#39;,
      target_arch: &#39;x64&#39;,
      v8_use_snapshot: &#39;true&#39; } }</code></pre>
+<h2>process.release<span><a class="mark" href="#process_process_release" id="process_process_release">#</a></span></h2>
+<p>An Object containing metadata related to the current release, including URLs
+for the source tarball and headers-only tarball.
+
+</p>
+<p><code>process.release</code> contains the following properties:
+
+</p>
+<ul>
+<li><code>name</code>: a string with a value that will always be <code>&quot;io.js&quot;</code> for io.js.</li>
+<li><code>sourceUrl</code>: a complete URL pointing to a <em>.tar.gz</em> file containing the
+source of the current release.</li>
+<li><code>headersUrl</code>: a complete URL pointing to a <em>.tar.gz</em> file containing only
+the header files for the current release. This file is significantly smaller
+than the full source file and can be used for compiling add-ons against
+io.js.</li>
+<li><code>libUrl</code>: a complete URL pointing to an <em>iojs.lib</em> file matching the
+architecture and version of the current release. This file is used for
+compiling add-ons against io.js. <em>This property is only present on Windows
+builds of io.js and will be missing on all other platforms.</em></li>
+</ul>
+<p>e.g.
+
+</p>
+<pre><code>{ name: &#39;io.js&#39;,
+  sourceUrl: &#39;https://iojs.org/download/release/v2.3.5/iojs-v2.3.5.tar.gz&#39;,
+  headersUrl: &#39;https://iojs.org/download/release/v2.3.5/iojs-v2.3.5-headers.tar.gz&#39;,
+  libUrl: &#39;https://iojs.org/download/release/v2.3.5/win-x64/iojs.lib&#39; }</code></pre>
+<p>In custom builds from non-release versions of the source tree, only the
+<code>name</code> property may be present. The additional properties should not be
+relied upon to exist.
+
+</p>
 <h2>process.kill(pid[, signal])<span><a class="mark" href="#process_process_kill_pid_signal" id="process_process_kill_pid_signal">#</a></span></h2>
 <p>Send a signal to a process. <code>pid</code> is the process id and <code>signal</code> is the
 string describing the signal to send.  Signal names are strings like

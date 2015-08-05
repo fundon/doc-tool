@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>net io.js v2.5.0 Manual &amp; Documentation</title>
+  <title>net io.js v3.0.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -44,7 +44,6 @@
 <li><a class="nav-querystring" href="querystring.html">Query Strings</a></li>
 <li><a class="nav-readline" href="readline.html">Readline</a></li>
 <li><a class="nav-repl" href="repl.html">REPL</a></li>
-<li><a class="nav-smalloc" href="smalloc.html">Smalloc</a></li>
 <li><a class="nav-stream" href="stream.html">Stream</a></li>
 <li><a class="nav-string_decoder" href="string_decoder.html">String Decoder</a></li>
 <li><a class="nav-timers" href="timers.html">Timers</a></li>
@@ -62,7 +61,7 @@
 
     <div id="column1" data-id="net" class="interior">
       <header>
-        <h1>io.js v2.5.0 Documentation</h1>
+        <h1>io.js v3.0.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -286,7 +285,7 @@ parameter is 511 (not 512).
 </p>
 <p>This function is asynchronous.  When the server has been bound,
 <a href="#net_event_listening">&#39;listening&#39;</a> event will be emitted.  The last parameter <code>callback</code>
-will be added as an listener for the <a href="#net_event_listening">&#39;listening&#39;</a> event.
+will be added as a listener for the <a href="#net_event_listening">&#39;listening&#39;</a> event.
 
 </p>
 <p>One issue some users run into is getting <code>EADDRINUSE</code> errors. This means that
@@ -356,7 +355,7 @@ already been bound to a port or domain socket.
 </p>
 <p>This function is asynchronous.  When the server has been bound,
 <a href="#net_event_listening">&#39;listening&#39;</a> event will be emitted.
-the last parameter <code>callback</code> will be added as an listener for the
+The last parameter <code>callback</code> will be added as a listener for the
 <a href="#net_event_listening">&#39;listening&#39;</a> event.
 
 </p>
@@ -394,10 +393,10 @@ shown below.
 <h3>server.close([callback])<span><a class="mark" href="#net_server_close_callback" id="net_server_close_callback">#</a></span></h3>
 <p>Stops the server from accepting new connections and keeps existing
 connections. This function is asynchronous, the server is finally
-closed when all connections are ended and the server emits a <code>&#39;close&#39;</code>
-event. Optionally, you can pass a callback to listen for the <code>&#39;close&#39;</code>
-event. If present, the callback is invoked with any potential error
-as the first and only argument.
+closed when all connections are ended and the server emits a <a href="#net_event_close">&#39;close&#39;</a> event.
+The optional <code>callback</code> will be called once the <code>&#39;close&#39;</code> event occurs. Unlike
+that event, it will be called with an Error as its only argument if the server
+was not open when it was closed.
 
 </p>
 <h3>server.address()<span><a class="mark" href="#net_server_address" id="net_server_address">#</a></span></h3>
@@ -492,7 +491,7 @@ event is not emitted until all connections are ended.
 <div class="signature"><ul>
 <li><span class="type">Error Object</span></li>
 </div></ul>
-<p>Emitted when an error occurs.  The <code>&#39;close&#39;</code> event will be called directly
+<p>Emitted when an error occurs.  The <a href="#net_event_close">&#39;close&#39;</a> event will be called directly
 following this event.  See example in discussion of <code>server.listen</code>.
 
 </p>
@@ -558,7 +557,7 @@ socket is established. If there is a problem connecting, the <code>&#39;connect&
 will not be emitted, the <code>&#39;error&#39;</code> event will be emitted with the exception.
 
 </p>
-<p>The <code>connectListener</code> parameter will be added as an listener for the
+<p>The <code>connectListener</code> parameter will be added as a listener for the
 <a href="#net_event_connect">&#39;connect&#39;</a> event.
 
 </p>
@@ -804,7 +803,7 @@ following this event.
 </p>
 <h3>Event: &#39;close&#39;<span><a class="mark" href="#net_event_close_1" id="net_event_close_1">#</a></span></h3>
 <div class="signature"><ul>
-<li><code>had_error</code> <span class="type">Boolean</span> true if the socket had a transmission error</li>
+<li><code>had_error</code> <span class="type">Boolean</span> <code>true</code> if the socket had a transmission error.</li>
 </div></ul>
 <p>Emitted once the socket is fully closed. The argument <code>had_error</code> is a boolean
 which says if the socket was closed due to a transmission error.

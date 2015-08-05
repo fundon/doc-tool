@@ -141,7 +141,7 @@
                   ]
                 }
               ],
-              "desc": "<p>Returns a buffer which is the result of concatenating all the buffers in\nthe list together.\n\n</p>\n<p>If the list has no items, or if the totalLength is 0, then it returns a\nzero-length buffer.\n\n</p>\n<p>If the list has exactly one item, then the first item of the list is\nreturned.\n\n</p>\n<p>If the list has more than one item, then a new Buffer is created.\n\n</p>\n<p>If totalLength is not provided, it is read from the buffers in the list.\nHowever, this adds an additional loop to the function, so it is faster\nto provide the length explicitly.\n\n</p>\n"
+              "desc": "<p>Returns a buffer which is the result of concatenating all the buffers in\nthe list together.\n\n</p>\n<p>If the list has no items, or if the totalLength is 0, then it returns a\nzero-length buffer.\n\n</p>\n<p>If totalLength is not provided, it is read from the buffers in the list.\nHowever, this adds an additional loop to the function, so it is faster\nto provide the length explicitly.\n\n</p>\n"
             },
             {
               "textRaw": "Class Method: Buffer.compare(buf1, buf2)",
@@ -2097,7 +2097,7 @@
                   "desc": "Number"
                 }
               ],
-              "desc": "<p>Allocates a new buffer of <code>size</code> octets. Note, <code>size</code> must be no more than\n<a href=\"smalloc.html#smalloc_smalloc_kmaxlength\">kMaxLength</a>. Otherwise, a <code>RangeError</code>\nwill be thrown here.\n\n</p>\n"
+              "desc": "<p>Allocates a new buffer of <code>size</code> bytes.  <code>size</code> must be less than\n1,073,741,824 bytes (1 GB) on 32 bits architectures or\n2,147,483,648 bytes (2 GB) on 64 bits architectures,\notherwise a <code>RangeError</code> is thrown.\n\n</p>\n"
             },
             {
               "params": [
@@ -2105,7 +2105,7 @@
                   "name": "size"
                 }
               ],
-              "desc": "<p>Allocates a new buffer of <code>size</code> octets. Note, <code>size</code> must be no more than\n<a href=\"smalloc.html#smalloc_smalloc_kmaxlength\">kMaxLength</a>. Otherwise, a <code>RangeError</code>\nwill be thrown here.\n\n</p>\n"
+              "desc": "<p>Allocates a new buffer of <code>size</code> bytes.  <code>size</code> must be less than\n1,073,741,824 bytes (1 GB) on 32 bits architectures or\n2,147,483,648 bytes (2 GB) on 64 bits architectures,\notherwise a <code>RangeError</code> is thrown.\n\n</p>\n"
             },
             {
               "params": [

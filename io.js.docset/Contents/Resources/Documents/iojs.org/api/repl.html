@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>REPL io.js v2.5.0 Manual &amp; Documentation</title>
+  <title>REPL io.js v3.0.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -44,7 +44,6 @@
 <li><a class="nav-querystring" href="querystring.html">Query Strings</a></li>
 <li><a class="nav-readline" href="readline.html">Readline</a></li>
 <li><a class="nav-repl active" href="repl.html">REPL</a></li>
-<li><a class="nav-smalloc" href="smalloc.html">Smalloc</a></li>
 <li><a class="nav-stream" href="stream.html">Stream</a></li>
 <li><a class="nav-string_decoder" href="string_decoder.html">String Decoder</a></li>
 <li><a class="nav-timers" href="timers.html">Timers</a></li>
@@ -62,7 +61,7 @@
 
     <div id="column1" data-id="repl" class="interior">
       <header>
-        <h1>io.js v2.5.0 Documentation</h1>
+        <h1>io.js v3.0.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -77,6 +76,8 @@
         <h2>Table of Contents</h2>
         <ul>
 <li><a href="#repl_repl">REPL</a><ul>
+<li><a href="#repl_persistent_history">Persistent History</a></li>
+<li><a href="#repl_environment_variable_options">Environment Variable Options</a></li>
 <li><a href="#repl_repl_start_options">repl.start(options)</a><ul>
 <li><a href="#repl_event_exit">Event: &#39;exit&#39;</a></li>
 <li><a href="#repl_event_reset">Event: &#39;reset&#39;</a></li>
@@ -123,24 +124,39 @@ terminal settings which will allow you to use with <code>rlwrap</code>.
 
 </p>
 <pre><code>alias iojs=&quot;env NODE_NO_READLINE=1 rlwrap iojs&quot;</code></pre>
+<h2>Persistent History<span><a class="mark" href="#repl_persistent_history" id="repl_persistent_history">#</a></span></h2>
+<p>By default, the REPL will persist history between <code>iojs</code> REPL sessions by saving
+to a <code>.node_repl_history</code> file in the user&#39;s home directory. This can be
+disabled by setting the environment variable <code>NODE_REPL_HISTORY=&quot;&quot;</code>.
+
+</p>
+<p>Previously in io.js v2.x, REPL history was controlled by using a
+<code>NODE_REPL_HISTORY_FILE</code> environment variable, and the history was saved in JSON
+format. This variable has now been deprecated, and your REPL history will
+automatically be converted to using plain text. The new file will be saved to
+either your home directory, or a directory defined by the <code>NODE_REPL_HISTORY</code>
+variable, as documented below.
+
+</p>
+<h2>Environment Variable Options<span><a class="mark" href="#repl_environment_variable_options" id="repl_environment_variable_options">#</a></span></h2>
 <p>The built-in repl (invoked by running <code>iojs</code> or <code>iojs -i</code>) may be controlled
 via the following environment variables:
 
 </p>
 <ul>
-<li><code>NODE_REPL_HISTORY_FILE</code> - if given, must be a path to a user-writable,
-user-readable file. When a valid path is given, persistent history support
-is enabled: REPL history will persist across <code>iojs</code> repl sessions.</li>
-<li><code>NODE_REPL_HISTORY_SIZE</code> - defaults to <code>1000</code>. In conjunction with
-<code>NODE_REPL_HISTORY_FILE</code>, controls how many lines of history will be
-persisted. Must be a positive number.</li>
+<li><code>NODE_REPL_HISTORY</code> - When a valid path is given, persistent REPL history
+will be saved to the specified file rather than <code>.node_repl_history</code> in the
+user&#39;s home directory. Setting this value to <code>&quot;&quot;</code> will disable persistent
+REPL history.</li>
+<li><code>NODE_REPL_HISTORY_SIZE</code> - defaults to <code>1000</code>. Controls how many lines of
+history will be persisted if history is available. Must be a positive number.</li>
 <li><code>NODE_REPL_MODE</code> - may be any of <code>sloppy</code>, <code>strict</code>, or <code>magic</code>. Defaults
 to <code>magic</code>, which will automatically run &quot;strict mode only&quot; statements in
 strict mode.</li>
 </ul>
 <h2>repl.start(options)<span><a class="mark" href="#repl_repl_start_options" id="repl_repl_start_options">#</a></span></h2>
-<p>Returns and starts a <code>REPLServer</code> instance, that inherits from 
-[Readline Interface][]. Accepts an &quot;options&quot; Object that takes 
+<p>Returns and starts a <code>REPLServer</code> instance, that inherits from
+[Readline Interface][]. Accepts an &quot;options&quot; Object that takes
 the following values:
 
 </p>

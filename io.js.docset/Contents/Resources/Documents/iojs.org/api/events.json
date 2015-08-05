@@ -222,7 +222,16 @@
               "type": "event",
               "name": "removeListener",
               "params": [],
-              "desc": "<p>This event is emitted <em>after</em> a listener is removed.  When this event is\ntriggered, the listener has been removed from the array of listeners for the\n<code>event</code>.\n</p>\n"
+              "desc": "<p>This event is emitted <em>after</em> a listener is removed.  When this event is\ntriggered, the listener has been removed from the array of listeners for the\n<code>event</code>.\n\n</p>\n"
+            }
+          ],
+          "modules": [
+            {
+              "textRaw": "Inheriting from 'EventEmitter'",
+              "name": "inheriting_from_'eventemitter'",
+              "desc": "<p>Inheriting from <code>EventEmitter</code> is no different from inheriting from any other\nconstructor function. For example:\n\n</p>\n<pre><code>&#39;use strict&#39;;\nconst util = require(&#39;util&#39;);\nconst EventEmitter = require(&#39;events&#39;).EventEmitter;\n\nfunction MyEventEmitter() {\n  // Initialize necessary properties from `EventEmitter` in this instance\n  EventEmitter.call(this);\n}\n\n// Inherit functions from `EventEmitter`&#39;s prototype\nutil.inherits(MyEventEmitter, EventEmitter);</code></pre>\n",
+              "type": "module",
+              "displayName": "Inheriting from 'EventEmitter'"
             }
           ]
         }

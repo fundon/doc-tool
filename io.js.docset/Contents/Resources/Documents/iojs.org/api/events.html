@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Events io.js v2.5.0 Manual &amp; Documentation</title>
+  <title>Events io.js v3.0.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -44,7 +44,6 @@
 <li><a class="nav-querystring" href="querystring.html">Query Strings</a></li>
 <li><a class="nav-readline" href="readline.html">Readline</a></li>
 <li><a class="nav-repl" href="repl.html">REPL</a></li>
-<li><a class="nav-smalloc" href="smalloc.html">Smalloc</a></li>
 <li><a class="nav-stream" href="stream.html">Stream</a></li>
 <li><a class="nav-string_decoder" href="string_decoder.html">String Decoder</a></li>
 <li><a class="nav-timers" href="timers.html">Timers</a></li>
@@ -62,7 +61,7 @@
 
     <div id="column1" data-id="events" class="interior">
       <header>
-        <h1>io.js v2.5.0 Documentation</h1>
+        <h1>io.js v3.0.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -91,6 +90,7 @@
 <li><a href="#events_class_method_eventemitter_listenercount_emitter_event">Class Method: EventEmitter.listenerCount(emitter, event)</a></li>
 <li><a href="#events_event_newlistener">Event: &#39;newListener&#39;</a></li>
 <li><a href="#events_event_removelistener">Event: &#39;removeListener&#39;</a></li>
+<li><a href="#events_inheriting_from_eventemitter">Inheriting from &#39;EventEmitter&#39;</a></li>
 </ul>
 </li>
 </ul>
@@ -267,7 +267,24 @@ added.
 <p>This event is emitted <em>after</em> a listener is removed.  When this event is
 triggered, the listener has been removed from the array of listeners for the
 <code>event</code>.
+
 </p>
+<h3>Inheriting from &#39;EventEmitter&#39;<span><a class="mark" href="#events_inheriting_from_eventemitter" id="events_inheriting_from_eventemitter">#</a></span></h3>
+<p>Inheriting from <code>EventEmitter</code> is no different from inheriting from any other
+constructor function. For example:
+
+</p>
+<pre><code>&#39;use strict&#39;;
+const util = require(&#39;util&#39;);
+const EventEmitter = require(&#39;events&#39;).EventEmitter;
+
+function MyEventEmitter() {
+  // Initialize necessary properties from `EventEmitter` in this instance
+  EventEmitter.call(this);
+}
+
+// Inherit functions from `EventEmitter`&#39;s prototype
+util.inherits(MyEventEmitter, EventEmitter);</code></pre>
 
       </div>
     </div>

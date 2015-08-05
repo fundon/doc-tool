@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Buffer io.js v2.5.0 Manual &amp; Documentation</title>
+  <title>Buffer io.js v3.0.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -44,7 +44,6 @@
 <li><a class="nav-querystring" href="querystring.html">Query Strings</a></li>
 <li><a class="nav-readline" href="readline.html">Readline</a></li>
 <li><a class="nav-repl" href="repl.html">REPL</a></li>
-<li><a class="nav-smalloc" href="smalloc.html">Smalloc</a></li>
 <li><a class="nav-stream" href="stream.html">Stream</a></li>
 <li><a class="nav-string_decoder" href="string_decoder.html">String Decoder</a></li>
 <li><a class="nav-timers" href="timers.html">Timers</a></li>
@@ -62,7 +61,7 @@
 
     <div id="column1" data-id="buffer" class="interior">
       <header>
-        <h1>io.js v2.5.0 Documentation</h1>
+        <h1>io.js v3.0.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -221,9 +220,10 @@ It can be constructed in a variety of ways.
 <div class="signature"><ul>
 <li><code>size</code> Number</li>
 </div></ul>
-<p>Allocates a new buffer of <code>size</code> octets. Note, <code>size</code> must be no more than
-<a href="smalloc.html#smalloc_smalloc_kmaxlength">kMaxLength</a>. Otherwise, a <code>RangeError</code>
-will be thrown here.
+<p>Allocates a new buffer of <code>size</code> bytes.  <code>size</code> must be less than
+1,073,741,824 bytes (1 GB) on 32 bits architectures or
+2,147,483,648 bytes (2 GB) on 64 bits architectures,
+otherwise a <code>RangeError</code> is thrown.
 
 </p>
 <h3>new Buffer(array)<span><a class="mark" href="#buffer_new_buffer_array" id="buffer_new_buffer_array">#</a></span></h3>
@@ -296,13 +296,6 @@ the list together.
 </p>
 <p>If the list has no items, or if the totalLength is 0, then it returns a
 zero-length buffer.
-
-</p>
-<p>If the list has exactly one item, then the first item of the list is
-returned.
-
-</p>
-<p>If the list has more than one item, then a new Buffer is created.
 
 </p>
 <p>If totalLength is not provided, it is read from the buffers in the list.

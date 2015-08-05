@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>UDP / Datagram Sockets io.js v2.5.0 Manual &amp; Documentation</title>
+  <title>UDP / Datagram Sockets io.js v3.0.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -44,7 +44,6 @@
 <li><a class="nav-querystring" href="querystring.html">Query Strings</a></li>
 <li><a class="nav-readline" href="readline.html">Readline</a></li>
 <li><a class="nav-repl" href="repl.html">REPL</a></li>
-<li><a class="nav-smalloc" href="smalloc.html">Smalloc</a></li>
 <li><a class="nav-stream" href="stream.html">Stream</a></li>
 <li><a class="nav-string_decoder" href="string_decoder.html">String Decoder</a></li>
 <li><a class="nav-timers" href="timers.html">Timers</a></li>
@@ -62,7 +61,7 @@
 
     <div id="column1" data-id="dgram" class="interior">
       <header>
-        <h1>io.js v2.5.0 Documentation</h1>
+        <h1>io.js v3.0.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -231,7 +230,9 @@ assigned a random port number and is bound to the &quot;all interfaces&quot; add
 <p>An optional callback may be specified to detect DNS errors or for determining
 when it&#39;s safe to reuse the <code>buf</code> object.  Note that DNS lookups delay the time
 to send for at least one tick.  The only way to know for sure that the datagram
-has been sent is by using a callback.
+has been sent is by using a callback. If an error occurs and a callback is
+given, the error will be the first argument to the callback. If a callback is
+not given, the error is emitted as an <code>&#39;error&#39;</code> event on the <code>socket</code> object.
 
 </p>
 <p>With consideration for multi-byte characters, <code>offset</code> and <code>length</code> will

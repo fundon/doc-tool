@@ -494,6 +494,11 @@
               "desc": "<p>An Object containing the JavaScript representation of the configure options\nthat were used to compile the current io.js executable. This is the same as\nthe &quot;config.gypi&quot; file that was produced when running the <code>./configure</code> script.\n\n</p>\n<p>An example of the possible output looks like:\n\n</p>\n<pre><code>{ target_defaults:\n   { cflags: [],\n     default_configuration: &#39;Release&#39;,\n     defines: [],\n     include_dirs: [],\n     libraries: [] },\n  variables:\n   { host_arch: &#39;x64&#39;,\n     node_install_npm: &#39;true&#39;,\n     node_prefix: &#39;&#39;,\n     node_shared_cares: &#39;false&#39;,\n     node_shared_http_parser: &#39;false&#39;,\n     node_shared_libuv: &#39;false&#39;,\n     node_shared_zlib: &#39;false&#39;,\n     node_use_dtrace: &#39;false&#39;,\n     node_use_openssl: &#39;true&#39;,\n     node_shared_openssl: &#39;false&#39;,\n     strict_aliasing: &#39;true&#39;,\n     target_arch: &#39;x64&#39;,\n     v8_use_snapshot: &#39;true&#39; } }</code></pre>\n"
             },
             {
+              "textRaw": "process.release",
+              "name": "release",
+              "desc": "<p>An Object containing metadata related to the current release, including URLs\nfor the source tarball and headers-only tarball.\n\n</p>\n<p><code>process.release</code> contains the following properties:\n\n</p>\n<ul>\n<li><code>name</code>: a string with a value that will always be <code>&quot;io.js&quot;</code> for io.js.</li>\n<li><code>sourceUrl</code>: a complete URL pointing to a <em>.tar.gz</em> file containing the\nsource of the current release.</li>\n<li><code>headersUrl</code>: a complete URL pointing to a <em>.tar.gz</em> file containing only\nthe header files for the current release. This file is significantly smaller\nthan the full source file and can be used for compiling add-ons against\nio.js.</li>\n<li><code>libUrl</code>: a complete URL pointing to an <em>iojs.lib</em> file matching the\narchitecture and version of the current release. This file is used for\ncompiling add-ons against io.js. <em>This property is only present on Windows\nbuilds of io.js and will be missing on all other platforms.</em></li>\n</ul>\n<p>e.g.\n\n</p>\n<pre><code>{ name: &#39;io.js&#39;,\n  sourceUrl: &#39;https://iojs.org/download/release/v2.3.5/iojs-v2.3.5.tar.gz&#39;,\n  headersUrl: &#39;https://iojs.org/download/release/v2.3.5/iojs-v2.3.5-headers.tar.gz&#39;,\n  libUrl: &#39;https://iojs.org/download/release/v2.3.5/win-x64/iojs.lib&#39; }</code></pre>\n<p>In custom builds from non-release versions of the source tree, only the\n<code>name</code> property may be present. The additional properties should not be\nrelied upon to exist.\n\n</p>\n"
+            },
+            {
               "textRaw": "process.pid",
               "name": "pid",
               "desc": "<p>The PID of the process.\n\n</p>\n<pre><code>console.log(&#39;This process is pid &#39; + process.pid);</code></pre>\n"
@@ -1469,7 +1474,7 @@
                   ]
                 }
               ],
-              "desc": "<p>Returns a buffer which is the result of concatenating all the buffers in\nthe list together.\n\n</p>\n<p>If the list has no items, or if the totalLength is 0, then it returns a\nzero-length buffer.\n\n</p>\n<p>If the list has exactly one item, then the first item of the list is\nreturned.\n\n</p>\n<p>If the list has more than one item, then a new Buffer is created.\n\n</p>\n<p>If totalLength is not provided, it is read from the buffers in the list.\nHowever, this adds an additional loop to the function, so it is faster\nto provide the length explicitly.\n\n</p>\n"
+              "desc": "<p>Returns a buffer which is the result of concatenating all the buffers in\nthe list together.\n\n</p>\n<p>If the list has no items, or if the totalLength is 0, then it returns a\nzero-length buffer.\n\n</p>\n<p>If totalLength is not provided, it is read from the buffers in the list.\nHowever, this adds an additional loop to the function, so it is faster\nto provide the length explicitly.\n\n</p>\n"
             },
             {
               "textRaw": "Class Method: Buffer.compare(buf1, buf2)",
@@ -3425,7 +3430,7 @@
                   "desc": "Number"
                 }
               ],
-              "desc": "<p>Allocates a new buffer of <code>size</code> octets. Note, <code>size</code> must be no more than\n<a href=\"smalloc.html#smalloc_smalloc_kmaxlength\">kMaxLength</a>. Otherwise, a <code>RangeError</code>\nwill be thrown here.\n\n</p>\n"
+              "desc": "<p>Allocates a new buffer of <code>size</code> bytes.  <code>size</code> must be less than\n1,073,741,824 bytes (1 GB) on 32 bits architectures or\n2,147,483,648 bytes (2 GB) on 64 bits architectures,\notherwise a <code>RangeError</code> is thrown.\n\n</p>\n"
             },
             {
               "params": [
@@ -3433,7 +3438,7 @@
                   "name": "size"
                 }
               ],
-              "desc": "<p>Allocates a new buffer of <code>size</code> octets. Note, <code>size</code> must be no more than\n<a href=\"smalloc.html#smalloc_smalloc_kmaxlength\">kMaxLength</a>. Otherwise, a <code>RangeError</code>\nwill be thrown here.\n\n</p>\n"
+              "desc": "<p>Allocates a new buffer of <code>size</code> bytes.  <code>size</code> must be less than\n1,073,741,824 bytes (1 GB) on 32 bits architectures or\n2,147,483,648 bytes (2 GB) on 64 bits architectures,\notherwise a <code>RangeError</code> is thrown.\n\n</p>\n"
             },
             {
               "params": [
@@ -6544,7 +6549,7 @@
                   ]
                 }
               ],
-              "desc": "<p>For UDP sockets, the destination port and address must be specified.  A string\nmay be supplied for the <code>address</code> parameter, and it will be resolved with DNS.\n\n</p>\n<p>If the address is omitted or is an empty string, <code>&#39;0.0.0.0&#39;</code> or <code>&#39;::0&#39;</code> is used\ninstead.  Depending on the network configuration, those defaults may or may not\nwork; it&#39;s best to be explicit about the destination address.\n\n</p>\n<p>If the socket has not been previously bound with a call to <code>bind</code>, it gets\nassigned a random port number and is bound to the &quot;all interfaces&quot; address\n(<code>&#39;0.0.0.0&#39;</code> for <code>udp4</code> sockets, <code>&#39;::0&#39;</code> for <code>udp6</code> sockets.)\n\n</p>\n<p>An optional callback may be specified to detect DNS errors or for determining\nwhen it&#39;s safe to reuse the <code>buf</code> object.  Note that DNS lookups delay the time\nto send for at least one tick.  The only way to know for sure that the datagram\nhas been sent is by using a callback.\n\n</p>\n<p>With consideration for multi-byte characters, <code>offset</code> and <code>length</code> will\nbe calculated with respect to\n<a href=\"buffer.html#buffer_class_method_buffer_bytelength_string_encoding\">byte length</a>\nand not the character position.\n\n</p>\n<p>Example of sending a UDP packet to a random port on <code>localhost</code>;\n\n</p>\n<pre><code>var dgram = require(&#39;dgram&#39;);\nvar message = new Buffer(&quot;Some bytes&quot;);\nvar client = dgram.createSocket(&quot;udp4&quot;);\nclient.send(message, 0, message.length, 41234, &quot;localhost&quot;, function(err) {\n  client.close();\n});</code></pre>\n<p><strong>A Note about UDP datagram size</strong>\n\n</p>\n<p>The maximum size of an <code>IPv4/v6</code> datagram depends on the <code>MTU</code> (<em>Maximum Transmission Unit</em>)\nand on the <code>Payload Length</code> field size.\n\n</p>\n<ul>\n<li><p>The <code>Payload Length</code> field is <code>16 bits</code> wide, which means that a normal payload\ncannot be larger than 64K octets including internet header and data\n(65,507 bytes = 65,535 − 8 bytes UDP header − 20 bytes IP header);\nthis is generally true for loopback interfaces, but such long datagrams\nare impractical for most hosts and networks.</p>\n</li>\n<li><p>The <code>MTU</code> is the largest size a given link layer technology can support for datagrams.\nFor any link, <code>IPv4</code> mandates a minimum <code>MTU</code> of <code>68</code> octets, while the recommended <code>MTU</code>\nfor IPv4 is <code>576</code> (typically recommended as the <code>MTU</code> for dial-up type applications),\nwhether they arrive whole or in fragments.</p>\n<p>For <code>IPv6</code>, the minimum <code>MTU</code> is <code>1280</code> octets, however, the mandatory minimum\nfragment reassembly buffer size is <code>1500</code> octets.\nThe value of <code>68</code> octets is very small, since most current link layer technologies have\na minimum <code>MTU</code> of <code>1500</code> (like Ethernet).</p>\n</li>\n</ul>\n<p>Note that it&#39;s impossible to know in advance the MTU of each link through which\na packet might travel, and that generally sending a datagram greater than\nthe (receiver) <code>MTU</code> won&#39;t work (the packet gets silently dropped, without\ninforming the source that the data did not reach its intended recipient).\n\n</p>\n"
+              "desc": "<p>For UDP sockets, the destination port and address must be specified.  A string\nmay be supplied for the <code>address</code> parameter, and it will be resolved with DNS.\n\n</p>\n<p>If the address is omitted or is an empty string, <code>&#39;0.0.0.0&#39;</code> or <code>&#39;::0&#39;</code> is used\ninstead.  Depending on the network configuration, those defaults may or may not\nwork; it&#39;s best to be explicit about the destination address.\n\n</p>\n<p>If the socket has not been previously bound with a call to <code>bind</code>, it gets\nassigned a random port number and is bound to the &quot;all interfaces&quot; address\n(<code>&#39;0.0.0.0&#39;</code> for <code>udp4</code> sockets, <code>&#39;::0&#39;</code> for <code>udp6</code> sockets.)\n\n</p>\n<p>An optional callback may be specified to detect DNS errors or for determining\nwhen it&#39;s safe to reuse the <code>buf</code> object.  Note that DNS lookups delay the time\nto send for at least one tick.  The only way to know for sure that the datagram\nhas been sent is by using a callback. If an error occurs and a callback is\ngiven, the error will be the first argument to the callback. If a callback is\nnot given, the error is emitted as an <code>&#39;error&#39;</code> event on the <code>socket</code> object.\n\n</p>\n<p>With consideration for multi-byte characters, <code>offset</code> and <code>length</code> will\nbe calculated with respect to\n<a href=\"buffer.html#buffer_class_method_buffer_bytelength_string_encoding\">byte length</a>\nand not the character position.\n\n</p>\n<p>Example of sending a UDP packet to a random port on <code>localhost</code>;\n\n</p>\n<pre><code>var dgram = require(&#39;dgram&#39;);\nvar message = new Buffer(&quot;Some bytes&quot;);\nvar client = dgram.createSocket(&quot;udp4&quot;);\nclient.send(message, 0, message.length, 41234, &quot;localhost&quot;, function(err) {\n  client.close();\n});</code></pre>\n<p><strong>A Note about UDP datagram size</strong>\n\n</p>\n<p>The maximum size of an <code>IPv4/v6</code> datagram depends on the <code>MTU</code> (<em>Maximum Transmission Unit</em>)\nand on the <code>Payload Length</code> field size.\n\n</p>\n<ul>\n<li><p>The <code>Payload Length</code> field is <code>16 bits</code> wide, which means that a normal payload\ncannot be larger than 64K octets including internet header and data\n(65,507 bytes = 65,535 − 8 bytes UDP header − 20 bytes IP header);\nthis is generally true for loopback interfaces, but such long datagrams\nare impractical for most hosts and networks.</p>\n</li>\n<li><p>The <code>MTU</code> is the largest size a given link layer technology can support for datagrams.\nFor any link, <code>IPv4</code> mandates a minimum <code>MTU</code> of <code>68</code> octets, while the recommended <code>MTU</code>\nfor IPv4 is <code>576</code> (typically recommended as the <code>MTU</code> for dial-up type applications),\nwhether they arrive whole or in fragments.</p>\n<p>For <code>IPv6</code>, the minimum <code>MTU</code> is <code>1280</code> octets, however, the mandatory minimum\nfragment reassembly buffer size is <code>1500</code> octets.\nThe value of <code>68</code> octets is very small, since most current link layer technologies have\na minimum <code>MTU</code> of <code>1500</code> (like Ethernet).</p>\n</li>\n</ul>\n<p>Note that it&#39;s impossible to know in advance the MTU of each link through which\na packet might travel, and that generally sending a datagram greater than\nthe (receiver) <code>MTU</code> won&#39;t work (the packet gets silently dropped, without\ninforming the source that the data did not reach its intended recipient).\n\n</p>\n"
             },
             {
               "textRaw": "socket.bind(port[, address][, callback])",
@@ -7137,7 +7142,7 @@
         {
           "textRaw": "Supported getaddrinfo flags",
           "name": "supported_getaddrinfo_flags",
-          "desc": "<p>The following flags can be passed as hints to <code>dns.lookup</code>.\n\n</p>\n<ul>\n<li><code>dns.ADDRCONFIG</code>: Returned address types are determined by the types\nof addresses supported by the current system. For example, IPv4 addresses\nare only returned if the current system has at least one IPv4 address\nconfigured. Loopback addresses are not considered.</li>\n<li><code>dns.V4MAPPED</code>: If the IPv6 family was specified, but no IPv6 addresses\nwere found, then return IPv4 mapped IPv6 addresses.</li>\n</ul>\n",
+          "desc": "<p>The following flags can be passed as hints to <code>dns.lookup</code>.\n\n</p>\n<ul>\n<li><code>dns.ADDRCONFIG</code>: Returned address types are determined by the types\nof addresses supported by the current system. For example, IPv4 addresses\nare only returned if the current system has at least one IPv4 address\nconfigured. Loopback addresses are not considered.</li>\n<li><code>dns.V4MAPPED</code>: If the IPv6 family was specified, but no IPv6 addresses were\nfound, then return IPv4 mapped IPv6 addresses. Note that it is not supported\non some operating systems (e.g FreeBSD 10.1).</li>\n</ul>\n",
           "type": "module",
           "displayName": "Supported getaddrinfo flags"
         },
@@ -7648,6 +7653,15 @@
               "name": "removeListener",
               "params": [],
               "desc": "<p>This event is emitted <em>after</em> a listener is removed.  When this event is\ntriggered, the listener has been removed from the array of listeners for the\n<code>event</code>.\n\n</p>\n"
+            }
+          ],
+          "modules": [
+            {
+              "textRaw": "Inheriting from 'EventEmitter'",
+              "name": "inheriting_from_'eventemitter'",
+              "desc": "<p>Inheriting from <code>EventEmitter</code> is no different from inheriting from any other\nconstructor function. For example:\n\n</p>\n<pre><code>&#39;use strict&#39;;\nconst util = require(&#39;util&#39;);\nconst EventEmitter = require(&#39;events&#39;).EventEmitter;\n\nfunction MyEventEmitter() {\n  // Initialize necessary properties from `EventEmitter` in this instance\n  EventEmitter.call(this);\n}\n\n// Inherit functions from `EventEmitter`&#39;s prototype\nutil.inherits(MyEventEmitter, EventEmitter);</code></pre>\n",
+              "type": "module",
+              "displayName": "Inheriting from 'EventEmitter'"
             }
           ]
         }
@@ -9080,7 +9094,7 @@
           "textRaw": "fs.watchFile(filename[, options], listener)",
           "type": "method",
           "name": "watchFile",
-          "desc": "<p>Watch for changes on <code>filename</code>. The callback <code>listener</code> will be called each\ntime the file is accessed.\n\n</p>\n<p>The second argument is optional. The <code>options</code> if provided should be an object\ncontaining two members a boolean, <code>persistent</code>, and <code>interval</code>. <code>persistent</code>\nindicates whether the process should continue to run as long as files are\nbeing watched. <code>interval</code> indicates how often the target should be polled,\nin milliseconds. The default is <code>{ persistent: true, interval: 5007 }</code>.\n\n</p>\n<p>The <code>listener</code> gets two arguments the current stat object and the previous\nstat object:\n\n</p>\n<pre><code>fs.watchFile(&#39;message.text&#39;, function (curr, prev) {\n  console.log(&#39;the current mtime is: &#39; + curr.mtime);\n  console.log(&#39;the previous mtime was: &#39; + prev.mtime);\n});</code></pre>\n<p>These stat objects are instances of <code>fs.Stat</code>.\n\n</p>\n<p>If you want to be notified when the file was modified, not just accessed\nyou need to compare <code>curr.mtime</code> and <code>prev.mtime</code>.\n\n</p>\n<p><em>Note: when an <code>fs.watchFile</code> operation results in an <code>ENOENT</code> error, it will\ninvoke the callback once. This is a change in functionality since v0.10.</em>\n\n</p>\n<p><em>Note: <code>fs.watch</code> is more efficient than <code>fs.watchFile</code> and <code>fs.unwatchFile</code>.\n<code>fs.watch</code> should be used instead of <code>fs.watchFile</code> and <code>fs.unwatchFile</code>\nwhen possible.</em>\n\n</p>\n",
+          "desc": "<p>Watch for changes on <code>filename</code>. The callback <code>listener</code> will be called each\ntime the file is accessed.\n\n</p>\n<p>The second argument is optional. The <code>options</code> if provided should be an object\ncontaining two members a boolean, <code>persistent</code>, and <code>interval</code>. <code>persistent</code>\nindicates whether the process should continue to run as long as files are\nbeing watched. <code>interval</code> indicates how often the target should be polled,\nin milliseconds. The default is <code>{ persistent: true, interval: 5007 }</code>.\n\n</p>\n<p>The <code>listener</code> gets two arguments the current stat object and the previous\nstat object:\n\n</p>\n<pre><code>fs.watchFile(&#39;message.text&#39;, function (curr, prev) {\n  console.log(&#39;the current mtime is: &#39; + curr.mtime);\n  console.log(&#39;the previous mtime was: &#39; + prev.mtime);\n});</code></pre>\n<p>These stat objects are instances of <code>fs.Stat</code>.\n\n</p>\n<p>If you want to be notified when the file was modified, not just accessed\nyou need to compare <code>curr.mtime</code> and <code>prev.mtime</code>.\n\n</p>\n<p><em>Note: when an <code>fs.watchFile</code> operation results in an <code>ENOENT</code> error, it will\n invoke the listener once, with all the fields zeroed (or, for dates, the Unix\n Epoch). In Windows, <code>blksize</code> and <code>blocks</code> fields will be <code>undefined</code>, instead\n of zero. If the file is created later on, the listener will be called again,\n with the latest stat objects. This is a change in functionality since v0.10.</em>\n\n</p>\n<p><em>Note: <code>fs.watch</code> is more efficient than <code>fs.watchFile</code> and <code>fs.unwatchFile</code>.\n<code>fs.watch</code> should be used instead of <code>fs.watchFile</code> and <code>fs.unwatchFile</code>\nwhen possible.</em>\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -10863,7 +10877,7 @@
               "textRaw": "server.listen(port[, hostname][, backlog][, callback])",
               "type": "method",
               "name": "listen",
-              "desc": "<p>Begin accepting connections on the specified <code>port</code> and <code>hostname</code>. If the\n<code>hostname</code> is omitted, the server will accept connections on any IPv6 address\n(<code>::</code>) when IPv6 is available, or any IPv4 address (<code>0.0.0.0</code>) otherwise. A\nport value of zero will assign a random port.\n\n</p>\n<p>Backlog is the maximum length of the queue of pending connections.\nThe actual length will be determined by your OS through sysctl settings such as\n<code>tcp_max_syn_backlog</code> and <code>somaxconn</code> on linux. The default value of this\nparameter is 511 (not 512).\n\n</p>\n<p>This function is asynchronous.  When the server has been bound,\n[&#39;listening&#39;][] event will be emitted.  The last parameter <code>callback</code>\nwill be added as an listener for the [&#39;listening&#39;][] event.\n\n</p>\n<p>One issue some users run into is getting <code>EADDRINUSE</code> errors. This means that\nanother server is already running on the requested port. One way of handling this\nwould be to wait a second and then try again. This can be done with\n\n</p>\n<pre><code>server.on(&#39;error&#39;, function (e) {\n  if (e.code == &#39;EADDRINUSE&#39;) {\n    console.log(&#39;Address in use, retrying...&#39;);\n    setTimeout(function () {\n      server.close();\n      server.listen(PORT, HOST);\n    }, 1000);\n  }\n});</code></pre>\n<p>(Note: All sockets in io.js set <code>SO_REUSEADDR</code> already)\n\n\n</p>\n",
+              "desc": "<p>Begin accepting connections on the specified <code>port</code> and <code>hostname</code>. If the\n<code>hostname</code> is omitted, the server will accept connections on any IPv6 address\n(<code>::</code>) when IPv6 is available, or any IPv4 address (<code>0.0.0.0</code>) otherwise. A\nport value of zero will assign a random port.\n\n</p>\n<p>Backlog is the maximum length of the queue of pending connections.\nThe actual length will be determined by your OS through sysctl settings such as\n<code>tcp_max_syn_backlog</code> and <code>somaxconn</code> on linux. The default value of this\nparameter is 511 (not 512).\n\n</p>\n<p>This function is asynchronous.  When the server has been bound,\n[&#39;listening&#39;][] event will be emitted.  The last parameter <code>callback</code>\nwill be added as a listener for the [&#39;listening&#39;][] event.\n\n</p>\n<p>One issue some users run into is getting <code>EADDRINUSE</code> errors. This means that\nanother server is already running on the requested port. One way of handling this\nwould be to wait a second and then try again. This can be done with\n\n</p>\n<pre><code>server.on(&#39;error&#39;, function (e) {\n  if (e.code == &#39;EADDRINUSE&#39;) {\n    console.log(&#39;Address in use, retrying...&#39;);\n    setTimeout(function () {\n      server.close();\n      server.listen(PORT, HOST);\n    }, 1000);\n  }\n});</code></pre>\n<p>(Note: All sockets in io.js set <code>SO_REUSEADDR</code> already)\n\n\n</p>\n",
               "signatures": [
                 {
                   "params": [
@@ -10952,7 +10966,7 @@
                   ]
                 }
               ],
-              "desc": "<p>The <code>handle</code> object can be set to either a server or socket (anything\nwith an underlying <code>_handle</code> member), or a <code>{fd: &lt;n&gt;}</code> object.\n\n</p>\n<p>This will cause the server to accept connections on the specified\nhandle, but it is presumed that the file descriptor or handle has\nalready been bound to a port or domain socket.\n\n</p>\n<p>Listening on a file descriptor is not supported on Windows.\n\n</p>\n<p>This function is asynchronous.  When the server has been bound,\n[&#39;listening&#39;][] event will be emitted.\nthe last parameter <code>callback</code> will be added as an listener for the\n[&#39;listening&#39;][] event.\n\n</p>\n"
+              "desc": "<p>The <code>handle</code> object can be set to either a server or socket (anything\nwith an underlying <code>_handle</code> member), or a <code>{fd: &lt;n&gt;}</code> object.\n\n</p>\n<p>This will cause the server to accept connections on the specified\nhandle, but it is presumed that the file descriptor or handle has\nalready been bound to a port or domain socket.\n\n</p>\n<p>Listening on a file descriptor is not supported on Windows.\n\n</p>\n<p>This function is asynchronous.  When the server has been bound,\n[&#39;listening&#39;][] event will be emitted.\nThe last parameter <code>callback</code> will be added as a listener for the\n[&#39;listening&#39;][] event.\n\n</p>\n"
             },
             {
               "textRaw": "server.listen(options[, callback])",
@@ -11026,7 +11040,7 @@
               "textRaw": "server.close([callback])",
               "type": "method",
               "name": "close",
-              "desc": "<p>Stops the server from accepting new connections and keeps existing\nconnections. This function is asynchronous, the server is finally\nclosed when all connections are ended and the server emits a <code>&#39;close&#39;</code>\nevent. Optionally, you can pass a callback to listen for the <code>&#39;close&#39;</code>\nevent. If present, the callback is invoked with any potential error\nas the first and only argument.\n\n</p>\n",
+              "desc": "<p>Stops the server from accepting new connections and keeps existing\nconnections. This function is asynchronous, the server is finally\nclosed when all connections are ended and the server emits a [&#39;close&#39;][] event.\nThe optional <code>callback</code> will be called once the <code>&#39;close&#39;</code> event occurs. Unlike\nthat event, it will be called with an Error as its only argument if the server\nwas not open when it was closed.\n\n</p>\n",
               "signatures": [
                 {
                   "params": [
@@ -11126,7 +11140,7 @@
               "type": "event",
               "name": "error",
               "params": [],
-              "desc": "<p>Emitted when an error occurs.  The <code>&#39;close&#39;</code> event will be called directly\nfollowing this event.  See example in discussion of <code>server.listen</code>.\n\n</p>\n"
+              "desc": "<p>Emitted when an error occurs.  The [&#39;close&#39;][] event will be called directly\nfollowing this event.  See example in discussion of <code>server.listen</code>.\n\n</p>\n"
             }
           ]
         },
@@ -11156,7 +11170,7 @@
               "textRaw": "socket.connect(options[, connectListener])",
               "type": "method",
               "name": "connect",
-              "desc": "<p>Opens the connection for a given socket.\n\n</p>\n<p>For TCP sockets, <code>options</code> argument should be an object which specifies:\n\n</p>\n<ul>\n<li><p><code>port</code>: Port the client should connect to (Required).</p>\n</li>\n<li><p><code>host</code>: Host the client should connect to. Defaults to <code>&#39;localhost&#39;</code>.</p>\n</li>\n<li><p><code>localAddress</code>: Local interface to bind to for network connections.</p>\n</li>\n<li><p><code>localPort</code>: Local port to bind to for network connections.</p>\n</li>\n<li><p><code>family</code> : Version of IP stack. Defaults to <code>4</code>.</p>\n</li>\n<li><p><code>lookup</code> : Custom lookup function. Defaults to <code>dns.lookup</code>.</p>\n</li>\n</ul>\n<p>For local domain sockets, <code>options</code> argument should be an object which\nspecifies:\n\n</p>\n<ul>\n<li><code>path</code>: Path the client should connect to (Required).</li>\n</ul>\n<p>Normally this method is not needed, as <code>net.createConnection</code> opens the\nsocket. Use this only if you are implementing a custom Socket.\n\n</p>\n<p>This function is asynchronous. When the [&#39;connect&#39;][] event is emitted the\nsocket is established. If there is a problem connecting, the <code>&#39;connect&#39;</code> event\nwill not be emitted, the <code>&#39;error&#39;</code> event will be emitted with the exception.\n\n</p>\n<p>The <code>connectListener</code> parameter will be added as an listener for the\n[&#39;connect&#39;][] event.\n\n</p>\n",
+              "desc": "<p>Opens the connection for a given socket.\n\n</p>\n<p>For TCP sockets, <code>options</code> argument should be an object which specifies:\n\n</p>\n<ul>\n<li><p><code>port</code>: Port the client should connect to (Required).</p>\n</li>\n<li><p><code>host</code>: Host the client should connect to. Defaults to <code>&#39;localhost&#39;</code>.</p>\n</li>\n<li><p><code>localAddress</code>: Local interface to bind to for network connections.</p>\n</li>\n<li><p><code>localPort</code>: Local port to bind to for network connections.</p>\n</li>\n<li><p><code>family</code> : Version of IP stack. Defaults to <code>4</code>.</p>\n</li>\n<li><p><code>lookup</code> : Custom lookup function. Defaults to <code>dns.lookup</code>.</p>\n</li>\n</ul>\n<p>For local domain sockets, <code>options</code> argument should be an object which\nspecifies:\n\n</p>\n<ul>\n<li><code>path</code>: Path the client should connect to (Required).</li>\n</ul>\n<p>Normally this method is not needed, as <code>net.createConnection</code> opens the\nsocket. Use this only if you are implementing a custom Socket.\n\n</p>\n<p>This function is asynchronous. When the [&#39;connect&#39;][] event is emitted the\nsocket is established. If there is a problem connecting, the <code>&#39;connect&#39;</code> event\nwill not be emitted, the <code>&#39;error&#39;</code> event will be emitted with the exception.\n\n</p>\n<p>The <code>connectListener</code> parameter will be added as a listener for the\n[&#39;connect&#39;][] event.\n\n</p>\n",
               "signatures": [
                 {
                   "params": [
@@ -12336,13 +12350,29 @@
       "name": "repl",
       "stability": 2,
       "stabilityText": "Stable",
-      "desc": "<p>A Read-Eval-Print-Loop (REPL) is available both as a standalone program and\neasily includable in other programs. The REPL provides a way to interactively\nrun JavaScript and see the results.  It can be used for debugging, testing, or\njust trying things out.\n\n</p>\n<p>By executing <code>iojs</code> without any arguments from the command-line you will be\ndropped into the REPL. It has simplistic emacs line-editing.\n\n</p>\n<pre><code>mjr:~$ iojs\nType &#39;.help&#39; for options.\n&gt; a = [ 1, 2, 3];\n[ 1, 2, 3 ]\n&gt; a.forEach(function (v) {\n...   console.log(v);\n...   });\n1\n2\n3</code></pre>\n<p>For advanced line-editors, start io.js with the environmental variable\n<code>NODE_NO_READLINE=1</code>. This will start the main and debugger REPL in canonical\nterminal settings which will allow you to use with <code>rlwrap</code>.\n\n</p>\n<p>For example, you could add this to your bashrc file:\n\n</p>\n<pre><code>alias iojs=&quot;env NODE_NO_READLINE=1 rlwrap iojs&quot;</code></pre>\n<p>The built-in repl (invoked by running <code>iojs</code> or <code>iojs -i</code>) may be controlled\nvia the following environment variables:\n\n</p>\n<ul>\n<li><code>NODE_REPL_HISTORY_FILE</code> - if given, must be a path to a user-writable,\nuser-readable file. When a valid path is given, persistent history support\nis enabled: REPL history will persist across <code>iojs</code> repl sessions.</li>\n<li><code>NODE_REPL_HISTORY_SIZE</code> - defaults to <code>1000</code>. In conjunction with\n<code>NODE_REPL_HISTORY_FILE</code>, controls how many lines of history will be\npersisted. Must be a positive number.</li>\n<li><code>NODE_REPL_MODE</code> - may be any of <code>sloppy</code>, <code>strict</code>, or <code>magic</code>. Defaults\nto <code>magic</code>, which will automatically run &quot;strict mode only&quot; statements in\nstrict mode.</li>\n</ul>\n",
+      "desc": "<p>A Read-Eval-Print-Loop (REPL) is available both as a standalone program and\neasily includable in other programs. The REPL provides a way to interactively\nrun JavaScript and see the results.  It can be used for debugging, testing, or\njust trying things out.\n\n</p>\n<p>By executing <code>iojs</code> without any arguments from the command-line you will be\ndropped into the REPL. It has simplistic emacs line-editing.\n\n</p>\n<pre><code>mjr:~$ iojs\nType &#39;.help&#39; for options.\n&gt; a = [ 1, 2, 3];\n[ 1, 2, 3 ]\n&gt; a.forEach(function (v) {\n...   console.log(v);\n...   });\n1\n2\n3</code></pre>\n<p>For advanced line-editors, start io.js with the environmental variable\n<code>NODE_NO_READLINE=1</code>. This will start the main and debugger REPL in canonical\nterminal settings which will allow you to use with <code>rlwrap</code>.\n\n</p>\n<p>For example, you could add this to your bashrc file:\n\n</p>\n<pre><code>alias iojs=&quot;env NODE_NO_READLINE=1 rlwrap iojs&quot;</code></pre>\n",
+      "modules": [
+        {
+          "textRaw": "Persistent History",
+          "name": "persistent_history",
+          "desc": "<p>By default, the REPL will persist history between <code>iojs</code> REPL sessions by saving\nto a <code>.node_repl_history</code> file in the user&#39;s home directory. This can be\ndisabled by setting the environment variable <code>NODE_REPL_HISTORY=&quot;&quot;</code>.\n\n</p>\n<p>Previously in io.js v2.x, REPL history was controlled by using a\n<code>NODE_REPL_HISTORY_FILE</code> environment variable, and the history was saved in JSON\nformat. This variable has now been deprecated, and your REPL history will\nautomatically be converted to using plain text. The new file will be saved to\neither your home directory, or a directory defined by the <code>NODE_REPL_HISTORY</code>\nvariable, as documented below.\n\n</p>\n",
+          "type": "module",
+          "displayName": "Persistent History"
+        },
+        {
+          "textRaw": "Environment Variable Options",
+          "name": "environment_variable_options",
+          "desc": "<p>The built-in repl (invoked by running <code>iojs</code> or <code>iojs -i</code>) may be controlled\nvia the following environment variables:\n\n</p>\n<ul>\n<li><code>NODE_REPL_HISTORY</code> - When a valid path is given, persistent REPL history\nwill be saved to the specified file rather than <code>.node_repl_history</code> in the\nuser&#39;s home directory. Setting this value to <code>&quot;&quot;</code> will disable persistent\nREPL history.</li>\n<li><code>NODE_REPL_HISTORY_SIZE</code> - defaults to <code>1000</code>. Controls how many lines of\nhistory will be persisted if history is available. Must be a positive number.</li>\n<li><code>NODE_REPL_MODE</code> - may be any of <code>sloppy</code>, <code>strict</code>, or <code>magic</code>. Defaults\nto <code>magic</code>, which will automatically run &quot;strict mode only&quot; statements in\nstrict mode.</li>\n</ul>\n",
+          "type": "module",
+          "displayName": "Environment Variable Options"
+        }
+      ],
       "methods": [
         {
           "textRaw": "repl.start(options)",
           "type": "method",
           "name": "start",
-          "desc": "<p>Returns and starts a <code>REPLServer</code> instance, that inherits from \n[Readline Interface][]. Accepts an &quot;options&quot; Object that takes \nthe following values:\n\n</p>\n<ul>\n<li><p><code>prompt</code> - the prompt and <code>stream</code> for all I/O. Defaults to <code>&gt; </code>.</p>\n</li>\n<li><p><code>input</code> - the readable stream to listen to. Defaults to <code>process.stdin</code>.</p>\n</li>\n<li><p><code>output</code> - the writable stream to write readline data to. Defaults to\n<code>process.stdout</code>.</p>\n</li>\n<li><p><code>terminal</code> - pass <code>true</code> if the <code>stream</code> should be treated like a TTY, and\nhave ANSI/VT100 escape codes written to it. Defaults to checking <code>isTTY</code>\non the <code>output</code> stream upon instantiation.</p>\n</li>\n<li><p><code>eval</code> - function that will be used to eval each given line. Defaults to\nan async wrapper for <code>eval()</code>. See below for an example of a custom <code>eval</code>.</p>\n</li>\n<li><p><code>useColors</code> - a boolean which specifies whether or not the <code>writer</code> function\nshould output colors. If a different <code>writer</code> function is set then this does\nnothing. Defaults to the repl&#39;s <code>terminal</code> value.</p>\n</li>\n<li><p><code>useGlobal</code> - if set to <code>true</code>, then the repl will use the <code>global</code> object,\ninstead of running scripts in a separate context. Defaults to <code>false</code>.</p>\n</li>\n<li><p><code>ignoreUndefined</code> - if set to <code>true</code>, then the repl will not output the\nreturn value of command if it&#39;s <code>undefined</code>. Defaults to <code>false</code>.</p>\n</li>\n<li><p><code>writer</code> - the function to invoke for each command that gets evaluated which\nreturns the formatting (including coloring) to display. Defaults to\n<code>util.inspect</code>.</p>\n</li>\n<li><p><code>replMode</code> - controls whether the repl runs all commands in strict mode,\ndefault mode, or a hybrid mode (&quot;magic&quot; mode.) Acceptable values are:</p>\n<ul>\n<li><code>repl.REPL_MODE_SLOPPY</code> - run commands in sloppy mode.</li>\n<li><code>repl.REPL_MODE_STRICT</code> - run commands in strict mode. This is equivalent to\nprefacing every repl statement with <code>&#39;use strict&#39;</code>.</li>\n<li><code>repl.REPL_MODE_MAGIC</code> - attempt to run commands in default mode. If they\nfail to parse, re-try in strict mode.</li>\n</ul>\n</li>\n</ul>\n<p>You can use your own <code>eval</code> function if it has following signature:\n\n</p>\n<pre><code>function eval(cmd, context, filename, callback) {\n  callback(null, result);\n}</code></pre>\n<p>On tab completion - <code>eval</code> will be called with <code>.scope</code> as an input string. It\nis expected to return an array of scope names to be used for the auto-completion.\n\n</p>\n<p>Multiple REPLs may be started against the same running instance of io.js.  Each\nwill share the same global object but will have unique I/O.\n\n</p>\n<p>Here is an example that starts a REPL on stdin, a Unix socket, and a TCP socket:\n\n</p>\n<pre><code>var net = require(&quot;net&quot;),\n    repl = require(&quot;repl&quot;);\n\nconnections = 0;\n\nrepl.start({\n  prompt: &quot;io.js via stdin&gt; &quot;,\n  input: process.stdin,\n  output: process.stdout\n});\n\nnet.createServer(function (socket) {\n  connections += 1;\n  repl.start({\n    prompt: &quot;io.js via Unix socket&gt; &quot;,\n    input: socket,\n    output: socket\n  }).on(&#39;exit&#39;, function() {\n    socket.end();\n  })\n}).listen(&quot;/tmp/iojs-repl-sock&quot;);\n\nnet.createServer(function (socket) {\n  connections += 1;\n  repl.start({\n    prompt: &quot;io.js via TCP socket&gt; &quot;,\n    input: socket,\n    output: socket\n  }).on(&#39;exit&#39;, function() {\n    socket.end();\n  });\n}).listen(5001);</code></pre>\n<p>Running this program from the command line will start a REPL on stdin.  Other\nREPL clients may connect through the Unix socket or TCP socket. <code>telnet</code> is useful\nfor connecting to TCP sockets, and <code>socat</code> can be used to connect to both Unix and\nTCP sockets.\n\n</p>\n<p>By starting a REPL from a Unix socket-based server instead of stdin, you can\nconnect to a long-running io.js process without restarting it.\n\n</p>\n<p>For an example of running a &quot;full-featured&quot; (<code>terminal</code>) REPL over\na <code>net.Server</code> and <code>net.Socket</code> instance, see: <a href=\"https://gist.github.com/2209310\">https://gist.github.com/2209310</a>\n\n</p>\n<p>For an example of running a REPL instance over <code>curl(1)</code>,\nsee: <a href=\"https://gist.github.com/2053342\">https://gist.github.com/2053342</a>\n\n</p>\n",
+          "desc": "<p>Returns and starts a <code>REPLServer</code> instance, that inherits from\n[Readline Interface][]. Accepts an &quot;options&quot; Object that takes\nthe following values:\n\n</p>\n<ul>\n<li><p><code>prompt</code> - the prompt and <code>stream</code> for all I/O. Defaults to <code>&gt; </code>.</p>\n</li>\n<li><p><code>input</code> - the readable stream to listen to. Defaults to <code>process.stdin</code>.</p>\n</li>\n<li><p><code>output</code> - the writable stream to write readline data to. Defaults to\n<code>process.stdout</code>.</p>\n</li>\n<li><p><code>terminal</code> - pass <code>true</code> if the <code>stream</code> should be treated like a TTY, and\nhave ANSI/VT100 escape codes written to it. Defaults to checking <code>isTTY</code>\non the <code>output</code> stream upon instantiation.</p>\n</li>\n<li><p><code>eval</code> - function that will be used to eval each given line. Defaults to\nan async wrapper for <code>eval()</code>. See below for an example of a custom <code>eval</code>.</p>\n</li>\n<li><p><code>useColors</code> - a boolean which specifies whether or not the <code>writer</code> function\nshould output colors. If a different <code>writer</code> function is set then this does\nnothing. Defaults to the repl&#39;s <code>terminal</code> value.</p>\n</li>\n<li><p><code>useGlobal</code> - if set to <code>true</code>, then the repl will use the <code>global</code> object,\ninstead of running scripts in a separate context. Defaults to <code>false</code>.</p>\n</li>\n<li><p><code>ignoreUndefined</code> - if set to <code>true</code>, then the repl will not output the\nreturn value of command if it&#39;s <code>undefined</code>. Defaults to <code>false</code>.</p>\n</li>\n<li><p><code>writer</code> - the function to invoke for each command that gets evaluated which\nreturns the formatting (including coloring) to display. Defaults to\n<code>util.inspect</code>.</p>\n</li>\n<li><p><code>replMode</code> - controls whether the repl runs all commands in strict mode,\ndefault mode, or a hybrid mode (&quot;magic&quot; mode.) Acceptable values are:</p>\n<ul>\n<li><code>repl.REPL_MODE_SLOPPY</code> - run commands in sloppy mode.</li>\n<li><code>repl.REPL_MODE_STRICT</code> - run commands in strict mode. This is equivalent to\nprefacing every repl statement with <code>&#39;use strict&#39;</code>.</li>\n<li><code>repl.REPL_MODE_MAGIC</code> - attempt to run commands in default mode. If they\nfail to parse, re-try in strict mode.</li>\n</ul>\n</li>\n</ul>\n<p>You can use your own <code>eval</code> function if it has following signature:\n\n</p>\n<pre><code>function eval(cmd, context, filename, callback) {\n  callback(null, result);\n}</code></pre>\n<p>On tab completion - <code>eval</code> will be called with <code>.scope</code> as an input string. It\nis expected to return an array of scope names to be used for the auto-completion.\n\n</p>\n<p>Multiple REPLs may be started against the same running instance of io.js.  Each\nwill share the same global object but will have unique I/O.\n\n</p>\n<p>Here is an example that starts a REPL on stdin, a Unix socket, and a TCP socket:\n\n</p>\n<pre><code>var net = require(&quot;net&quot;),\n    repl = require(&quot;repl&quot;);\n\nconnections = 0;\n\nrepl.start({\n  prompt: &quot;io.js via stdin&gt; &quot;,\n  input: process.stdin,\n  output: process.stdout\n});\n\nnet.createServer(function (socket) {\n  connections += 1;\n  repl.start({\n    prompt: &quot;io.js via Unix socket&gt; &quot;,\n    input: socket,\n    output: socket\n  }).on(&#39;exit&#39;, function() {\n    socket.end();\n  })\n}).listen(&quot;/tmp/iojs-repl-sock&quot;);\n\nnet.createServer(function (socket) {\n  connections += 1;\n  repl.start({\n    prompt: &quot;io.js via TCP socket&gt; &quot;,\n    input: socket,\n    output: socket\n  }).on(&#39;exit&#39;, function() {\n    socket.end();\n  });\n}).listen(5001);</code></pre>\n<p>Running this program from the command line will start a REPL on stdin.  Other\nREPL clients may connect through the Unix socket or TCP socket. <code>telnet</code> is useful\nfor connecting to TCP sockets, and <code>socat</code> can be used to connect to both Unix and\nTCP sockets.\n\n</p>\n<p>By starting a REPL from a Unix socket-based server instead of stdin, you can\nconnect to a long-running io.js process without restarting it.\n\n</p>\n<p>For an example of running a &quot;full-featured&quot; (<code>terminal</code>) REPL over\na <code>net.Server</code> and <code>net.Socket</code> instance, see: <a href=\"https://gist.github.com/2209310\">https://gist.github.com/2209310</a>\n\n</p>\n<p>For an example of running a REPL instance over <code>curl(1)</code>,\nsee: <a href=\"https://gist.github.com/2053342\">https://gist.github.com/2053342</a>\n\n</p>\n",
           "events": [
             {
               "textRaw": "Event: 'exit'",
@@ -12389,141 +12419,6 @@
       ],
       "type": "module",
       "displayName": "REPL"
-    },
-    {
-      "textRaw": "Smalloc",
-      "name": "smalloc",
-      "stability": 0,
-      "stabilityText": "Deprecated",
-      "desc": "<p>This module has been deprecated for technical reasons and will be removed when\nthe V8 JavaScript engine is upgraded to version 4.3 or 4.4.  It is recommended\nthat you start using [typed arrays][] instead.\n\n</p>\n",
-      "classes": [
-        {
-          "textRaw": "Class: smalloc",
-          "type": "class",
-          "name": "smalloc",
-          "desc": "<p>Buffers are backed by a simple allocator that only handles the assignation of\nexternal raw memory. Smalloc exposes that functionality.\n\n</p>\n",
-          "methods": [
-            {
-              "textRaw": "smalloc.alloc(length[, receiver][, type])",
-              "type": "method",
-              "name": "alloc",
-              "signatures": [
-                {
-                  "params": [
-                    {
-                      "textRaw": "`length` {Number} `<= smalloc.kMaxLength` ",
-                      "name": "length",
-                      "type": "Number",
-                      "desc": "`<= smalloc.kMaxLength`"
-                    },
-                    {
-                      "textRaw": "`receiver` {Object} Default: `new Object` ",
-                      "name": "receiver",
-                      "type": "Object",
-                      "desc": "Default: `new Object`",
-                      "optional": true
-                    },
-                    {
-                      "textRaw": "`type` {Enum} Default: `Uint8` ",
-                      "name": "type",
-                      "type": "Enum",
-                      "desc": "Default: `Uint8`",
-                      "optional": true
-                    }
-                  ]
-                },
-                {
-                  "params": [
-                    {
-                      "name": "length"
-                    },
-                    {
-                      "name": "receiver",
-                      "optional": true
-                    },
-                    {
-                      "name": "type",
-                      "optional": true
-                    }
-                  ]
-                }
-              ],
-              "desc": "<p>Returns <code>receiver</code> with allocated external array data. If no <code>receiver</code> is\npassed then a new Object will be created and returned.\n\n</p>\n<p>This can be used to create your own Buffer-like classes. No other properties are\nset, so the user will need to keep track of other necessary information (e.g.\n<code>length</code> of the allocation).\n\n</p>\n<pre><code>function SimpleData(n) {\n  this.length = n;\n  smalloc.alloc(this.length, this);\n}\n\nSimpleData.prototype = { /* ... */ };</code></pre>\n<p>It only checks if the <code>receiver</code> is an Object, and also not an Array. Because of\nthis it is possible to allocate external array data to more than a plain Object.\n\n</p>\n<pre><code>function allocMe() { }\nsmalloc.alloc(3, allocMe);\n\n// { [Function allocMe] &#39;0&#39;: 0, &#39;1&#39;: 0, &#39;2&#39;: 0 }</code></pre>\n<p>v8 does not support allocating external array data to an Array, and if passed\nwill throw.\n\n</p>\n<p>It&#39;s possible to specify the type of external array data you would like. All\npossible options are listed in <code>smalloc.Types</code>. Example usage:\n\n</p>\n<pre><code>var doubleArr = smalloc.alloc(3, smalloc.Types.Double);\n\nfor (var i = 0; i &lt; 3; i++)\n  doubleArr[i] = i / 10;\n\n// { &#39;0&#39;: 0, &#39;1&#39;: 0.1, &#39;2&#39;: 0.2 }</code></pre>\n<p>It is not possible to freeze, seal and prevent extensions of objects with\nexternal data using <code>Object.freeze</code>, <code>Object.seal</code> and\n<code>Object.preventExtensions</code> respectively.\n\n</p>\n"
-            },
-            {
-              "textRaw": "smalloc.dispose(obj)",
-              "type": "method",
-              "name": "dispose",
-              "signatures": [
-                {
-                  "params": [
-                    {
-                      "textRaw": "`obj` Object ",
-                      "name": "obj",
-                      "desc": "Object"
-                    }
-                  ]
-                },
-                {
-                  "params": [
-                    {
-                      "name": "obj"
-                    }
-                  ]
-                }
-              ],
-              "desc": "<p>Free memory that has been allocated to an object via <code>smalloc.alloc</code>.\n\n</p>\n<pre><code>var a = {};\nsmalloc.alloc(3, a);\n\n// { &#39;0&#39;: 0, &#39;1&#39;: 0, &#39;2&#39;: 0 }\n\nsmalloc.dispose(a);\n\n// {}</code></pre>\n<p>This is useful to reduce strain on the garbage collector, but developers must be\ncareful. Cryptic errors may arise in applications that are difficult to trace.\n\n</p>\n<pre><code>var a = smalloc.alloc(4);\nvar b = smalloc.alloc(4);\n\n// perform this somewhere along the line\nsmalloc.dispose(b);\n\n// now trying to copy some data out\nsmalloc.copyOnto(b, 2, a, 0, 2);\n\n// now results in:\n// RangeError: copy_length &gt; source_length</code></pre>\n<p>After <code>dispose()</code> is called object still behaves as one with external data, for\nexample <code>smalloc.hasExternalData()</code> returns <code>true</code>.\n<code>dispose()</code> does not support Buffers, and will throw if passed.\n\n</p>\n"
-            },
-            {
-              "textRaw": "smalloc.hasExternalData(obj)",
-              "type": "method",
-              "name": "hasExternalData",
-              "signatures": [
-                {
-                  "params": [
-                    {
-                      "textRaw": "`obj` {Object} ",
-                      "name": "obj",
-                      "type": "Object"
-                    }
-                  ]
-                },
-                {
-                  "params": [
-                    {
-                      "name": "obj"
-                    }
-                  ]
-                }
-              ],
-              "desc": "<p>Returns <code>true</code> if the <code>obj</code> has externally allocated memory.\n\n</p>\n"
-            }
-          ],
-          "modules": [
-            {
-              "textRaw": "smalloc.copyOnto(source, sourceStart, dest, destStart, copyLength);",
-              "name": "smalloc.copyonto(source,_sourcestart,_dest,_deststart,_copylength);",
-              "desc": "<p>Copy memory from one external array allocation to another. No arguments are\noptional, and any violation will throw.\n\n</p>\n<pre><code>var a = smalloc.alloc(4);\nvar b = smalloc.alloc(4);\n\nfor (var i = 0; i &lt; 4; i++) {\n  a[i] = i;\n  b[i] = i * 2;\n}\n\n// { &#39;0&#39;: 0, &#39;1&#39;: 1, &#39;2&#39;: 2, &#39;3&#39;: 3 }\n// { &#39;0&#39;: 0, &#39;1&#39;: 2, &#39;2&#39;: 4, &#39;3&#39;: 6 }\n\nsmalloc.copyOnto(b, 2, a, 0, 2);\n\n// { &#39;0&#39;: 4, &#39;1&#39;: 6, &#39;2&#39;: 2, &#39;3&#39;: 3 }</code></pre>\n<p><code>copyOnto</code> automatically detects the length of the allocation internally, so no\nneed to set any additional properties for this to work.\n\n</p>\n",
-              "type": "module",
-              "displayName": "smalloc.copyOnto(source, sourceStart, dest, destStart, copyLength);"
-            }
-          ],
-          "properties": [
-            {
-              "textRaw": "smalloc.kMaxLength",
-              "name": "kMaxLength",
-              "desc": "<p>Size of maximum allocation. This is also applicable to Buffer creation.\n\n</p>\n"
-            },
-            {
-              "textRaw": "smalloc.Types",
-              "name": "Types",
-              "desc": "<p>Enum of possible external array types. Contains:\n\n</p>\n<ul>\n<li><code>Int8</code></li>\n<li><code>Uint8</code></li>\n<li><code>Int16</code></li>\n<li><code>Uint16</code></li>\n<li><code>Int32</code></li>\n<li><code>Uint32</code></li>\n<li><code>Float</code></li>\n<li><code>Double</code></li>\n<li><code>Uint8Clamped</code></li>\n</ul>\n"
-            }
-          ]
-        }
-      ],
-      "type": "module",
-      "displayName": "Smalloc"
     },
     {
       "textRaw": "Stream",
@@ -16528,6 +16423,11 @@
           "textRaw": "process.config",
           "name": "config",
           "desc": "<p>An Object containing the JavaScript representation of the configure options\nthat were used to compile the current io.js executable. This is the same as\nthe &quot;config.gypi&quot; file that was produced when running the <code>./configure</code> script.\n\n</p>\n<p>An example of the possible output looks like:\n\n</p>\n<pre><code>{ target_defaults:\n   { cflags: [],\n     default_configuration: &#39;Release&#39;,\n     defines: [],\n     include_dirs: [],\n     libraries: [] },\n  variables:\n   { host_arch: &#39;x64&#39;,\n     node_install_npm: &#39;true&#39;,\n     node_prefix: &#39;&#39;,\n     node_shared_cares: &#39;false&#39;,\n     node_shared_http_parser: &#39;false&#39;,\n     node_shared_libuv: &#39;false&#39;,\n     node_shared_zlib: &#39;false&#39;,\n     node_use_dtrace: &#39;false&#39;,\n     node_use_openssl: &#39;true&#39;,\n     node_shared_openssl: &#39;false&#39;,\n     strict_aliasing: &#39;true&#39;,\n     target_arch: &#39;x64&#39;,\n     v8_use_snapshot: &#39;true&#39; } }</code></pre>\n"
+        },
+        {
+          "textRaw": "process.release",
+          "name": "release",
+          "desc": "<p>An Object containing metadata related to the current release, including URLs\nfor the source tarball and headers-only tarball.\n\n</p>\n<p><code>process.release</code> contains the following properties:\n\n</p>\n<ul>\n<li><code>name</code>: a string with a value that will always be <code>&quot;io.js&quot;</code> for io.js.</li>\n<li><code>sourceUrl</code>: a complete URL pointing to a <em>.tar.gz</em> file containing the\nsource of the current release.</li>\n<li><code>headersUrl</code>: a complete URL pointing to a <em>.tar.gz</em> file containing only\nthe header files for the current release. This file is significantly smaller\nthan the full source file and can be used for compiling add-ons against\nio.js.</li>\n<li><code>libUrl</code>: a complete URL pointing to an <em>iojs.lib</em> file matching the\narchitecture and version of the current release. This file is used for\ncompiling add-ons against io.js. <em>This property is only present on Windows\nbuilds of io.js and will be missing on all other platforms.</em></li>\n</ul>\n<p>e.g.\n\n</p>\n<pre><code>{ name: &#39;io.js&#39;,\n  sourceUrl: &#39;https://iojs.org/download/release/v2.3.5/iojs-v2.3.5.tar.gz&#39;,\n  headersUrl: &#39;https://iojs.org/download/release/v2.3.5/iojs-v2.3.5-headers.tar.gz&#39;,\n  libUrl: &#39;https://iojs.org/download/release/v2.3.5/win-x64/iojs.lib&#39; }</code></pre>\n<p>In custom builds from non-release versions of the source tree, only the\n<code>name</code> property may be present. The additional properties should not be\nrelied upon to exist.\n\n</p>\n"
         },
         {
           "textRaw": "process.pid",

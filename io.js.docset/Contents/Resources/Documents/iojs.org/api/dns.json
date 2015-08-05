@@ -273,7 +273,7 @@
         {
           "textRaw": "Supported getaddrinfo flags",
           "name": "supported_getaddrinfo_flags",
-          "desc": "<p>The following flags can be passed as hints to <code>dns.lookup</code>.\n\n</p>\n<ul>\n<li><code>dns.ADDRCONFIG</code>: Returned address types are determined by the types\nof addresses supported by the current system. For example, IPv4 addresses\nare only returned if the current system has at least one IPv4 address\nconfigured. Loopback addresses are not considered.</li>\n<li><code>dns.V4MAPPED</code>: If the IPv6 family was specified, but no IPv6 addresses\nwere found, then return IPv4 mapped IPv6 addresses.</li>\n</ul>\n",
+          "desc": "<p>The following flags can be passed as hints to <code>dns.lookup</code>.\n\n</p>\n<ul>\n<li><code>dns.ADDRCONFIG</code>: Returned address types are determined by the types\nof addresses supported by the current system. For example, IPv4 addresses\nare only returned if the current system has at least one IPv4 address\nconfigured. Loopback addresses are not considered.</li>\n<li><code>dns.V4MAPPED</code>: If the IPv6 family was specified, but no IPv6 addresses were\nfound, then return IPv4 mapped IPv6 addresses. Note that it is not supported\non some operating systems (e.g FreeBSD 10.1).</li>\n</ul>\n",
           "type": "module",
           "displayName": "Supported getaddrinfo flags"
         },

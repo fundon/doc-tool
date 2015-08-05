@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>About this Documentation io.js v2.5.0 Manual &amp; Documentation</title>
+  <title>About this Documentation io.js v3.0.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -44,7 +44,6 @@
 <li><a class="nav-querystring" href="querystring.html">Query Strings</a></li>
 <li><a class="nav-readline" href="readline.html">Readline</a></li>
 <li><a class="nav-repl" href="repl.html">REPL</a></li>
-<li><a class="nav-smalloc" href="smalloc.html">Smalloc</a></li>
 <li><a class="nav-stream" href="stream.html">Stream</a></li>
 <li><a class="nav-string_decoder" href="string_decoder.html">String Decoder</a></li>
 <li><a class="nav-timers" href="timers.html">Timers</a></li>
@@ -62,7 +61,7 @@
 
     <div id="column1" data-id="all" class="interior">
       <header>
-        <h1>io.js v2.5.0 Documentation</h1>
+        <h1>io.js v3.0.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -525,6 +524,7 @@
 <li><a href="#all_class_method_eventemitter_listenercount_emitter_event">Class Method: EventEmitter.listenerCount(emitter, event)</a></li>
 <li><a href="#all_event_newlistener">Event: &#39;newListener&#39;</a></li>
 <li><a href="#all_event_removelistener">Event: &#39;removeListener&#39;</a></li>
+<li><a href="#all_inheriting_from_eventemitter">Inheriting from &#39;EventEmitter&#39;</a></li>
 </ul>
 </li>
 </ul>
@@ -920,6 +920,7 @@
 <li><a href="#all_process_version">process.version</a></li>
 <li><a href="#all_process_versions">process.versions</a></li>
 <li><a href="#all_process_config">process.config</a></li>
+<li><a href="#all_process_release">process.release</a></li>
 <li><a href="#all_process_kill_pid_signal">process.kill(pid[, signal])</a></li>
 <li><a href="#all_process_pid">process.pid</a></li>
 <li><a href="#all_process_title">process.title</a></li>
@@ -983,6 +984,8 @@
 </ul>
 </li>
 <li><a href="#all_repl">REPL</a><ul>
+<li><a href="#all_persistent_history">Persistent History</a></li>
+<li><a href="#all_environment_variable_options">Environment Variable Options</a></li>
 <li><a href="#all_repl_start_options">repl.start(options)</a><ul>
 <li><a href="#all_event_exit_4">Event: &#39;exit&#39;</a></li>
 <li><a href="#all_event_reset">Event: &#39;reset&#39;</a></li>
@@ -990,18 +993,6 @@
 </li>
 <li><a href="#all_repl_features">REPL Features</a><ul>
 <li><a href="#all_customizing_object_displays_in_the_repl">Customizing Object displays in the REPL</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#all_smalloc">Smalloc</a><ul>
-<li><a href="#all_class_smalloc">Class: smalloc</a><ul>
-<li><a href="#all_smalloc_alloc_length_receiver_type">smalloc.alloc(length[, receiver][, type])</a></li>
-<li><a href="#all_smalloc_copyonto_source_sourcestart_dest_deststart_copylength">smalloc.copyOnto(source, sourceStart, dest, destStart, copyLength);</a></li>
-<li><a href="#all_smalloc_dispose_obj">smalloc.dispose(obj)</a></li>
-<li><a href="#all_smalloc_hasexternaldata_obj">smalloc.hasExternalData(obj)</a></li>
-<li><a href="#all_smalloc_kmaxlength">smalloc.kMaxLength</a></li>
-<li><a href="#all_smalloc_types">smalloc.Types</a></li>
 </ul>
 </li>
 </ul>
@@ -2417,9 +2408,10 @@ It can be constructed in a variety of ways.
 <div class="signature"><ul>
 <li><code>size</code> Number</li>
 </div></ul>
-<p>Allocates a new buffer of <code>size</code> octets. Note, <code>size</code> must be no more than
-<a href="smalloc.html#smalloc_smalloc_kmaxlength">kMaxLength</a>. Otherwise, a <code>RangeError</code>
-will be thrown here.
+<p>Allocates a new buffer of <code>size</code> bytes.  <code>size</code> must be less than
+1,073,741,824 bytes (1 GB) on 32 bits architectures or
+2,147,483,648 bytes (2 GB) on 64 bits architectures,
+otherwise a <code>RangeError</code> is thrown.
 
 </p>
 <h3>new Buffer(array)<span><a class="mark" href="#all_new_buffer_array" id="all_new_buffer_array">#</a></span></h3>
@@ -2492,13 +2484,6 @@ the list together.
 </p>
 <p>If the list has no items, or if the totalLength is 0, then it returns a
 zero-length buffer.
-
-</p>
-<p>If the list has exactly one item, then the first item of the list is
-returned.
-
-</p>
-<p>If the list has more than one item, then a new Buffer is created.
 
 </p>
 <p>If totalLength is not provided, it is read from the buffers in the list.
@@ -6122,7 +6107,9 @@ assigned a random port number and is bound to the &quot;all interfaces&quot; add
 <p>An optional callback may be specified to detect DNS errors or for determining
 when it&#39;s safe to reuse the <code>buf</code> object.  Note that DNS lookups delay the time
 to send for at least one tick.  The only way to know for sure that the datagram
-has been sent is by using a callback.
+has been sent is by using a callback. If an error occurs and a callback is
+given, the error will be the first argument to the callback. If a callback is
+not given, the error is emitted as an <code>&#39;error&#39;</code> event on the <code>socket</code> object.
 
 </p>
 <p>With consideration for multi-byte characters, <code>offset</code> and <code>length</code> will
@@ -6633,8 +6620,9 @@ library doesn&#39;t support that.
 of addresses supported by the current system. For example, IPv4 addresses
 are only returned if the current system has at least one IPv4 address
 configured. Loopback addresses are not considered.</li>
-<li><code>dns.V4MAPPED</code>: If the IPv6 family was specified, but no IPv6 addresses
-were found, then return IPv4 mapped IPv6 addresses.</li>
+<li><code>dns.V4MAPPED</code>: If the IPv6 family was specified, but no IPv6 addresses were
+found, then return IPv4 mapped IPv6 addresses. Note that it is not supported
+on some operating systems (e.g FreeBSD 10.1).</li>
 </ul>
 <h2>Implementation considerations<span><a class="mark" href="#all_implementation_considerations" id="all_implementation_considerations">#</a></span></h2>
 <p>Although <code>dns.lookup</code> and <code>dns.resolve*/dns.reverse</code> functions have the same
@@ -7761,6 +7749,22 @@ triggered, the listener has been removed from the array of listeners for the
 <code>event</code>.
 
 </p>
+<h3>Inheriting from &#39;EventEmitter&#39;<span><a class="mark" href="#all_inheriting_from_eventemitter" id="all_inheriting_from_eventemitter">#</a></span></h3>
+<p>Inheriting from <code>EventEmitter</code> is no different from inheriting from any other
+constructor function. For example:
+
+</p>
+<pre><code>&#39;use strict&#39;;
+const util = require(&#39;util&#39;);
+const EventEmitter = require(&#39;events&#39;).EventEmitter;
+
+function MyEventEmitter() {
+  // Initialize necessary properties from `EventEmitter` in this instance
+  EventEmitter.call(this);
+}
+
+// Inherit functions from `EventEmitter`&#39;s prototype
+util.inherits(MyEventEmitter, EventEmitter);</code></pre>
 <h1>File System<span><a class="mark" href="#all_file_system" id="all_file_system">#</a></span></h1>
 <pre class="api_stability_2">Stability: 2 - Stable</pre><!--name=fs-->
 
@@ -8375,7 +8379,10 @@ you need to compare <code>curr.mtime</code> and <code>prev.mtime</code>.
 
 </p>
 <p><em>Note: when an <code>fs.watchFile</code> operation results in an <code>ENOENT</code> error, it will
-invoke the callback once. This is a change in functionality since v0.10.</em>
+ invoke the listener once, with all the fields zeroed (or, for dates, the Unix
+ Epoch). In Windows, <code>blksize</code> and <code>blocks</code> fields will be <code>undefined</code>, instead
+ of zero. If the file is created later on, the listener will be called again,
+ with the latest stat objects. This is a change in functionality since v0.10.</em>
 
 </p>
 <p><em>Note: <code>fs.watch</code> is more efficient than <code>fs.watchFile</code> and <code>fs.unwatchFile</code>.
@@ -11040,7 +11047,7 @@ parameter is 511 (not 512).
 </p>
 <p>This function is asynchronous.  When the server has been bound,
 <a href="#net_event_listening">&#39;listening&#39;</a> event will be emitted.  The last parameter <code>callback</code>
-will be added as an listener for the <a href="#net_event_listening">&#39;listening&#39;</a> event.
+will be added as a listener for the <a href="#net_event_listening">&#39;listening&#39;</a> event.
 
 </p>
 <p>One issue some users run into is getting <code>EADDRINUSE</code> errors. This means that
@@ -11110,7 +11117,7 @@ already been bound to a port or domain socket.
 </p>
 <p>This function is asynchronous.  When the server has been bound,
 <a href="#net_event_listening">&#39;listening&#39;</a> event will be emitted.
-the last parameter <code>callback</code> will be added as an listener for the
+The last parameter <code>callback</code> will be added as a listener for the
 <a href="#net_event_listening">&#39;listening&#39;</a> event.
 
 </p>
@@ -11148,10 +11155,10 @@ shown below.
 <h3>server.close([callback])<span><a class="mark" href="#all_server_close_callback_2" id="all_server_close_callback_2">#</a></span></h3>
 <p>Stops the server from accepting new connections and keeps existing
 connections. This function is asynchronous, the server is finally
-closed when all connections are ended and the server emits a <code>&#39;close&#39;</code>
-event. Optionally, you can pass a callback to listen for the <code>&#39;close&#39;</code>
-event. If present, the callback is invoked with any potential error
-as the first and only argument.
+closed when all connections are ended and the server emits a <a href="#net_event_close">&#39;close&#39;</a> event.
+The optional <code>callback</code> will be called once the <code>&#39;close&#39;</code> event occurs. Unlike
+that event, it will be called with an Error as its only argument if the server
+was not open when it was closed.
 
 </p>
 <h3>server.address()<span><a class="mark" href="#all_server_address" id="all_server_address">#</a></span></h3>
@@ -11246,7 +11253,7 @@ event is not emitted until all connections are ended.
 <div class="signature"><ul>
 <li><span class="type">Error Object</span></li>
 </div></ul>
-<p>Emitted when an error occurs.  The <code>&#39;close&#39;</code> event will be called directly
+<p>Emitted when an error occurs.  The <a href="#net_event_close">&#39;close&#39;</a> event will be called directly
 following this event.  See example in discussion of <code>server.listen</code>.
 
 </p>
@@ -11312,7 +11319,7 @@ socket is established. If there is a problem connecting, the <code>&#39;connect&
 will not be emitted, the <code>&#39;error&#39;</code> event will be emitted with the exception.
 
 </p>
-<p>The <code>connectListener</code> parameter will be added as an listener for the
+<p>The <code>connectListener</code> parameter will be added as a listener for the
 <a href="#net_event_connect">&#39;connect&#39;</a> event.
 
 </p>
@@ -11558,7 +11565,7 @@ following this event.
 </p>
 <h3>Event: &#39;close&#39;<span><a class="mark" href="#all_event_close_6" id="all_event_close_6">#</a></span></h3>
 <div class="signature"><ul>
-<li><code>had_error</code> <span class="type">Boolean</span> true if the socket had a transmission error</li>
+<li><code>had_error</code> <span class="type">Boolean</span> <code>true</code> if the socket had a transmission error.</li>
 </div></ul>
 <p>Emitted once the socket is fully closed. The argument <code>had_error</code> is a boolean
 which says if the socket was closed due to a transmission error.
@@ -12727,6 +12734,39 @@ the &quot;config.gypi&quot; file that was produced when running the <code>./conf
      strict_aliasing: &#39;true&#39;,
      target_arch: &#39;x64&#39;,
      v8_use_snapshot: &#39;true&#39; } }</code></pre>
+<h2>process.release<span><a class="mark" href="#all_process_release" id="all_process_release">#</a></span></h2>
+<p>An Object containing metadata related to the current release, including URLs
+for the source tarball and headers-only tarball.
+
+</p>
+<p><code>process.release</code> contains the following properties:
+
+</p>
+<ul>
+<li><code>name</code>: a string with a value that will always be <code>&quot;io.js&quot;</code> for io.js.</li>
+<li><code>sourceUrl</code>: a complete URL pointing to a <em>.tar.gz</em> file containing the
+source of the current release.</li>
+<li><code>headersUrl</code>: a complete URL pointing to a <em>.tar.gz</em> file containing only
+the header files for the current release. This file is significantly smaller
+than the full source file and can be used for compiling add-ons against
+io.js.</li>
+<li><code>libUrl</code>: a complete URL pointing to an <em>iojs.lib</em> file matching the
+architecture and version of the current release. This file is used for
+compiling add-ons against io.js. <em>This property is only present on Windows
+builds of io.js and will be missing on all other platforms.</em></li>
+</ul>
+<p>e.g.
+
+</p>
+<pre><code>{ name: &#39;io.js&#39;,
+  sourceUrl: &#39;https://iojs.org/download/release/v2.3.5/iojs-v2.3.5.tar.gz&#39;,
+  headersUrl: &#39;https://iojs.org/download/release/v2.3.5/iojs-v2.3.5-headers.tar.gz&#39;,
+  libUrl: &#39;https://iojs.org/download/release/v2.3.5/win-x64/iojs.lib&#39; }</code></pre>
+<p>In custom builds from non-release versions of the source tree, only the
+<code>name</code> property may be present. The additional properties should not be
+relied upon to exist.
+
+</p>
 <h2>process.kill(pid[, signal])<span><a class="mark" href="#all_process_kill_pid_signal" id="all_process_kill_pid_signal">#</a></span></h2>
 <p>Send a signal to a process. <code>pid</code> is the process id and <code>signal</code> is the
 string describing the signal to send.  Signal names are strings like
@@ -13445,24 +13485,39 @@ terminal settings which will allow you to use with <code>rlwrap</code>.
 
 </p>
 <pre><code>alias iojs=&quot;env NODE_NO_READLINE=1 rlwrap iojs&quot;</code></pre>
+<h2>Persistent History<span><a class="mark" href="#all_persistent_history" id="all_persistent_history">#</a></span></h2>
+<p>By default, the REPL will persist history between <code>iojs</code> REPL sessions by saving
+to a <code>.node_repl_history</code> file in the user&#39;s home directory. This can be
+disabled by setting the environment variable <code>NODE_REPL_HISTORY=&quot;&quot;</code>.
+
+</p>
+<p>Previously in io.js v2.x, REPL history was controlled by using a
+<code>NODE_REPL_HISTORY_FILE</code> environment variable, and the history was saved in JSON
+format. This variable has now been deprecated, and your REPL history will
+automatically be converted to using plain text. The new file will be saved to
+either your home directory, or a directory defined by the <code>NODE_REPL_HISTORY</code>
+variable, as documented below.
+
+</p>
+<h2>Environment Variable Options<span><a class="mark" href="#all_environment_variable_options" id="all_environment_variable_options">#</a></span></h2>
 <p>The built-in repl (invoked by running <code>iojs</code> or <code>iojs -i</code>) may be controlled
 via the following environment variables:
 
 </p>
 <ul>
-<li><code>NODE_REPL_HISTORY_FILE</code> - if given, must be a path to a user-writable,
-user-readable file. When a valid path is given, persistent history support
-is enabled: REPL history will persist across <code>iojs</code> repl sessions.</li>
-<li><code>NODE_REPL_HISTORY_SIZE</code> - defaults to <code>1000</code>. In conjunction with
-<code>NODE_REPL_HISTORY_FILE</code>, controls how many lines of history will be
-persisted. Must be a positive number.</li>
+<li><code>NODE_REPL_HISTORY</code> - When a valid path is given, persistent REPL history
+will be saved to the specified file rather than <code>.node_repl_history</code> in the
+user&#39;s home directory. Setting this value to <code>&quot;&quot;</code> will disable persistent
+REPL history.</li>
+<li><code>NODE_REPL_HISTORY_SIZE</code> - defaults to <code>1000</code>. Controls how many lines of
+history will be persisted if history is available. Must be a positive number.</li>
 <li><code>NODE_REPL_MODE</code> - may be any of <code>sloppy</code>, <code>strict</code>, or <code>magic</code>. Defaults
 to <code>magic</code>, which will automatically run &quot;strict mode only&quot; statements in
 strict mode.</li>
 </ul>
 <h2>repl.start(options)<span><a class="mark" href="#all_repl_start_options" id="all_repl_start_options">#</a></span></h2>
-<p>Returns and starts a <code>REPLServer</code> instance, that inherits from 
-[Readline Interface][]. Accepts an &quot;options&quot; Object that takes 
+<p>Returns and starts a <code>REPLServer</code> instance, that inherits from
+[Readline Interface][]. Accepts an &quot;options&quot; Object that takes
 the following values:
 
 </p>
@@ -13695,156 +13750,6 @@ undefined
 </p>
 <pre><code>&gt; obj
 { bar: &#39;baz&#39; }</code></pre>
-<h1>Smalloc<span><a class="mark" href="#all_smalloc" id="all_smalloc">#</a></span></h1>
-<pre class="api_stability_0">Stability: 0 - Deprecated</pre><p>This module has been deprecated for technical reasons and will be removed when
-the V8 JavaScript engine is upgraded to version 4.3 or 4.4.  It is recommended
-that you start using <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays">typed arrays</a> instead.
-
-</p>
-<h2>Class: smalloc<span><a class="mark" href="#all_class_smalloc" id="all_class_smalloc">#</a></span></h2>
-<p>Buffers are backed by a simple allocator that only handles the assignation of
-external raw memory. Smalloc exposes that functionality.
-
-</p>
-<h3>smalloc.alloc(length[, receiver][, type])<span><a class="mark" href="#all_smalloc_alloc_length_receiver_type" id="all_smalloc_alloc_length_receiver_type">#</a></span></h3>
-<div class="signature"><ul>
-<li><code>length</code> <span class="type">Number</span> <code>&lt;= smalloc.kMaxLength</code></li>
-<li><code>receiver</code> <span class="type">Object</span> Default: <code>new Object</code></li>
-<li><code>type</code> <span class="type">Enum</span> Default: <code>Uint8</code></li>
-</div></ul>
-<p>Returns <code>receiver</code> with allocated external array data. If no <code>receiver</code> is
-passed then a new Object will be created and returned.
-
-</p>
-<p>This can be used to create your own Buffer-like classes. No other properties are
-set, so the user will need to keep track of other necessary information (e.g.
-<code>length</code> of the allocation).
-
-</p>
-<pre><code>function SimpleData(n) {
-  this.length = n;
-  smalloc.alloc(this.length, this);
-}
-
-SimpleData.prototype = { /* ... */ };</code></pre>
-<p>It only checks if the <code>receiver</code> is an Object, and also not an Array. Because of
-this it is possible to allocate external array data to more than a plain Object.
-
-</p>
-<pre><code>function allocMe() { }
-smalloc.alloc(3, allocMe);
-
-// { [Function allocMe] &#39;0&#39;: 0, &#39;1&#39;: 0, &#39;2&#39;: 0 }</code></pre>
-<p>v8 does not support allocating external array data to an Array, and if passed
-will throw.
-
-</p>
-<p>It&#39;s possible to specify the type of external array data you would like. All
-possible options are listed in <code>smalloc.Types</code>. Example usage:
-
-</p>
-<pre><code>var doubleArr = smalloc.alloc(3, smalloc.Types.Double);
-
-for (var i = 0; i &lt; 3; i++)
-  doubleArr[i] = i / 10;
-
-// { &#39;0&#39;: 0, &#39;1&#39;: 0.1, &#39;2&#39;: 0.2 }</code></pre>
-<p>It is not possible to freeze, seal and prevent extensions of objects with
-external data using <code>Object.freeze</code>, <code>Object.seal</code> and
-<code>Object.preventExtensions</code> respectively.
-
-</p>
-<h3>smalloc.copyOnto(source, sourceStart, dest, destStart, copyLength);<span><a class="mark" href="#all_smalloc_copyonto_source_sourcestart_dest_deststart_copylength" id="all_smalloc_copyonto_source_sourcestart_dest_deststart_copylength">#</a></span></h3>
-<div class="signature"><ul>
-<li><code>source</code> <span class="type">Object</span> with external array allocation</li>
-<li><code>sourceStart</code> <span class="type">Number</span> Position to begin copying from</li>
-<li><code>dest</code> <span class="type">Object</span> with external array allocation</li>
-<li><code>destStart</code> <span class="type">Number</span> Position to begin copying onto</li>
-<li><code>copyLength</code> <span class="type">Number</span> Length of copy</li>
-</div></ul>
-<p>Copy memory from one external array allocation to another. No arguments are
-optional, and any violation will throw.
-
-</p>
-<pre><code>var a = smalloc.alloc(4);
-var b = smalloc.alloc(4);
-
-for (var i = 0; i &lt; 4; i++) {
-  a[i] = i;
-  b[i] = i * 2;
-}
-
-// { &#39;0&#39;: 0, &#39;1&#39;: 1, &#39;2&#39;: 2, &#39;3&#39;: 3 }
-// { &#39;0&#39;: 0, &#39;1&#39;: 2, &#39;2&#39;: 4, &#39;3&#39;: 6 }
-
-smalloc.copyOnto(b, 2, a, 0, 2);
-
-// { &#39;0&#39;: 4, &#39;1&#39;: 6, &#39;2&#39;: 2, &#39;3&#39;: 3 }</code></pre>
-<p><code>copyOnto</code> automatically detects the length of the allocation internally, so no
-need to set any additional properties for this to work.
-
-</p>
-<h3>smalloc.dispose(obj)<span><a class="mark" href="#all_smalloc_dispose_obj" id="all_smalloc_dispose_obj">#</a></span></h3>
-<div class="signature"><ul>
-<li><code>obj</code> Object</li>
-</div></ul>
-<p>Free memory that has been allocated to an object via <code>smalloc.alloc</code>.
-
-</p>
-<pre><code>var a = {};
-smalloc.alloc(3, a);
-
-// { &#39;0&#39;: 0, &#39;1&#39;: 0, &#39;2&#39;: 0 }
-
-smalloc.dispose(a);
-
-// {}</code></pre>
-<p>This is useful to reduce strain on the garbage collector, but developers must be
-careful. Cryptic errors may arise in applications that are difficult to trace.
-
-</p>
-<pre><code>var a = smalloc.alloc(4);
-var b = smalloc.alloc(4);
-
-// perform this somewhere along the line
-smalloc.dispose(b);
-
-// now trying to copy some data out
-smalloc.copyOnto(b, 2, a, 0, 2);
-
-// now results in:
-// RangeError: copy_length &gt; source_length</code></pre>
-<p>After <code>dispose()</code> is called object still behaves as one with external data, for
-example <code>smalloc.hasExternalData()</code> returns <code>true</code>.
-<code>dispose()</code> does not support Buffers, and will throw if passed.
-
-</p>
-<h3>smalloc.hasExternalData(obj)<span><a class="mark" href="#all_smalloc_hasexternaldata_obj" id="all_smalloc_hasexternaldata_obj">#</a></span></h3>
-<div class="signature"><ul>
-<li><code>obj</code> <span class="type">Object</span></li>
-</div></ul>
-<p>Returns <code>true</code> if the <code>obj</code> has externally allocated memory.
-
-</p>
-<h3>smalloc.kMaxLength<span><a class="mark" href="#all_smalloc_kmaxlength" id="all_smalloc_kmaxlength">#</a></span></h3>
-<p>Size of maximum allocation. This is also applicable to Buffer creation.
-
-</p>
-<h3>smalloc.Types<span><a class="mark" href="#all_smalloc_types" id="all_smalloc_types">#</a></span></h3>
-<p>Enum of possible external array types. Contains:
-
-</p>
-<ul>
-<li><code>Int8</code></li>
-<li><code>Uint8</code></li>
-<li><code>Int16</code></li>
-<li><code>Uint16</code></li>
-<li><code>Int32</code></li>
-<li><code>Uint32</code></li>
-<li><code>Float</code></li>
-<li><code>Double</code></li>
-<li><code>Uint8Clamped</code></li>
-</ul>
 <h1>Stream<span><a class="mark" href="#all_stream" id="all_stream">#</a></span></h1>
 <pre class="api_stability_2">Stability: 2 - Stable</pre><p>A stream is an abstract interface implemented by various objects in
 io.js.  For example a <a href="http.html#http_http_incomingmessage">request to an HTTP
