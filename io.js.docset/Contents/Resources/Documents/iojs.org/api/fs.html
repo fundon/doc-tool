@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>File System io.js v3.0.0 Manual &amp; Documentation</title>
+  <title>File System io.js v3.1.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -61,7 +61,7 @@
 
     <div id="column1" data-id="fs" class="interior">
       <header>
-        <h1>io.js v3.0.0 Documentation</h1>
+        <h1>io.js v3.1.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -771,11 +771,12 @@ to <code>&#39;utf8&#39;</code>.
 time the file is accessed.
 
 </p>
-<p>The second argument is optional. The <code>options</code> if provided should be an object
-containing two members a boolean, <code>persistent</code>, and <code>interval</code>. <code>persistent</code>
-indicates whether the process should continue to run as long as files are
-being watched. <code>interval</code> indicates how often the target should be polled,
-in milliseconds. The default is <code>{ persistent: true, interval: 5007 }</code>.
+<p>The <code>options</code> argument may be omitted. If provided, it should be an object. The
+<code>options</code> object may contain a boolean named <code>persistent</code> that indicates
+whether the process should continue to run as long as files are being watched.
+The <code>options</code> object may specify an <code>interval</code> property indicating how often the
+target should be polled in milliseconds. The default is
+<code>{ persistent: true, interval: 5007 }</code>.
 
 </p>
 <p>The <code>listener</code> gets two arguments the current stat object and the previous
@@ -1033,6 +1034,11 @@ on Unix systems, it never was.
 <p>Returns a new ReadStream object (See <code>Readable Stream</code>).
 
 </p>
+<p>Be aware that, unlike the default value set for <code>highWaterMark</code> on a
+readable stream (16 kb), the stream returned by this method has a
+default value of 64 kb for the same parameter.
+
+</p>
 <p><code>options</code> is an object or string with the following defaults:
 
 </p>
@@ -1056,6 +1062,10 @@ there&#39;s an error.  It is your responsibility to close it and make sure
 there&#39;s no file descriptor leak.  If <code>autoClose</code> is set to true (default
 behavior), on <code>error</code> or <code>end</code> the file descriptor will be closed
 automatically.
+
+</p>
+<p><code>mode</code> sets the file mode (permission and sticky bits), but only if the
+file was created.
 
 </p>
 <p>An example to read the last 10 bytes of a file which is 100 bytes long:
@@ -1085,13 +1095,13 @@ automatically.
 
 </p>
 <pre><code>{ flags: &#39;w&#39;,
-  encoding: null,
+  defaultEncoding: &#39;utf8&#39;,
   fd: null,
   mode: 0o666 }</code></pre>
 <p><code>options</code> may also include a <code>start</code> option to allow writing data at
 some position past the beginning of the file.  Modifying a file rather
 than replacing it may require a <code>flags</code> mode of <code>r+</code> rather than the
-default mode <code>w</code>. The <code>encoding</code> can be <code>&#39;utf8&#39;</code>, <code>&#39;ascii&#39;</code>, <code>binary</code>,
+default mode <code>w</code>. The <code>defaultEncoding</code> can be <code>&#39;utf8&#39;</code>, <code>&#39;ascii&#39;</code>, <code>binary</code>,
 or <code>&#39;base64&#39;</code>.
 
 </p>

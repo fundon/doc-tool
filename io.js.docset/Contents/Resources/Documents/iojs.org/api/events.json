@@ -143,7 +143,7 @@
               "textRaw": "emitter.listeners(event)",
               "type": "method",
               "name": "listeners",
-              "desc": "<p>Returns an array of listeners for the specified event.\n\n</p>\n<pre><code>server.on(&#39;connection&#39;, function (stream) {\n  console.log(&#39;someone connected!&#39;);\n});\nconsole.log(util.inspect(server.listeners(&#39;connection&#39;))); // [ [Function] ]</code></pre>\n",
+              "desc": "<p>Returns a copy of the array of listeners for the specified event.\n\n</p>\n<pre><code>server.on(&#39;connection&#39;, function (stream) {\n  console.log(&#39;someone connected!&#39;);\n});\nconsole.log(util.inspect(server.listeners(&#39;connection&#39;))); // [ [Function] ]</code></pre>\n",
               "signatures": [
                 {
                   "params": [

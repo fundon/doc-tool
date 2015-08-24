@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>HTTP io.js v3.0.0 Manual &amp; Documentation</title>
+  <title>HTTP io.js v3.1.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -61,7 +61,7 @@
 
     <div id="column1" data-id="http" class="interior">
       <header>
-        <h1>io.js v3.0.0 Documentation</h1>
+        <h1>io.js v3.1.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -687,6 +687,7 @@ automatically parsed with <a href="url.html#url_url_parse_urlstr_parsequerystrin
 
 </p>
 <ul>
+<li><code>protocol</code>: Protocol to use. Defaults to <code>&#39;http&#39;</code>.</li>
 <li><code>host</code>: A domain name or IP address of the server to issue the request to.
 Defaults to <code>&#39;localhost&#39;</code>.</li>
 <li><code>hostname</code>: Alias for <code>host</code>. To support <code>url.parse()</code> <code>hostname</code> is
@@ -1167,7 +1168,8 @@ is finished.
 
 </p>
 <h3>request.abort()<span><a class="mark" href="#http_request_abort" id="http_request_abort">#</a></span></h3>
-<p>Aborts a request.  (New since v0.3.8.)
+<p>Marks the request as aborting. Calling this will cause remaining data
+in the response to be dropped and the socket to be destroyed.
 
 </p>
 <h3>request.setTimeout(timeout[, callback])<span><a class="mark" href="#http_request_settimeout_timeout_callback" id="http_request_settimeout_timeout_callback">#</a></span></h3>

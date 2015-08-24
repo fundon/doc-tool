@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>DNS io.js v3.0.0 Manual &amp; Documentation</title>
+  <title>DNS io.js v3.1.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -61,7 +61,7 @@
 
     <div id="column1" data-id="dns" class="interior">
       <header>
-        <h1>io.js v3.0.0 Documentation</h1>
+        <h1>io.js v3.1.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -193,7 +193,7 @@ in an array, otherwise returns a single address. Defaults to <code>false</code>.
   all: false
 }</code></pre>
 <p>The callback has arguments <code>(err, address, family)</code>. <code>address</code> is a string
-representation of a IP v4 or v6 address. <code>family</code> is either the integer 4 or 6
+representation of an IP v4 or v6 address. <code>family</code> is either the integer 4 or 6
 and denotes the family of <code>address</code> (not necessarily the value initially passed
 to <code>lookup</code>).
 
@@ -282,7 +282,7 @@ attribute (e.g. <code>[{&#39;priority&#39;: 10, &#39;exchange&#39;: &#39;mx.exam
 </p>
 <h2>dns.resolveTxt(hostname, callback)<span><a class="mark" href="#dns_dns_resolvetxt_hostname_callback" id="dns_dns_resolvetxt_hostname_callback">#</a></span></h2>
 <p>The same as <code>dns.resolve()</code>, but only for text queries (<code>TXT</code> records).
-<code>addresses</code> is an 2-d array of the text records available for <code>hostname</code> (e.g.,
+<code>addresses</code> is a 2-d array of the text records available for <code>hostname</code> (e.g.,
 <code>[ [&#39;v=spf1 ip4:0.0.0.0 &#39;, &#39;~all&#39; ] ]</code>). Each sub-array contains TXT chunks of
 one record. Depending on the use case, the could be either joined together or
 treated separately.
