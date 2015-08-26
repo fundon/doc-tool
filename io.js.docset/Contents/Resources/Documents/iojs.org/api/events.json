@@ -180,6 +180,31 @@
                   ]
                 }
               ]
+            },
+            {
+              "textRaw": "emitter.listenerCount(type)",
+              "type": "method",
+              "name": "listenerCount",
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`type` {Value} The type of event ",
+                      "name": "type",
+                      "type": "Value",
+                      "desc": "The type of event"
+                    }
+                  ]
+                },
+                {
+                  "params": [
+                    {
+                      "name": "type"
+                    }
+                  ]
+                }
+              ],
+              "desc": "<p>Returns the number of listeners listening to the <code>type</code> of event.\n\n</p>\n"
             }
           ],
           "properties": [
@@ -194,7 +219,9 @@
               "textRaw": "Class Method: EventEmitter.listenerCount(emitter, event)",
               "type": "classMethod",
               "name": "listenerCount",
-              "desc": "<p>Return the number of listeners for a given event.\n\n\n</p>\n",
+              "stability": 0,
+              "stabilityText": "Deprecated: Use [emitter.listenerCount][] instead.",
+              "desc": "<p>Returns the number of listeners for a given event.\n\n</p>\n",
               "signatures": [
                 {
                   "params": [

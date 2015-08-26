@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>About this Documentation io.js v3.1.0 Manual &amp; Documentation</title>
+  <title>About this Documentation io.js v3.2.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -61,7 +61,7 @@
 
     <div id="column1" data-id="all" class="interior">
       <header>
-        <h1>io.js v3.1.0 Documentation</h1>
+        <h1>io.js v3.2.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -521,6 +521,7 @@
 <li><a href="#all_eventemitter_defaultmaxlisteners">EventEmitter.defaultMaxListeners</a></li>
 <li><a href="#all_emitter_listeners_event">emitter.listeners(event)</a></li>
 <li><a href="#all_emitter_emit_event_arg1_arg2">emitter.emit(event[, arg1][, arg2][, ...])</a></li>
+<li><a href="#all_emitter_listenercount_type">emitter.listenerCount(type)</a></li>
 <li><a href="#all_class_method_eventemitter_listenercount_emitter_event">Class Method: EventEmitter.listenerCount(emitter, event)</a></li>
 <li><a href="#all_event_newlistener">Event: &#39;newListener&#39;</a></li>
 <li><a href="#all_event_removelistener">Event: &#39;removeListener&#39;</a></li>
@@ -688,6 +689,7 @@
 <li><a href="#all_response_write_chunk_encoding_callback">response.write(chunk[, encoding][, callback])</a></li>
 <li><a href="#all_response_addtrailers_headers">response.addTrailers(headers)</a></li>
 <li><a href="#all_response_end_data_encoding_callback">response.end([data][, encoding][, callback])</a></li>
+<li><a href="#all_response_finished">response.finished</a></li>
 </ul>
 </li>
 <li><a href="#all_http_request_options_callback">http.request(options[, callback])</a></li>
@@ -984,7 +986,10 @@
 </ul>
 </li>
 <li><a href="#all_repl">REPL</a><ul>
-<li><a href="#all_persistent_history">Persistent History</a></li>
+<li><a href="#all_persistent_history">Persistent History</a><ul>
+<li><a href="#all_node_repl_history_file">NODE_REPL_HISTORY_FILE</a></li>
+</ul>
+</li>
 <li><a href="#all_environment_variable_options">Environment Variable Options</a></li>
 <li><a href="#all_repl_start_options">repl.start(options)</a><ul>
 <li><a href="#all_event_exit_4">Event: &#39;exit&#39;</a></li>
@@ -1102,6 +1107,7 @@
 <li><a href="#all_tls_ssl">TLS (SSL)</a><ul>
 <li><a href="#all_client_initiated_renegotiation_attack_mitigation">Client-initiated renegotiation attack mitigation</a></li>
 <li><a href="#all_npn_and_sni">NPN and SNI</a></li>
+<li><a href="#all_modifying_the_default_tls_cipher_suite">Modifying the Default TLS Cipher suite</a></li>
 <li><a href="#all_perfect_forward_secrecy">Perfect Forward Secrecy</a></li>
 <li><a href="#all_tls_getciphers">tls.getCiphers()</a></li>
 <li><a href="#all_tls_createserver_options_secureconnectionlistener">tls.createServer(options[, secureConnectionListener])</a></li>
@@ -5044,7 +5050,7 @@ console.log(hashes); // [&#39;sha&#39;, &#39;sha1&#39;, &#39;sha1WithRSAEncrypti
 <pre><code>var curves = crypto.getCurves();
 console.log(curves); // [&#39;secp256k1&#39;, &#39;secp384r1&#39;, ...]</code></pre>
 <h2>crypto.createCredentials(details)<span><a class="mark" href="#all_crypto_createcredentials_details" id="all_crypto_createcredentials_details">#</a></span></h2>
-<pre class="api_stability_0">Stability: 0 - Deprecated. Use <a href="tls.html#tls_tls_createsecurecontext_details">tls.createSecureContext</a> instead.</pre><p>Creates a credentials object, with the optional details being a
+<pre class="api_stability_0">Stability: 0 - Deprecated: Use <a href="tls.html#tls_tls_createsecurecontext_details">tls.createSecureContext</a> instead.</pre><p>Creates a credentials object, with the optional details being a
 dictionary with keys:
 
 </p>
@@ -7726,9 +7732,15 @@ console.log(util.inspect(server.listeners(&#39;connection&#39;))); // [ [Functio
 
 
 </p>
-<h3>Class Method: EventEmitter.listenerCount(emitter, event)<span><a class="mark" href="#all_class_method_eventemitter_listenercount_emitter_event" id="all_class_method_eventemitter_listenercount_emitter_event">#</a></span></h3>
-<p>Return the number of listeners for a given event.
+<h3>emitter.listenerCount(type)<span><a class="mark" href="#all_emitter_listenercount_type" id="all_emitter_listenercount_type">#</a></span></h3>
+<div class="signature"><ul>
+<li><code>type</code> <span class="type">Value</span> The type of event</li>
+</div></ul>
+<p>Returns the number of listeners listening to the <code>type</code> of event.
 
+</p>
+<h3>Class Method: EventEmitter.listenerCount(emitter, event)<span><a class="mark" href="#all_class_method_eventemitter_listenercount_emitter_event" id="all_class_method_eventemitter_listenercount_emitter_event">#</a></span></h3>
+<pre class="api_stability_0">Stability: 0 - Deprecated: Use <a href="#events_emitter_listenercount_type">emitter.listenerCount</a> instead.</pre><p>Returns the number of listeners for a given event.
 
 </p>
 <h3>Event: &#39;newListener&#39;<span><a class="mark" href="#all_event_newlistener" id="all_event_newlistener">#</a></span></h3>
@@ -8487,12 +8499,7 @@ callback, and have some fallback logic if it is null.
   }
 });</code></pre>
 <h2>fs.exists(path, callback)<span><a class="mark" href="#all_fs_exists_path_callback" id="all_fs_exists_path_callback">#</a></span></h2>
-<p><code>fs.exists()</code> is <strong>deprecated</strong>. For supported alternatives please check out
-<a href="fs.html#fs_fs_stat_path_callback"><code>fs.stat</code></a> or
-<a href="fs.html#fs_fs_access_path_mode_callback"><code>fs.access</code></a>.
-
-</p>
-<p>Test whether or not the given path exists by checking with the file system.
+<pre class="api_stability_0">Stability: 0 - Deprecated: Use <a href="#fs_fs_stat_path_callback">fs.stat</a> or <a href="#fs_fs_access_path_mode_callback">fs.access</a> instead.</pre><p>Test whether or not the given path exists by checking with the file system.
 Then call the <code>callback</code> argument with either true or false.  Example:
 
 </p>
@@ -8516,12 +8523,7 @@ and handle the error when it&#39;s not there.
 Returns <code>true</code> if the file exists, <code>false</code> otherwise.
 
 </p>
-<p><code>fs.existsSync()</code> is <strong>deprecated</strong>. For supported alternatives please check
-out <a href="fs.html#fs_fs_statsync_path"><code>fs.statSync</code></a> or
-<a href="fs.html#fs_fs_accesssync_path_mode"><code>fs.accessSync</code></a>.
-
-</p>
-<h2>fs.access(path[, mode], callback)<span><a class="mark" href="#all_fs_access_path_mode_callback" id="all_fs_access_path_mode_callback">#</a></span></h2>
+<pre class="api_stability_0">Stability: 0 - Deprecated: Use <a href="#fs_fs_statsync_path">fs.statSync</a> or <a href="#fs_fs_accesssync_path_mode">fs.accessSync</a> instead.</pre><h2>fs.access(path[, mode], callback)<span><a class="mark" href="#all_fs_access_path_mode_callback" id="all_fs_access_path_mode_callback">#</a></span></h2>
 <p>Tests a user&#39;s permissions for the file specified by <code>path</code>. <code>mode</code> is an
 optional integer that specifies the accessibility checks to be performed. The
 following constants define the possible values of <code>mode</code>. It is possible to
@@ -8741,6 +8743,7 @@ See more details in <a href="#fs_fs_watch_filename_options_listener">fs.watch</a
 <li><code>error</code> <span class="type">Error object</span></li>
 </div></ul>
 <p>Emitted when an error occurs.
+
 
 </p>
 <h1>Global Objects<span><a class="mark" href="#all_global_objects" id="all_global_objects">#</a></span></h1>
@@ -9021,8 +9024,7 @@ added to the <code>&#39;request&#39;</code> event.
 
 </p>
 <h2>http.createClient([port][, host])<span><a class="mark" href="#all_http_createclient_port_host" id="all_http_createclient_port_host">#</a></span></h2>
-<p>This function is <strong>deprecated</strong>; please use <a href="http.html#http_http_request_options_callback">http.request()</a> instead.
-Constructs a new HTTP client. <code>port</code> and <code>host</code> refer to the server to be
+<pre class="api_stability_0">Stability: 0 - Deprecated: Use <a href="#http_http_request_options_callback">http.request</a> instead.</pre><p>Constructs a new HTTP client. <code>port</code> and <code>host</code> refer to the server to be
 connected to.
 
 </p>
@@ -9454,6 +9456,11 @@ response.
 </p>
 <p>If <code>callback</code> is specified, it will be called when the response stream
 is finished.
+
+</p>
+<h3>response.finished<span><a class="mark" href="#all_response_finished" id="all_response_finished">#</a></span></h3>
+<p>Boolean value that indicates whether the response has completed. Starts
+as <code>false</code>. After <code>response.end()</code> executes, the value will be <code>true</code>.
 
 </p>
 <h2>http.request(options[, callback])<span><a class="mark" href="#all_http_request_options_callback" id="all_http_request_options_callback">#</a></span></h2>
@@ -11229,8 +11236,7 @@ with <code>child_process.fork()</code>.
 
 </p>
 <h3>server.connections<span><a class="mark" href="#all_server_connections" id="all_server_connections">#</a></span></h3>
-<p>This function is <strong>deprecated</strong>; please use <a href="#net_server_getconnections_callback">server.getConnections()</a> instead.
-The number of concurrent connections on the server.
+<pre class="api_stability_0">Stability: 0 - Deprecated: Use <a href="#net_server_getconnections_callback">server.getConnections</a> instead.</pre><p>The number of concurrent connections on the server.
 
 </p>
 <p>This becomes <code>null</code> when sending a socket to a child with
@@ -13508,7 +13514,8 @@ to a <code>.node_repl_history</code> file in the user&#39;s home directory. This
 disabled by setting the environment variable <code>NODE_REPL_HISTORY=&quot;&quot;</code>.
 
 </p>
-<p>Previously in io.js v2.x, REPL history was controlled by using a
+<h3>NODE_REPL_HISTORY_FILE<span><a class="mark" href="#all_node_repl_history_file" id="all_node_repl_history_file">#</a></span></h3>
+<pre class="api_stability_0">Stability: 0 - Deprecated: Use <code>NODE_REPL_HISTORY</code> instead.</pre><p>Previously in io.js v2.x, REPL history was controlled by using a
 <code>NODE_REPL_HISTORY_FILE</code> environment variable, and the history was saved in JSON
 format. This variable has now been deprecated, and your REPL history will
 automatically be converted to using plain text. The new file will be saved to
@@ -15626,6 +15633,45 @@ handshake extensions allowing you:
 <li>SNI - to use one TLS server for multiple hostnames with different SSL
 certificates.</li>
 </ul>
+<h2>Modifying the Default TLS Cipher suite<span><a class="mark" href="#all_modifying_the_default_tls_cipher_suite" id="all_modifying_the_default_tls_cipher_suite">#</a></span></h2>
+<p>Node.js is built with a default suite of enabled and disabled TLS ciphers.
+Currently, the default cipher suite is:
+
+</p>
+<pre><code>ECDHE-RSA-AES128-GCM-SHA256:
+ECDHE-ECDSA-AES128-GCM-SHA256:
+ECDHE-RSA-AES256-GCM-SHA384:
+ECDHE-ECDSA-AES256-GCM-SHA384:
+DHE-RSA-AES128-GCM-SHA256:
+ECDHE-RSA-AES128-SHA256:
+DHE-RSA-AES128-SHA256:
+ECDHE-RSA-AES256-SHA384:
+DHE-RSA-AES256-SHA384:
+ECDHE-RSA-AES256-SHA256:
+DHE-RSA-AES256-SHA256:
+HIGH:
+!aNULL:
+!eNULL:
+!EXPORT:
+!DES:
+!RC4:
+!MD5:
+!PSK:
+!SRP:
+!CAMELLIA</code></pre>
+<p>This default can be overriden entirely using the <code>--tls-cipher-list</code> command
+line switch. For instance, the following makes
+<code>ECDHE-RSA-AES128-GCM-SHA256:!RC4</code> the default TLS cipher suite:
+
+</p>
+<pre><code>node --tls-cipher-list=&quot;ECDHE-RSA-AES128-GCM-SHA256:!RC4&quot;</code></pre>
+<p>Note that the default cipher suite included within Node.js has been carefully
+selected to reflect current security best practices and risk mitigation.
+Changing the default cipher suite can have a significant impact on the security
+of an application. The <code>--tls-cipher-list</code> switch should by used only if
+absolutely necessary.
+
+</p>
 <h2>Perfect Forward Secrecy<span><a class="mark" href="#all_perfect_forward_secrecy" id="all_perfect_forward_secrecy">#</a></span></h2>
 <!-- type=misc -->
 
@@ -15690,7 +15736,7 @@ like VeriSign. These are used to authorize connections.</p>
 <li><p><code>crl</code> : Either a string or list of strings of PEM encoded CRLs (Certificate
 Revocation List)</p>
 </li>
-<li><p><code>ciphers</code>: A string describing the ciphers to use or exclude, seperated by
+<li><p><code>ciphers</code>: A string describing the ciphers to use or exclude, separated by
 <code>:</code>. The default cipher suite is:</p>
 <pre><code>ECDHE-RSA-AES128-GCM-SHA256:
 ECDHE-ECDSA-AES128-GCM-SHA256:
@@ -16244,7 +16290,7 @@ gets high.
 
 </p>
 <h2>Class: CryptoStream<span><a class="mark" href="#all_class_cryptostream" id="all_class_cryptostream">#</a></span></h2>
-<pre class="api_stability_0">Stability: 0 - Deprecated. Use tls.TLSSocket instead.</pre><p>This is an encrypted stream.
+<pre class="api_stability_0">Stability: 0 - Deprecated: Use <a href="#tls_class_tls_tlssocket">tls.TLSSocket</a> instead.</pre><p>This is an encrypted stream.
 
 </p>
 <h3>cryptoStream.bytesWritten<span><a class="mark" href="#all_cryptostream_byteswritten" id="all_cryptostream_byteswritten">#</a></span></h3>
@@ -16438,12 +16484,7 @@ terminal.
 
 </p>
 <h2>tty.setRawMode(mode)<span><a class="mark" href="#all_tty_setrawmode_mode" id="all_tty_setrawmode_mode">#</a></span></h2>
-<p>Deprecated. Use <code>tty.ReadStream#setRawMode()</code>
-(i.e. <code>process.stdin.setRawMode()</code>) instead.
-
-
-</p>
-<h2>Class: ReadStream<span><a class="mark" href="#all_class_readstream" id="all_class_readstream">#</a></span></h2>
+<pre class="api_stability_0">Stability: 0 - Deprecated: Use <a href="#tty_rs_setrawmode_mode">tty.ReadStream#setRawMode</a> (i.e. process.stdin.setRawMode) instead.</pre><h2>Class: ReadStream<span><a class="mark" href="#all_class_readstream" id="all_class_readstream">#</a></span></h2>
 <p>A <code>net.Socket</code> subclass that represents the readable portion of a tty. In normal
 circumstances, <code>process.stdin</code> will be the only <code>tty.ReadStream</code> instance in any
 io.js program (only when <code>isatty(0)</code> is true).

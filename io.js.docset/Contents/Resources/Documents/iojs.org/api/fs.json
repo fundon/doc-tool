@@ -1514,7 +1514,9 @@
           "textRaw": "fs.exists(path, callback)",
           "type": "method",
           "name": "exists",
-          "desc": "<p><code>fs.exists()</code> is <strong>deprecated</strong>. For supported alternatives please check out\n<a href=\"fs.html#fs_fs_stat_path_callback\"><code>fs.stat</code></a> or\n<a href=\"fs.html#fs_fs_access_path_mode_callback\"><code>fs.access</code></a>.\n\n</p>\n<p>Test whether or not the given path exists by checking with the file system.\nThen call the <code>callback</code> argument with either true or false.  Example:\n\n</p>\n<pre><code>fs.exists(&#39;/etc/passwd&#39;, function (exists) {\n  console.log(exists ? &quot;it&#39;s there&quot; : &#39;no passwd!&#39;);\n});</code></pre>\n<p><code>fs.exists()</code> is an anachronism and exists only for historical reasons.\nThere should almost never be a reason to use it in your own code.\n\n</p>\n<p>In particular, checking if a file exists before opening it is an anti-pattern\nthat leaves you vulnerable to race conditions: another process may remove the\nfile between the calls to <code>fs.exists()</code> and <code>fs.open()</code>.  Just open the file\nand handle the error when it&#39;s not there.\n\n\n\n</p>\n",
+          "stability": 0,
+          "stabilityText": "Deprecated: Use [fs.stat][] or [fs.access][] instead.",
+          "desc": "<p>Test whether or not the given path exists by checking with the file system.\nThen call the <code>callback</code> argument with either true or false.  Example:\n\n</p>\n<pre><code>fs.exists(&#39;/etc/passwd&#39;, function (exists) {\n  console.log(exists ? &quot;it&#39;s there&quot; : &#39;no passwd!&#39;);\n});</code></pre>\n<p><code>fs.exists()</code> is an anachronism and exists only for historical reasons.\nThere should almost never be a reason to use it in your own code.\n\n</p>\n<p>In particular, checking if a file exists before opening it is an anti-pattern\nthat leaves you vulnerable to race conditions: another process may remove the\nfile between the calls to <code>fs.exists()</code> and <code>fs.open()</code>.  Just open the file\nand handle the error when it&#39;s not there.\n\n\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -1532,7 +1534,7 @@
           "textRaw": "fs.existsSync(path)",
           "type": "method",
           "name": "existsSync",
-          "desc": "<p>Synchronous version of <a href=\"fs.html#fs_fs_exists_path_callback\"><code>fs.exists</code></a>.\nReturns <code>true</code> if the file exists, <code>false</code> otherwise.\n\n</p>\n<p><code>fs.existsSync()</code> is <strong>deprecated</strong>. For supported alternatives please check\nout <a href=\"fs.html#fs_fs_statsync_path\"><code>fs.statSync</code></a> or\n<a href=\"fs.html#fs_fs_accesssync_path_mode\"><code>fs.accessSync</code></a>.\n\n</p>\n",
+          "desc": "<p>Synchronous version of <a href=\"fs.html#fs_fs_exists_path_callback\"><code>fs.exists</code></a>.\nReturns <code>true</code> if the file exists, <code>false</code> otherwise.\n\n</p>\n<pre><code>Stability: 0 - Deprecated: Use [fs.statSync][] or [fs.accessSync][] instead.</code></pre>\n",
           "signatures": [
             {
               "params": [
@@ -1707,7 +1709,7 @@
               "type": "event",
               "name": "error",
               "params": [],
-              "desc": "<p>Emitted when an error occurs.\n</p>\n"
+              "desc": "<p>Emitted when an error occurs.\n\n\n</p>\n"
             }
           ]
         }

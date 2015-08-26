@@ -65,7 +65,7 @@
           "type": "method",
           "name": "createCredentials",
           "stability": 0,
-          "stabilityText": "Deprecated. Use [tls.createSecureContext][] instead.",
+          "stabilityText": "Deprecated: Use [tls.createSecureContext][] instead.",
           "desc": "<p>Creates a credentials object, with the optional details being a\ndictionary with keys:\n\n</p>\n<ul>\n<li><code>pfx</code> : A string or buffer holding the PFX or PKCS12 encoded private\nkey, certificate and CA certificates</li>\n<li><code>key</code> : A string holding the PEM encoded private key</li>\n<li><code>passphrase</code> : A string of passphrase for the private key or pfx</li>\n<li><code>cert</code> : A string holding the PEM encoded certificate</li>\n<li><code>ca</code> : Either a string or list of strings of PEM encoded CA\ncertificates to trust.</li>\n<li><code>crl</code> : Either a string or list of strings of PEM encoded CRLs\n(Certificate Revocation List)</li>\n<li><code>ciphers</code>: A string describing the ciphers to use or exclude.\nConsult\n<a href=\"http://www.openssl.org/docs/apps/ciphers.html#CIPHER_LIST_FORMAT\">http://www.openssl.org/docs/apps/ciphers.html#CIPHER_LIST_FORMAT</a>\nfor details on the format.</li>\n</ul>\n<p>If no &#39;ca&#39; details are given, then io.js will use the default\npublicly trusted list of CAs as given in\n</p>\n<p><a href=\"http://mxr.mozilla.org/mozilla/source/security/nss/lib/ckfw/builtins/certdata.txt\">http://mxr.mozilla.org/mozilla/source/security/nss/lib/ckfw/builtins/certdata.txt</a>.\n\n\n</p>\n",
           "signatures": [
             {

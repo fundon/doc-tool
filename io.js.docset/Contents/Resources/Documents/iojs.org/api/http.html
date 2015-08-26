@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>HTTP io.js v3.1.0 Manual &amp; Documentation</title>
+  <title>HTTP io.js v3.2.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -61,7 +61,7 @@
 
     <div id="column1" data-id="http" class="interior">
       <header>
-        <h1>io.js v3.1.0 Documentation</h1>
+        <h1>io.js v3.2.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -113,6 +113,7 @@
 <li><a href="#http_response_write_chunk_encoding_callback">response.write(chunk[, encoding][, callback])</a></li>
 <li><a href="#http_response_addtrailers_headers">response.addTrailers(headers)</a></li>
 <li><a href="#http_response_end_data_encoding_callback">response.end([data][, encoding][, callback])</a></li>
+<li><a href="#http_response_finished">response.finished</a></li>
 </ul>
 </li>
 <li><a href="#http_http_request_options_callback">http.request(options[, callback])</a></li>
@@ -239,8 +240,7 @@ added to the <code>&#39;request&#39;</code> event.
 
 </p>
 <h2>http.createClient([port][, host])<span><a class="mark" href="#http_http_createclient_port_host" id="http_http_createclient_port_host">#</a></span></h2>
-<p>This function is <strong>deprecated</strong>; please use <a href="#http_http_request_options_callback">http.request()</a> instead.
-Constructs a new HTTP client. <code>port</code> and <code>host</code> refer to the server to be
+<pre class="api_stability_0">Stability: 0 - Deprecated: Use <a href="#http_http_request_options_callback">http.request</a> instead.</pre><p>Constructs a new HTTP client. <code>port</code> and <code>host</code> refer to the server to be
 connected to.
 
 </p>
@@ -672,6 +672,11 @@ response.
 </p>
 <p>If <code>callback</code> is specified, it will be called when the response stream
 is finished.
+
+</p>
+<h3>response.finished<span><a class="mark" href="#http_response_finished" id="http_response_finished">#</a></span></h3>
+<p>Boolean value that indicates whether the response has completed. Starts
+as <code>false</code>. After <code>response.end()</code> executes, the value will be <code>true</code>.
 
 </p>
 <h2>http.request(options[, callback])<span><a class="mark" href="#http_http_request_options_callback" id="http_http_request_options_callback">#</a></span></h2>

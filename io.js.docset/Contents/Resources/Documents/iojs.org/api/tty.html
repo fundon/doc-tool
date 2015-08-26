@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>TTY io.js v3.1.0 Manual &amp; Documentation</title>
+  <title>TTY io.js v3.2.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -61,7 +61,7 @@
 
     <div id="column1" data-id="tty" class="interior">
       <header>
-        <h1>io.js v3.1.0 Documentation</h1>
+        <h1>io.js v3.2.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -118,12 +118,7 @@ terminal.
 
 </p>
 <h2>tty.setRawMode(mode)<span><a class="mark" href="#tty_tty_setrawmode_mode" id="tty_tty_setrawmode_mode">#</a></span></h2>
-<p>Deprecated. Use <code>tty.ReadStream#setRawMode()</code>
-(i.e. <code>process.stdin.setRawMode()</code>) instead.
-
-
-</p>
-<h2>Class: ReadStream<span><a class="mark" href="#tty_class_readstream" id="tty_class_readstream">#</a></span></h2>
+<pre class="api_stability_0">Stability: 0 - Deprecated: Use <a href="#tty_rs_setrawmode_mode">tty.ReadStream#setRawMode</a> (i.e. process.stdin.setRawMode) instead.</pre><h2>Class: ReadStream<span><a class="mark" href="#tty_class_readstream" id="tty_class_readstream">#</a></span></h2>
 <p>A <code>net.Socket</code> subclass that represents the readable portion of a tty. In normal
 circumstances, <code>process.stdin</code> will be the only <code>tty.ReadStream</code> instance in any
 io.js program (only when <code>isatty(0)</code> is true).

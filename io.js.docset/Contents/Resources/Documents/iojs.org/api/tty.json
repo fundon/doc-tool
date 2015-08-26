@@ -27,7 +27,33 @@
           "textRaw": "tty.setRawMode(mode)",
           "type": "method",
           "name": "setRawMode",
-          "desc": "<p>Deprecated. Use <code>tty.ReadStream#setRawMode()</code>\n(i.e. <code>process.stdin.setRawMode()</code>) instead.\n\n\n</p>\n",
+          "stability": 0,
+          "stabilityText": "Deprecated: Use [tty.ReadStream#setRawMode][] (i.e. process.stdin.setRawMode) instead.",
+          "desc": "<p>A <code>net.Socket</code> subclass that represents the readable portion of a tty. In normal\ncircumstances, <code>process.stdin</code> will be the only <code>tty.ReadStream</code> instance in any\nio.js program (only when <code>isatty(0)</code> is true).\n\n</p>\n",
+          "properties": [
+            {
+              "textRaw": "rs.isRaw",
+              "name": "isRaw",
+              "desc": "<p>A <code>Boolean</code> that is initialized to <code>false</code>. It represents the current &quot;raw&quot; state\nof the <code>tty.ReadStream</code> instance.\n\n</p>\n"
+            }
+          ],
+          "methods": [
+            {
+              "textRaw": "rs.setRawMode(mode)",
+              "type": "method",
+              "name": "setRawMode",
+              "desc": "<p><code>mode</code> should be <code>true</code> or <code>false</code>. This sets the properties of the\n<code>tty.ReadStream</code> to act either as a raw device or default. <code>isRaw</code> will be set\nto the resulting mode.\n\n\n</p>\n",
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "name": "mode"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
           "signatures": [
             {
               "params": [

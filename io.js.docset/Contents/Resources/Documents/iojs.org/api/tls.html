@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>TLS (SSL) io.js v3.1.0 Manual &amp; Documentation</title>
+  <title>TLS (SSL) io.js v3.2.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -61,7 +61,7 @@
 
     <div id="column1" data-id="tls" class="interior">
       <header>
-        <h1>io.js v3.1.0 Documentation</h1>
+        <h1>io.js v3.2.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -78,6 +78,7 @@
 <li><a href="#tls_tls_ssl">TLS (SSL)</a><ul>
 <li><a href="#tls_client_initiated_renegotiation_attack_mitigation">Client-initiated renegotiation attack mitigation</a></li>
 <li><a href="#tls_npn_and_sni">NPN and SNI</a></li>
+<li><a href="#tls_modifying_the_default_tls_cipher_suite">Modifying the Default TLS Cipher suite</a></li>
 <li><a href="#tls_perfect_forward_secrecy">Perfect Forward Secrecy</a></li>
 <li><a href="#tls_tls_getciphers">tls.getCiphers()</a></li>
 <li><a href="#tls_tls_createserver_options_secureconnectionlistener">tls.createServer(options[, secureConnectionListener])</a></li>
@@ -223,6 +224,45 @@ handshake extensions allowing you:
 <li>SNI - to use one TLS server for multiple hostnames with different SSL
 certificates.</li>
 </ul>
+<h2>Modifying the Default TLS Cipher suite<span><a class="mark" href="#tls_modifying_the_default_tls_cipher_suite" id="tls_modifying_the_default_tls_cipher_suite">#</a></span></h2>
+<p>Node.js is built with a default suite of enabled and disabled TLS ciphers.
+Currently, the default cipher suite is:
+
+</p>
+<pre><code>ECDHE-RSA-AES128-GCM-SHA256:
+ECDHE-ECDSA-AES128-GCM-SHA256:
+ECDHE-RSA-AES256-GCM-SHA384:
+ECDHE-ECDSA-AES256-GCM-SHA384:
+DHE-RSA-AES128-GCM-SHA256:
+ECDHE-RSA-AES128-SHA256:
+DHE-RSA-AES128-SHA256:
+ECDHE-RSA-AES256-SHA384:
+DHE-RSA-AES256-SHA384:
+ECDHE-RSA-AES256-SHA256:
+DHE-RSA-AES256-SHA256:
+HIGH:
+!aNULL:
+!eNULL:
+!EXPORT:
+!DES:
+!RC4:
+!MD5:
+!PSK:
+!SRP:
+!CAMELLIA</code></pre>
+<p>This default can be overriden entirely using the <code>--tls-cipher-list</code> command
+line switch. For instance, the following makes
+<code>ECDHE-RSA-AES128-GCM-SHA256:!RC4</code> the default TLS cipher suite:
+
+</p>
+<pre><code>node --tls-cipher-list=&quot;ECDHE-RSA-AES128-GCM-SHA256:!RC4&quot;</code></pre>
+<p>Note that the default cipher suite included within Node.js has been carefully
+selected to reflect current security best practices and risk mitigation.
+Changing the default cipher suite can have a significant impact on the security
+of an application. The <code>--tls-cipher-list</code> switch should by used only if
+absolutely necessary.
+
+</p>
 <h2>Perfect Forward Secrecy<span><a class="mark" href="#tls_perfect_forward_secrecy" id="tls_perfect_forward_secrecy">#</a></span></h2>
 <!-- type=misc -->
 
@@ -287,7 +327,7 @@ like VeriSign. These are used to authorize connections.</p>
 <li><p><code>crl</code> : Either a string or list of strings of PEM encoded CRLs (Certificate
 Revocation List)</p>
 </li>
-<li><p><code>ciphers</code>: A string describing the ciphers to use or exclude, seperated by
+<li><p><code>ciphers</code>: A string describing the ciphers to use or exclude, separated by
 <code>:</code>. The default cipher suite is:</p>
 <pre><code>ECDHE-RSA-AES128-GCM-SHA256:
 ECDHE-ECDSA-AES128-GCM-SHA256:
@@ -841,7 +881,7 @@ gets high.
 
 </p>
 <h2>Class: CryptoStream<span><a class="mark" href="#tls_class_cryptostream" id="tls_class_cryptostream">#</a></span></h2>
-<pre class="api_stability_0">Stability: 0 - Deprecated. Use tls.TLSSocket instead.</pre><p>This is an encrypted stream.
+<pre class="api_stability_0">Stability: 0 - Deprecated: Use <a href="#tls_class_tls_tlssocket">tls.TLSSocket</a> instead.</pre><p>This is an encrypted stream.
 
 </p>
 <h3>cryptoStream.bytesWritten<span><a class="mark" href="#tls_cryptostream_byteswritten" id="tls_cryptostream_byteswritten">#</a></span></h3>

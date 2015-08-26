@@ -477,7 +477,9 @@
             {
               "textRaw": "server.connections",
               "name": "connections",
-              "desc": "<p>This function is <strong>deprecated</strong>; please use [server.getConnections()][] instead.\nThe number of concurrent connections on the server.\n\n</p>\n<p>This becomes <code>null</code> when sending a socket to a child with\n<code>child_process.fork()</code>. To poll forks and get current number of active\nconnections use asynchronous <code>server.getConnections</code> instead.\n\n</p>\n"
+              "stability": 0,
+              "stabilityText": "Deprecated: Use [server.getConnections][] instead.",
+              "desc": "<p>The number of concurrent connections on the server.\n\n</p>\n<p>This becomes <code>null</code> when sending a socket to a child with\n<code>child_process.fork()</code>. To poll forks and get current number of active\nconnections use asynchronous <code>server.getConnections</code> instead.\n\n</p>\n"
             }
           ],
           "events": [

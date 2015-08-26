@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>File System io.js v3.1.0 Manual &amp; Documentation</title>
+  <title>File System io.js v3.2.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -61,7 +61,7 @@
 
     <div id="column1" data-id="fs" class="interior">
       <header>
-        <h1>io.js v3.1.0 Documentation</h1>
+        <h1>io.js v3.2.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -897,12 +897,7 @@ callback, and have some fallback logic if it is null.
   }
 });</code></pre>
 <h2>fs.exists(path, callback)<span><a class="mark" href="#fs_fs_exists_path_callback" id="fs_fs_exists_path_callback">#</a></span></h2>
-<p><code>fs.exists()</code> is <strong>deprecated</strong>. For supported alternatives please check out
-<a href="fs.html#fs_fs_stat_path_callback"><code>fs.stat</code></a> or
-<a href="fs.html#fs_fs_access_path_mode_callback"><code>fs.access</code></a>.
-
-</p>
-<p>Test whether or not the given path exists by checking with the file system.
+<pre class="api_stability_0">Stability: 0 - Deprecated: Use <a href="#fs_fs_stat_path_callback">fs.stat</a> or <a href="#fs_fs_access_path_mode_callback">fs.access</a> instead.</pre><p>Test whether or not the given path exists by checking with the file system.
 Then call the <code>callback</code> argument with either true or false.  Example:
 
 </p>
@@ -926,12 +921,7 @@ and handle the error when it&#39;s not there.
 Returns <code>true</code> if the file exists, <code>false</code> otherwise.
 
 </p>
-<p><code>fs.existsSync()</code> is <strong>deprecated</strong>. For supported alternatives please check
-out <a href="fs.html#fs_fs_statsync_path"><code>fs.statSync</code></a> or
-<a href="fs.html#fs_fs_accesssync_path_mode"><code>fs.accessSync</code></a>.
-
-</p>
-<h2>fs.access(path[, mode], callback)<span><a class="mark" href="#fs_fs_access_path_mode_callback" id="fs_fs_access_path_mode_callback">#</a></span></h2>
+<pre class="api_stability_0">Stability: 0 - Deprecated: Use <a href="#fs_fs_statsync_path">fs.statSync</a> or <a href="#fs_fs_accesssync_path_mode">fs.accessSync</a> instead.</pre><h2>fs.access(path[, mode], callback)<span><a class="mark" href="#fs_fs_access_path_mode_callback" id="fs_fs_access_path_mode_callback">#</a></span></h2>
 <p>Tests a user&#39;s permissions for the file specified by <code>path</code>. <code>mode</code> is an
 optional integer that specifies the accessibility checks to be performed. The
 following constants define the possible values of <code>mode</code>. It is possible to
@@ -1151,6 +1141,8 @@ See more details in <a href="#fs_fs_watch_filename_options_listener">fs.watch</a
 <li><code>error</code> <span class="type">Error object</span></li>
 </div></ul>
 <p>Emitted when an error occurs.
+
+
 </p>
 
       </div>

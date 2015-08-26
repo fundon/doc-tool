@@ -5278,7 +5278,7 @@
           "type": "method",
           "name": "createCredentials",
           "stability": 0,
-          "stabilityText": "Deprecated. Use [tls.createSecureContext][] instead.",
+          "stabilityText": "Deprecated: Use [tls.createSecureContext][] instead.",
           "desc": "<p>Creates a credentials object, with the optional details being a\ndictionary with keys:\n\n</p>\n<ul>\n<li><code>pfx</code> : A string or buffer holding the PFX or PKCS12 encoded private\nkey, certificate and CA certificates</li>\n<li><code>key</code> : A string holding the PEM encoded private key</li>\n<li><code>passphrase</code> : A string of passphrase for the private key or pfx</li>\n<li><code>cert</code> : A string holding the PEM encoded certificate</li>\n<li><code>ca</code> : Either a string or list of strings of PEM encoded CA\ncertificates to trust.</li>\n<li><code>crl</code> : Either a string or list of strings of PEM encoded CRLs\n(Certificate Revocation List)</li>\n<li><code>ciphers</code>: A string describing the ciphers to use or exclude.\nConsult\n<a href=\"http://www.openssl.org/docs/apps/ciphers.html#CIPHER_LIST_FORMAT\">http://www.openssl.org/docs/apps/ciphers.html#CIPHER_LIST_FORMAT</a>\nfor details on the format.</li>\n</ul>\n<p>If no &#39;ca&#39; details are given, then io.js will use the default\npublicly trusted list of CAs as given in\n</p>\n<p><a href=\"http://mxr.mozilla.org/mozilla/source/security/nss/lib/ckfw/builtins/certdata.txt\">http://mxr.mozilla.org/mozilla/source/security/nss/lib/ckfw/builtins/certdata.txt</a>.\n\n\n</p>\n",
           "signatures": [
             {
@@ -7610,6 +7610,31 @@
                   ]
                 }
               ]
+            },
+            {
+              "textRaw": "emitter.listenerCount(type)",
+              "type": "method",
+              "name": "listenerCount",
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "textRaw": "`type` {Value} The type of event ",
+                      "name": "type",
+                      "type": "Value",
+                      "desc": "The type of event"
+                    }
+                  ]
+                },
+                {
+                  "params": [
+                    {
+                      "name": "type"
+                    }
+                  ]
+                }
+              ],
+              "desc": "<p>Returns the number of listeners listening to the <code>type</code> of event.\n\n</p>\n"
             }
           ],
           "properties": [
@@ -7624,7 +7649,9 @@
               "textRaw": "Class Method: EventEmitter.listenerCount(emitter, event)",
               "type": "classMethod",
               "name": "listenerCount",
-              "desc": "<p>Return the number of listeners for a given event.\n\n\n</p>\n",
+              "stability": 0,
+              "stabilityText": "Deprecated: Use [emitter.listenerCount][] instead.",
+              "desc": "<p>Returns the number of listeners for a given event.\n\n</p>\n",
               "signatures": [
                 {
                   "params": [
@@ -9180,7 +9207,9 @@
           "textRaw": "fs.exists(path, callback)",
           "type": "method",
           "name": "exists",
-          "desc": "<p><code>fs.exists()</code> is <strong>deprecated</strong>. For supported alternatives please check out\n<a href=\"fs.html#fs_fs_stat_path_callback\"><code>fs.stat</code></a> or\n<a href=\"fs.html#fs_fs_access_path_mode_callback\"><code>fs.access</code></a>.\n\n</p>\n<p>Test whether or not the given path exists by checking with the file system.\nThen call the <code>callback</code> argument with either true or false.  Example:\n\n</p>\n<pre><code>fs.exists(&#39;/etc/passwd&#39;, function (exists) {\n  console.log(exists ? &quot;it&#39;s there&quot; : &#39;no passwd!&#39;);\n});</code></pre>\n<p><code>fs.exists()</code> is an anachronism and exists only for historical reasons.\nThere should almost never be a reason to use it in your own code.\n\n</p>\n<p>In particular, checking if a file exists before opening it is an anti-pattern\nthat leaves you vulnerable to race conditions: another process may remove the\nfile between the calls to <code>fs.exists()</code> and <code>fs.open()</code>.  Just open the file\nand handle the error when it&#39;s not there.\n\n\n\n</p>\n",
+          "stability": 0,
+          "stabilityText": "Deprecated: Use [fs.stat][] or [fs.access][] instead.",
+          "desc": "<p>Test whether or not the given path exists by checking with the file system.\nThen call the <code>callback</code> argument with either true or false.  Example:\n\n</p>\n<pre><code>fs.exists(&#39;/etc/passwd&#39;, function (exists) {\n  console.log(exists ? &quot;it&#39;s there&quot; : &#39;no passwd!&#39;);\n});</code></pre>\n<p><code>fs.exists()</code> is an anachronism and exists only for historical reasons.\nThere should almost never be a reason to use it in your own code.\n\n</p>\n<p>In particular, checking if a file exists before opening it is an anti-pattern\nthat leaves you vulnerable to race conditions: another process may remove the\nfile between the calls to <code>fs.exists()</code> and <code>fs.open()</code>.  Just open the file\nand handle the error when it&#39;s not there.\n\n\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -9198,7 +9227,7 @@
           "textRaw": "fs.existsSync(path)",
           "type": "method",
           "name": "existsSync",
-          "desc": "<p>Synchronous version of <a href=\"fs.html#fs_fs_exists_path_callback\"><code>fs.exists</code></a>.\nReturns <code>true</code> if the file exists, <code>false</code> otherwise.\n\n</p>\n<p><code>fs.existsSync()</code> is <strong>deprecated</strong>. For supported alternatives please check\nout <a href=\"fs.html#fs_fs_statsync_path\"><code>fs.statSync</code></a> or\n<a href=\"fs.html#fs_fs_accesssync_path_mode\"><code>fs.accessSync</code></a>.\n\n</p>\n",
+          "desc": "<p>Synchronous version of <a href=\"fs.html#fs_fs_exists_path_callback\"><code>fs.exists</code></a>.\nReturns <code>true</code> if the file exists, <code>false</code> otherwise.\n\n</p>\n<pre><code>Stability: 0 - Deprecated: Use [fs.statSync][] or [fs.accessSync][] instead.</code></pre>\n",
           "signatures": [
             {
               "params": [
@@ -9373,7 +9402,7 @@
               "type": "event",
               "name": "error",
               "params": [],
-              "desc": "<p>Emitted when an error occurs.\n\n</p>\n"
+              "desc": "<p>Emitted when an error occurs.\n\n\n</p>\n"
             }
           ]
         }
@@ -9525,7 +9554,9 @@
           "textRaw": "http.createClient([port][, host])",
           "type": "method",
           "name": "createClient",
-          "desc": "<p>This function is <strong>deprecated</strong>; please use [http.request()][] instead.\nConstructs a new HTTP client. <code>port</code> and <code>host</code> refer to the server to be\nconnected to.\n\n</p>\n",
+          "stability": 0,
+          "stabilityText": "Deprecated: Use [http.request][] instead.",
+          "desc": "<p>Constructs a new HTTP client. <code>port</code> and <code>host</code> refer to the server to be\nconnected to.\n\n</p>\n",
           "signatures": [
             {
               "params": [
@@ -10000,6 +10031,11 @@
               "textRaw": "response.sendDate",
               "name": "sendDate",
               "desc": "<p>When true, the Date header will be automatically generated and sent in\nthe response if it is not already present in the headers. Defaults to true.\n\n</p>\n<p>This should only be disabled for testing; HTTP requires the Date header\nin responses.\n\n</p>\n"
+            },
+            {
+              "textRaw": "response.finished",
+              "name": "finished",
+              "desc": "<p>Boolean value that indicates whether the response has completed. Starts\nas <code>false</code>. After <code>response.end()</code> executes, the value will be <code>true</code>.\n\n</p>\n"
             }
           ]
         },
@@ -11110,7 +11146,9 @@
             {
               "textRaw": "server.connections",
               "name": "connections",
-              "desc": "<p>This function is <strong>deprecated</strong>; please use [server.getConnections()][] instead.\nThe number of concurrent connections on the server.\n\n</p>\n<p>This becomes <code>null</code> when sending a socket to a child with\n<code>child_process.fork()</code>. To poll forks and get current number of active\nconnections use asynchronous <code>server.getConnections</code> instead.\n\n</p>\n"
+              "stability": 0,
+              "stabilityText": "Deprecated: Use [server.getConnections][] instead.",
+              "desc": "<p>The number of concurrent connections on the server.\n\n</p>\n<p>This becomes <code>null</code> when sending a socket to a child with\n<code>child_process.fork()</code>. To poll forks and get current number of active\nconnections use asynchronous <code>server.getConnections</code> instead.\n\n</p>\n"
             }
           ],
           "events": [
@@ -12355,7 +12393,18 @@
         {
           "textRaw": "Persistent History",
           "name": "persistent_history",
-          "desc": "<p>By default, the REPL will persist history between <code>iojs</code> REPL sessions by saving\nto a <code>.node_repl_history</code> file in the user&#39;s home directory. This can be\ndisabled by setting the environment variable <code>NODE_REPL_HISTORY=&quot;&quot;</code>.\n\n</p>\n<p>Previously in io.js v2.x, REPL history was controlled by using a\n<code>NODE_REPL_HISTORY_FILE</code> environment variable, and the history was saved in JSON\nformat. This variable has now been deprecated, and your REPL history will\nautomatically be converted to using plain text. The new file will be saved to\neither your home directory, or a directory defined by the <code>NODE_REPL_HISTORY</code>\nvariable, as documented below.\n\n</p>\n",
+          "desc": "<p>By default, the REPL will persist history between <code>iojs</code> REPL sessions by saving\nto a <code>.node_repl_history</code> file in the user&#39;s home directory. This can be\ndisabled by setting the environment variable <code>NODE_REPL_HISTORY=&quot;&quot;</code>.\n\n</p>\n",
+          "modules": [
+            {
+              "textRaw": "NODE_REPL_HISTORY_FILE",
+              "name": "node_repl_history_file",
+              "stability": 0,
+              "stabilityText": "Deprecated: Use `NODE_REPL_HISTORY` instead.",
+              "desc": "<p>Previously in io.js v2.x, REPL history was controlled by using a\n<code>NODE_REPL_HISTORY_FILE</code> environment variable, and the history was saved in JSON\nformat. This variable has now been deprecated, and your REPL history will\nautomatically be converted to using plain text. The new file will be saved to\neither your home directory, or a directory defined by the <code>NODE_REPL_HISTORY</code>\nvariable, as documented below.\n\n</p>\n",
+              "type": "module",
+              "displayName": "NODE_REPL_HISTORY_FILE"
+            }
+          ],
           "type": "module",
           "displayName": "Persistent History"
         },
@@ -14278,6 +14327,15 @@
           "desc": "<p>The term &quot;[Forward Secrecy]&quot; or &quot;Perfect Forward Secrecy&quot; describes a feature of\nkey-agreement (i.e. key-exchange) methods. Practically it means that even if the\nprivate key of a (your) server is compromised, communication can only be\ndecrypted by eavesdroppers if they manage to obtain the key-pair specifically\ngenerated for each session.\n\n</p>\n<p>This is achieved by randomly generating a key pair for key-agreement on every\nhandshake (in contrary to the same key for all sessions). Methods implementing\nthis technique, thus offering Perfect Forward Secrecy, are called &quot;ephemeral&quot;.\n\n</p>\n<p>Currently two methods are commonly used to achieve Perfect Forward Secrecy (note\nthe character &quot;E&quot; appended to the traditional abbreviations):\n\n</p>\n<ul>\n<li>[DHE] - An ephemeral version of the Diffie Hellman key-agreement protocol.</li>\n<li>[ECDHE] - An ephemeral version of the Elliptic Curve Diffie Hellman\nkey-agreement protocol.</li>\n</ul>\n<p>Ephemeral methods may have some performance drawbacks, because key generation\nis expensive.\n\n\n</p>\n"
         }
       ],
+      "modules": [
+        {
+          "textRaw": "Modifying the Default TLS Cipher suite",
+          "name": "modifying_the_default_tls_cipher_suite",
+          "desc": "<p>Node.js is built with a default suite of enabled and disabled TLS ciphers.\nCurrently, the default cipher suite is:\n\n</p>\n<pre><code>ECDHE-RSA-AES128-GCM-SHA256:\nECDHE-ECDSA-AES128-GCM-SHA256:\nECDHE-RSA-AES256-GCM-SHA384:\nECDHE-ECDSA-AES256-GCM-SHA384:\nDHE-RSA-AES128-GCM-SHA256:\nECDHE-RSA-AES128-SHA256:\nDHE-RSA-AES128-SHA256:\nECDHE-RSA-AES256-SHA384:\nDHE-RSA-AES256-SHA384:\nECDHE-RSA-AES256-SHA256:\nDHE-RSA-AES256-SHA256:\nHIGH:\n!aNULL:\n!eNULL:\n!EXPORT:\n!DES:\n!RC4:\n!MD5:\n!PSK:\n!SRP:\n!CAMELLIA</code></pre>\n<p>This default can be overriden entirely using the <code>--tls-cipher-list</code> command\nline switch. For instance, the following makes\n<code>ECDHE-RSA-AES128-GCM-SHA256:!RC4</code> the default TLS cipher suite:\n\n</p>\n<pre><code>node --tls-cipher-list=&quot;ECDHE-RSA-AES128-GCM-SHA256:!RC4&quot;</code></pre>\n<p>Note that the default cipher suite included within Node.js has been carefully\nselected to reflect current security best practices and risk mitigation.\nChanging the default cipher suite can have a significant impact on the security\nof an application. The <code>--tls-cipher-list</code> switch should by used only if\nabsolutely necessary.\n\n</p>\n",
+          "type": "module",
+          "displayName": "Modifying the Default TLS Cipher suite"
+        }
+      ],
       "methods": [
         {
           "textRaw": "tls.getCiphers()",
@@ -14294,7 +14352,7 @@
           "textRaw": "tls.createServer(options[, secureConnectionListener])",
           "type": "method",
           "name": "createServer",
-          "desc": "<p>Creates a new [tls.Server][].  The <code>connectionListener</code> argument is\nautomatically set as a listener for the [secureConnection][] event.  The\n<code>options</code> object has these possibilities:\n\n</p>\n<ul>\n<li><p><code>pfx</code>: A string or <code>Buffer</code> containing the private key, certificate and\nCA certs of the server in PFX or PKCS12 format. (Mutually exclusive with\nthe <code>key</code>, <code>cert</code> and <code>ca</code> options.)</p>\n</li>\n<li><p><code>key</code>: A string or <code>Buffer</code> containing the private key of the server in\nPEM format. (Could be an array of keys). (Required)</p>\n</li>\n<li><p><code>passphrase</code>: A string of passphrase for the private key or pfx.</p>\n</li>\n<li><p><code>cert</code>: A string or <code>Buffer</code> containing the certificate key of the server in\nPEM format. (Could be an array of certs). (Required)</p>\n</li>\n<li><p><code>ca</code>: An array of strings or <code>Buffer</code>s of trusted certificates in PEM\nformat. If this is omitted several well known &quot;root&quot; CAs will be used,\nlike VeriSign. These are used to authorize connections.</p>\n</li>\n<li><p><code>crl</code> : Either a string or list of strings of PEM encoded CRLs (Certificate\nRevocation List)</p>\n</li>\n<li><p><code>ciphers</code>: A string describing the ciphers to use or exclude, seperated by\n<code>:</code>. The default cipher suite is:</p>\n<pre><code>ECDHE-RSA-AES128-GCM-SHA256:\nECDHE-ECDSA-AES128-GCM-SHA256:\nECDHE-RSA-AES256-GCM-SHA384:\nECDHE-ECDSA-AES256-GCM-SHA384:\nDHE-RSA-AES128-GCM-SHA256:\nECDHE-RSA-AES128-SHA256:\nDHE-RSA-AES128-SHA256:\nECDHE-RSA-AES256-SHA384:\nDHE-RSA-AES256-SHA384:\nECDHE-RSA-AES256-SHA256:\nDHE-RSA-AES256-SHA256:\nHIGH:\n!aNULL:\n!eNULL:\n!EXPORT:\n!DES:\n!RC4:\n!MD5:\n!PSK:\n!SRP:\n!CAMELLIA</code></pre>\n<p>The default cipher suite prefers GCM ciphers for [Chrome&#39;s &#39;modern\ncryptography&#39; setting] and also prefers ECDHE and DHE ciphers for Perfect\nForward secrecy, while offering <em>some</em> backward compatibiltity.</p>\n<p>128 bit AES is preferred over 192 and 256 bit AES in light of [specific\nattacks affecting larger AES key sizes].</p>\n<p>Old clients that rely on insecure and deprecated RC4 or DES-based ciphers\n(like Internet Explorer 6) aren&#39;t able to complete the handshake with the default\nconfiguration. If you absolutely must support these clients, the\n[TLS recommendations] may offer a compatible cipher suite. For more details\non the format, see the [OpenSSL cipher list format documentation].</p>\n</li>\n<li><p><code>ecdhCurve</code>: A string describing a named curve to use for ECDH key agreement\nor false to disable ECDH.</p>\n<p>Defaults to <code>prime256v1</code> (NIST P-256). Use [crypto.getCurves()][] to obtain\na list of available curve names. On recent releases,\n<code>openssl ecparam -list_curves</code> will also display the name and description of\neach available elliptic curve.</p>\n</li>\n<li><p><code>dhparam</code>: A string or <code>Buffer</code> containing Diffie Hellman parameters,\nrequired for Perfect Forward Secrecy. Use <code>openssl dhparam</code> to create it.\nIts key length should be greater than or equal to 1024 bits, otherwise\nit throws an error. It is strongly recommended to use 2048 bits or\nmore for stronger security. If omitted or invalid, it is silently\ndiscarded and DHE ciphers won&#39;t be available.</p>\n</li>\n<li><p><code>handshakeTimeout</code>: Abort the connection if the SSL/TLS handshake does not\nfinish in this many milliseconds. The default is 120 seconds.</p>\n<p>A <code>&#39;clientError&#39;</code> is emitted on the <code>tls.Server</code> object whenever a handshake\ntimes out.</p>\n</li>\n<li><p><code>honorCipherOrder</code> : When choosing a cipher, use the server&#39;s preferences\ninstead of the client preferences. Default: <code>true</code>.</p>\n</li>\n<li><p><code>requestCert</code>: If <code>true</code> the server will request a certificate from\nclients that connect and attempt to verify that certificate. Default:\n<code>false</code>.</p>\n</li>\n<li><p><code>rejectUnauthorized</code>: If <code>true</code> the server will reject any connection\nwhich is not authorized with the list of supplied CAs. This option only\nhas an effect if <code>requestCert</code> is <code>true</code>. Default: <code>false</code>.</p>\n</li>\n<li><p><code>NPNProtocols</code>: An array or <code>Buffer</code> of possible NPN protocols. (Protocols\nshould be ordered by their priority).</p>\n</li>\n<li><p><code>SNICallback(servername, cb)</code>: A function that will be called if client\nsupports SNI TLS extension. Two argument will be passed to it: <code>servername</code>,\nand <code>cb</code>. <code>SNICallback</code> should invoke <code>cb(null, ctx)</code>, where <code>ctx</code> is a\nSecureContext instance.\n(You can use <code>tls.createSecureContext(...)</code> to get proper\nSecureContext). If <code>SNICallback</code> wasn&#39;t provided - default callback with\nhigh-level API will be used (see below).</p>\n</li>\n<li><p><code>sessionTimeout</code>: An integer specifying the seconds after which TLS\nsession identifiers and TLS session tickets created by the server are\ntimed out. See [SSL_CTX_set_timeout] for more details.</p>\n</li>\n<li><p><code>ticketKeys</code>: A 48-byte <code>Buffer</code> instance consisting of 16-byte prefix,\n16-byte hmac key, 16-byte AES key. You could use it to accept tls session\ntickets on multiple instances of tls server.</p>\n<p>NOTE: Automatically shared between <code>cluster</code> module workers.</p>\n</li>\n<li><p><code>sessionIdContext</code>: A string containing an opaque identifier for session\nresumption. If <code>requestCert</code> is <code>true</code>, the default is MD5 hash value\ngenerated from command-line. Otherwise, the default is not provided.</p>\n</li>\n<li><p><code>secureProtocol</code>: The SSL method to use, e.g. <code>SSLv3_method</code> to force\nSSL version 3. The possible values depend on your installation of\nOpenSSL and are defined in the constant [SSL_METHODS][].</p>\n</li>\n</ul>\n<p>Here is a simple example echo server:\n\n</p>\n<pre><code>var tls = require(&#39;tls&#39;);\nvar fs = require(&#39;fs&#39;);\n\nvar options = {\n  key: fs.readFileSync(&#39;server-key.pem&#39;),\n  cert: fs.readFileSync(&#39;server-cert.pem&#39;),\n\n  // This is necessary only if using the client certificate authentication.\n  requestCert: true,\n\n  // This is necessary only if the client uses the self-signed certificate.\n  ca: [ fs.readFileSync(&#39;client-cert.pem&#39;) ]\n};\n\nvar server = tls.createServer(options, function(socket) {\n  console.log(&#39;server connected&#39;,\n              socket.authorized ? &#39;authorized&#39; : &#39;unauthorized&#39;);\n  socket.write(&quot;welcome!\\n&quot;);\n  socket.setEncoding(&#39;utf8&#39;);\n  socket.pipe(socket);\n});\nserver.listen(8000, function() {\n  console.log(&#39;server bound&#39;);\n});</code></pre>\n<p>Or\n\n</p>\n<pre><code>var tls = require(&#39;tls&#39;);\nvar fs = require(&#39;fs&#39;);\n\nvar options = {\n  pfx: fs.readFileSync(&#39;server.pfx&#39;),\n\n  // This is necessary only if using the client certificate authentication.\n  requestCert: true,\n\n};\n\nvar server = tls.createServer(options, function(socket) {\n  console.log(&#39;server connected&#39;,\n              socket.authorized ? &#39;authorized&#39; : &#39;unauthorized&#39;);\n  socket.write(&quot;welcome!\\n&quot;);\n  socket.setEncoding(&#39;utf8&#39;);\n  socket.pipe(socket);\n});\nserver.listen(8000, function() {\n  console.log(&#39;server bound&#39;);\n});</code></pre>\n<p>You can test this server by connecting to it with <code>openssl s_client</code>:\n\n\n</p>\n<pre><code>openssl s_client -connect 127.0.0.1:8000</code></pre>\n",
+          "desc": "<p>Creates a new [tls.Server][].  The <code>connectionListener</code> argument is\nautomatically set as a listener for the [secureConnection][] event.  The\n<code>options</code> object has these possibilities:\n\n</p>\n<ul>\n<li><p><code>pfx</code>: A string or <code>Buffer</code> containing the private key, certificate and\nCA certs of the server in PFX or PKCS12 format. (Mutually exclusive with\nthe <code>key</code>, <code>cert</code> and <code>ca</code> options.)</p>\n</li>\n<li><p><code>key</code>: A string or <code>Buffer</code> containing the private key of the server in\nPEM format. (Could be an array of keys). (Required)</p>\n</li>\n<li><p><code>passphrase</code>: A string of passphrase for the private key or pfx.</p>\n</li>\n<li><p><code>cert</code>: A string or <code>Buffer</code> containing the certificate key of the server in\nPEM format. (Could be an array of certs). (Required)</p>\n</li>\n<li><p><code>ca</code>: An array of strings or <code>Buffer</code>s of trusted certificates in PEM\nformat. If this is omitted several well known &quot;root&quot; CAs will be used,\nlike VeriSign. These are used to authorize connections.</p>\n</li>\n<li><p><code>crl</code> : Either a string or list of strings of PEM encoded CRLs (Certificate\nRevocation List)</p>\n</li>\n<li><p><code>ciphers</code>: A string describing the ciphers to use or exclude, separated by\n<code>:</code>. The default cipher suite is:</p>\n<pre><code>ECDHE-RSA-AES128-GCM-SHA256:\nECDHE-ECDSA-AES128-GCM-SHA256:\nECDHE-RSA-AES256-GCM-SHA384:\nECDHE-ECDSA-AES256-GCM-SHA384:\nDHE-RSA-AES128-GCM-SHA256:\nECDHE-RSA-AES128-SHA256:\nDHE-RSA-AES128-SHA256:\nECDHE-RSA-AES256-SHA384:\nDHE-RSA-AES256-SHA384:\nECDHE-RSA-AES256-SHA256:\nDHE-RSA-AES256-SHA256:\nHIGH:\n!aNULL:\n!eNULL:\n!EXPORT:\n!DES:\n!RC4:\n!MD5:\n!PSK:\n!SRP:\n!CAMELLIA</code></pre>\n<p>The default cipher suite prefers GCM ciphers for [Chrome&#39;s &#39;modern\ncryptography&#39; setting] and also prefers ECDHE and DHE ciphers for Perfect\nForward secrecy, while offering <em>some</em> backward compatibiltity.</p>\n<p>128 bit AES is preferred over 192 and 256 bit AES in light of [specific\nattacks affecting larger AES key sizes].</p>\n<p>Old clients that rely on insecure and deprecated RC4 or DES-based ciphers\n(like Internet Explorer 6) aren&#39;t able to complete the handshake with the default\nconfiguration. If you absolutely must support these clients, the\n[TLS recommendations] may offer a compatible cipher suite. For more details\non the format, see the [OpenSSL cipher list format documentation].</p>\n</li>\n<li><p><code>ecdhCurve</code>: A string describing a named curve to use for ECDH key agreement\nor false to disable ECDH.</p>\n<p>Defaults to <code>prime256v1</code> (NIST P-256). Use [crypto.getCurves()][] to obtain\na list of available curve names. On recent releases,\n<code>openssl ecparam -list_curves</code> will also display the name and description of\neach available elliptic curve.</p>\n</li>\n<li><p><code>dhparam</code>: A string or <code>Buffer</code> containing Diffie Hellman parameters,\nrequired for Perfect Forward Secrecy. Use <code>openssl dhparam</code> to create it.\nIts key length should be greater than or equal to 1024 bits, otherwise\nit throws an error. It is strongly recommended to use 2048 bits or\nmore for stronger security. If omitted or invalid, it is silently\ndiscarded and DHE ciphers won&#39;t be available.</p>\n</li>\n<li><p><code>handshakeTimeout</code>: Abort the connection if the SSL/TLS handshake does not\nfinish in this many milliseconds. The default is 120 seconds.</p>\n<p>A <code>&#39;clientError&#39;</code> is emitted on the <code>tls.Server</code> object whenever a handshake\ntimes out.</p>\n</li>\n<li><p><code>honorCipherOrder</code> : When choosing a cipher, use the server&#39;s preferences\ninstead of the client preferences. Default: <code>true</code>.</p>\n</li>\n<li><p><code>requestCert</code>: If <code>true</code> the server will request a certificate from\nclients that connect and attempt to verify that certificate. Default:\n<code>false</code>.</p>\n</li>\n<li><p><code>rejectUnauthorized</code>: If <code>true</code> the server will reject any connection\nwhich is not authorized with the list of supplied CAs. This option only\nhas an effect if <code>requestCert</code> is <code>true</code>. Default: <code>false</code>.</p>\n</li>\n<li><p><code>NPNProtocols</code>: An array or <code>Buffer</code> of possible NPN protocols. (Protocols\nshould be ordered by their priority).</p>\n</li>\n<li><p><code>SNICallback(servername, cb)</code>: A function that will be called if client\nsupports SNI TLS extension. Two argument will be passed to it: <code>servername</code>,\nand <code>cb</code>. <code>SNICallback</code> should invoke <code>cb(null, ctx)</code>, where <code>ctx</code> is a\nSecureContext instance.\n(You can use <code>tls.createSecureContext(...)</code> to get proper\nSecureContext). If <code>SNICallback</code> wasn&#39;t provided - default callback with\nhigh-level API will be used (see below).</p>\n</li>\n<li><p><code>sessionTimeout</code>: An integer specifying the seconds after which TLS\nsession identifiers and TLS session tickets created by the server are\ntimed out. See [SSL_CTX_set_timeout] for more details.</p>\n</li>\n<li><p><code>ticketKeys</code>: A 48-byte <code>Buffer</code> instance consisting of 16-byte prefix,\n16-byte hmac key, 16-byte AES key. You could use it to accept tls session\ntickets on multiple instances of tls server.</p>\n<p>NOTE: Automatically shared between <code>cluster</code> module workers.</p>\n</li>\n<li><p><code>sessionIdContext</code>: A string containing an opaque identifier for session\nresumption. If <code>requestCert</code> is <code>true</code>, the default is MD5 hash value\ngenerated from command-line. Otherwise, the default is not provided.</p>\n</li>\n<li><p><code>secureProtocol</code>: The SSL method to use, e.g. <code>SSLv3_method</code> to force\nSSL version 3. The possible values depend on your installation of\nOpenSSL and are defined in the constant [SSL_METHODS][].</p>\n</li>\n</ul>\n<p>Here is a simple example echo server:\n\n</p>\n<pre><code>var tls = require(&#39;tls&#39;);\nvar fs = require(&#39;fs&#39;);\n\nvar options = {\n  key: fs.readFileSync(&#39;server-key.pem&#39;),\n  cert: fs.readFileSync(&#39;server-cert.pem&#39;),\n\n  // This is necessary only if using the client certificate authentication.\n  requestCert: true,\n\n  // This is necessary only if the client uses the self-signed certificate.\n  ca: [ fs.readFileSync(&#39;client-cert.pem&#39;) ]\n};\n\nvar server = tls.createServer(options, function(socket) {\n  console.log(&#39;server connected&#39;,\n              socket.authorized ? &#39;authorized&#39; : &#39;unauthorized&#39;);\n  socket.write(&quot;welcome!\\n&quot;);\n  socket.setEncoding(&#39;utf8&#39;);\n  socket.pipe(socket);\n});\nserver.listen(8000, function() {\n  console.log(&#39;server bound&#39;);\n});</code></pre>\n<p>Or\n\n</p>\n<pre><code>var tls = require(&#39;tls&#39;);\nvar fs = require(&#39;fs&#39;);\n\nvar options = {\n  pfx: fs.readFileSync(&#39;server.pfx&#39;),\n\n  // This is necessary only if using the client certificate authentication.\n  requestCert: true,\n\n};\n\nvar server = tls.createServer(options, function(socket) {\n  console.log(&#39;server connected&#39;,\n              socket.authorized ? &#39;authorized&#39; : &#39;unauthorized&#39;);\n  socket.write(&quot;welcome!\\n&quot;);\n  socket.setEncoding(&#39;utf8&#39;);\n  socket.pipe(socket);\n});\nserver.listen(8000, function() {\n  console.log(&#39;server bound&#39;);\n});</code></pre>\n<p>You can test this server by connecting to it with <code>openssl s_client</code>:\n\n\n</p>\n<pre><code>openssl s_client -connect 127.0.0.1:8000</code></pre>\n",
           "signatures": [
             {
               "params": [
@@ -14614,7 +14672,7 @@
           "type": "class",
           "name": "CryptoStream",
           "stability": 0,
-          "stabilityText": "Deprecated. Use tls.TLSSocket instead.",
+          "stabilityText": "Deprecated: Use [tls.TLSSocket][] instead.",
           "desc": "<p>This is an encrypted stream.\n\n</p>\n",
           "properties": [
             {
@@ -14813,7 +14871,33 @@
           "textRaw": "tty.setRawMode(mode)",
           "type": "method",
           "name": "setRawMode",
-          "desc": "<p>Deprecated. Use <code>tty.ReadStream#setRawMode()</code>\n(i.e. <code>process.stdin.setRawMode()</code>) instead.\n\n\n</p>\n",
+          "stability": 0,
+          "stabilityText": "Deprecated: Use [tty.ReadStream#setRawMode][] (i.e. process.stdin.setRawMode) instead.",
+          "desc": "<p>A <code>net.Socket</code> subclass that represents the readable portion of a tty. In normal\ncircumstances, <code>process.stdin</code> will be the only <code>tty.ReadStream</code> instance in any\nio.js program (only when <code>isatty(0)</code> is true).\n\n</p>\n",
+          "properties": [
+            {
+              "textRaw": "rs.isRaw",
+              "name": "isRaw",
+              "desc": "<p>A <code>Boolean</code> that is initialized to <code>false</code>. It represents the current &quot;raw&quot; state\nof the <code>tty.ReadStream</code> instance.\n\n</p>\n"
+            }
+          ],
+          "methods": [
+            {
+              "textRaw": "rs.setRawMode(mode)",
+              "type": "method",
+              "name": "setRawMode",
+              "desc": "<p><code>mode</code> should be <code>true</code> or <code>false</code>. This sets the properties of the\n<code>tty.ReadStream</code> to act either as a raw device or default. <code>isRaw</code> will be set\nto the resulting mode.\n\n\n</p>\n",
+              "signatures": [
+                {
+                  "params": [
+                    {
+                      "name": "mode"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
           "signatures": [
             {
               "params": [

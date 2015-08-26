@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Events io.js v3.1.0 Manual &amp; Documentation</title>
+  <title>Events io.js v3.2.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -61,7 +61,7 @@
 
     <div id="column1" data-id="events" class="interior">
       <header>
-        <h1>io.js v3.1.0 Documentation</h1>
+        <h1>io.js v3.2.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -87,6 +87,7 @@
 <li><a href="#events_eventemitter_defaultmaxlisteners">EventEmitter.defaultMaxListeners</a></li>
 <li><a href="#events_emitter_listeners_event">emitter.listeners(event)</a></li>
 <li><a href="#events_emitter_emit_event_arg1_arg2">emitter.emit(event[, arg1][, arg2][, ...])</a></li>
+<li><a href="#events_emitter_listenercount_type">emitter.listenerCount(type)</a></li>
 <li><a href="#events_class_method_eventemitter_listenercount_emitter_event">Class Method: EventEmitter.listenerCount(emitter, event)</a></li>
 <li><a href="#events_event_newlistener">Event: &#39;newListener&#39;</a></li>
 <li><a href="#events_event_removelistener">Event: &#39;removeListener&#39;</a></li>
@@ -241,9 +242,15 @@ console.log(util.inspect(server.listeners(&#39;connection&#39;))); // [ [Functio
 
 
 </p>
-<h3>Class Method: EventEmitter.listenerCount(emitter, event)<span><a class="mark" href="#events_class_method_eventemitter_listenercount_emitter_event" id="events_class_method_eventemitter_listenercount_emitter_event">#</a></span></h3>
-<p>Return the number of listeners for a given event.
+<h3>emitter.listenerCount(type)<span><a class="mark" href="#events_emitter_listenercount_type" id="events_emitter_listenercount_type">#</a></span></h3>
+<div class="signature"><ul>
+<li><code>type</code> <span class="type">Value</span> The type of event</li>
+</div></ul>
+<p>Returns the number of listeners listening to the <code>type</code> of event.
 
+</p>
+<h3>Class Method: EventEmitter.listenerCount(emitter, event)<span><a class="mark" href="#events_class_method_eventemitter_listenercount_emitter_event" id="events_class_method_eventemitter_listenercount_emitter_event">#</a></span></h3>
+<pre class="api_stability_0">Stability: 0 - Deprecated: Use <a href="#events_emitter_listenercount_type">emitter.listenerCount</a> instead.</pre><p>Returns the number of listeners for a given event.
 
 </p>
 <h3>Event: &#39;newListener&#39;<span><a class="mark" href="#events_event_newlistener" id="events_event_newlistener">#</a></span></h3>

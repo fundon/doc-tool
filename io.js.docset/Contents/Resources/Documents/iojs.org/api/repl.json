@@ -11,7 +11,18 @@
         {
           "textRaw": "Persistent History",
           "name": "persistent_history",
-          "desc": "<p>By default, the REPL will persist history between <code>iojs</code> REPL sessions by saving\nto a <code>.node_repl_history</code> file in the user&#39;s home directory. This can be\ndisabled by setting the environment variable <code>NODE_REPL_HISTORY=&quot;&quot;</code>.\n\n</p>\n<p>Previously in io.js v2.x, REPL history was controlled by using a\n<code>NODE_REPL_HISTORY_FILE</code> environment variable, and the history was saved in JSON\nformat. This variable has now been deprecated, and your REPL history will\nautomatically be converted to using plain text. The new file will be saved to\neither your home directory, or a directory defined by the <code>NODE_REPL_HISTORY</code>\nvariable, as documented below.\n\n</p>\n",
+          "desc": "<p>By default, the REPL will persist history between <code>iojs</code> REPL sessions by saving\nto a <code>.node_repl_history</code> file in the user&#39;s home directory. This can be\ndisabled by setting the environment variable <code>NODE_REPL_HISTORY=&quot;&quot;</code>.\n\n</p>\n",
+          "modules": [
+            {
+              "textRaw": "NODE_REPL_HISTORY_FILE",
+              "name": "node_repl_history_file",
+              "stability": 0,
+              "stabilityText": "Deprecated: Use `NODE_REPL_HISTORY` instead.",
+              "desc": "<p>Previously in io.js v2.x, REPL history was controlled by using a\n<code>NODE_REPL_HISTORY_FILE</code> environment variable, and the history was saved in JSON\nformat. This variable has now been deprecated, and your REPL history will\nautomatically be converted to using plain text. The new file will be saved to\neither your home directory, or a directory defined by the <code>NODE_REPL_HISTORY</code>\nvariable, as documented below.\n\n</p>\n",
+              "type": "module",
+              "displayName": "NODE_REPL_HISTORY_FILE"
+            }
+          ],
           "type": "module",
           "displayName": "Persistent History"
         },
