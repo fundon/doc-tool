@@ -29,7 +29,7 @@
           ]
         },
         {
-          "textRaw": "net.connect(options[, connectionListener])",
+          "textRaw": "net.connect(options[, connectListener])",
           "type": "method",
           "name": "connect",
           "desc": "<p>A factory function, which returns a new <a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a>\nand automatically connects with the supplied <code>options</code>.\n\n</p>\n<p>The options are passed to both the <a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a>\nconstructor and the <a href=\"#net_socket_connect_options_connectlistener\">&#39;socket.connect&#39;</a>\nmethod.\n\n</p>\n<p>The <code>connectListener</code> parameter will be added as a listener for the\n[&#39;connect&#39;][] event once.\n\n</p>\n<p>Here is an example of a client of the previously described echo server:\n\n</p>\n<pre><code>var net = require(&#39;net&#39;);\nvar client = net.connect({port: 8124},\n    function() { //&#39;connect&#39; listener\n  console.log(&#39;connected to server!&#39;);\n  client.write(&#39;world!\\r\\n&#39;);\n});\nclient.on(&#39;data&#39;, function(data) {\n  console.log(data.toString());\n  client.end();\n});\nclient.on(&#39;end&#39;, function() {\n  console.log(&#39;disconnected from server&#39;);\n});</code></pre>\n<p>To connect on the socket <code>/tmp/echo.sock</code> the second line would just be\nchanged to\n\n</p>\n<pre><code>var client = net.connect({path: &#39;/tmp/echo.sock&#39;});</code></pre>\n",
@@ -40,7 +40,7 @@
                   "name": "options"
                 },
                 {
-                  "name": "connectionListener",
+                  "name": "connectListener",
                   "optional": true
                 }
               ]
@@ -51,7 +51,7 @@
                   "name": "options"
                 },
                 {
-                  "name": "connectionListener",
+                  "name": "connectListener",
                   "optional": true
                 }
               ]
@@ -59,7 +59,7 @@
           ]
         },
         {
-          "textRaw": "net.createConnection(options[, connectionListener])",
+          "textRaw": "net.createConnection(options[, connectListener])",
           "type": "method",
           "name": "createConnection",
           "desc": "<p>A factory function, which returns a new <a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a>\nand automatically connects with the supplied <code>options</code>.\n\n</p>\n<p>The options are passed to both the <a href=\"#net_class_net_socket\">&#39;net.Socket&#39;</a>\nconstructor and the <a href=\"#net_socket_connect_options_connectlistener\">&#39;socket.connect&#39;</a>\nmethod.\n\n</p>\n<p>The <code>connectListener</code> parameter will be added as a listener for the\n[&#39;connect&#39;][] event once.\n\n</p>\n<p>Here is an example of a client of the previously described echo server:\n\n</p>\n<pre><code>var net = require(&#39;net&#39;);\nvar client = net.connect({port: 8124},\n    function() { //&#39;connect&#39; listener\n  console.log(&#39;connected to server!&#39;);\n  client.write(&#39;world!\\r\\n&#39;);\n});\nclient.on(&#39;data&#39;, function(data) {\n  console.log(data.toString());\n  client.end();\n});\nclient.on(&#39;end&#39;, function() {\n  console.log(&#39;disconnected from server&#39;);\n});</code></pre>\n<p>To connect on the socket <code>/tmp/echo.sock</code> the second line would just be\nchanged to\n\n</p>\n<pre><code>var client = net.connect({path: &#39;/tmp/echo.sock&#39;});</code></pre>\n",
@@ -70,7 +70,7 @@
                   "name": "options"
                 },
                 {
-                  "name": "connectionListener",
+                  "name": "connectListener",
                   "optional": true
                 }
               ]
@@ -523,7 +523,7 @@
               "textRaw": "new net.Socket([options])",
               "type": "method",
               "name": "Socket",
-              "desc": "<p>Construct a new socket object.\n\n</p>\n<p><code>options</code> is an object with the following defaults:\n\n</p>\n<pre><code>{ fd: null\n  allowHalfOpen: false,\n  readable: false,\n  writable: false\n}</code></pre>\n<p><code>fd</code> allows you to specify the existing file descriptor of socket.\nSet <code>readable</code> and/or <code>writable</code> to <code>true</code> to allow reads and/or writes on this\nsocket (NOTE: Works only when <code>fd</code> is passed).\nAbout <code>allowHalfOpen</code>, refer to <code>createServer()</code> and <code>&#39;end&#39;</code> event.\n\n</p>\n",
+              "desc": "<p>Construct a new socket object.\n\n</p>\n<p><code>options</code> is an object with the following defaults:\n\n</p>\n<pre><code>{ fd: null,\n  allowHalfOpen: false,\n  readable: false,\n  writable: false\n}</code></pre>\n<p><code>fd</code> allows you to specify the existing file descriptor of socket.\nSet <code>readable</code> and/or <code>writable</code> to <code>true</code> to allow reads and/or writes on this\nsocket (NOTE: Works only when <code>fd</code> is passed).\nAbout <code>allowHalfOpen</code>, refer to <code>createServer()</code> and <code>&#39;end&#39;</code> event.\n\n</p>\n",
               "signatures": [
                 {
                   "params": [

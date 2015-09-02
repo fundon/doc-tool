@@ -137,7 +137,7 @@
           "textRaw": "path.extname(p)",
           "type": "method",
           "name": "extname",
-          "desc": "<p>Return the extension of the path, from the last &#39;.&#39; to end of string\nin the last portion of the path.  If there is no &#39;.&#39; in the last portion\nof the path or the first character of it is &#39;.&#39;, then it returns\nan empty string.  Examples:\n\n</p>\n<pre><code>path.extname(&#39;index.html&#39;)\n// returns\n&#39;.html&#39;\n\npath.extname(&#39;index.coffee.md&#39;)\n// returns\n&#39;.md&#39;\n\npath.extname(&#39;index.&#39;)\n// returns\n&#39;.&#39;\n\npath.extname(&#39;index&#39;)\n// returns\n&#39;&#39;</code></pre>\n",
+          "desc": "<p>Return the extension of the path, from the last &#39;.&#39; to end of string\nin the last portion of the path.  If there is no &#39;.&#39; in the last portion\nof the path or the first character of it is &#39;.&#39;, then it returns\nan empty string.  Examples:\n\n</p>\n<pre><code>path.extname(&#39;index.html&#39;)\n// returns\n&#39;.html&#39;\n\npath.extname(&#39;index.coffee.md&#39;)\n// returns\n&#39;.md&#39;\n\npath.extname(&#39;index.&#39;)\n// returns\n&#39;.&#39;\n\npath.extname(&#39;index&#39;)\n// returns\n&#39;&#39;\n\npath.extname(&#39;.index&#39;)\n// returns\n&#39;&#39;</code></pre>\n",
           "signatures": [
             {
               "params": [

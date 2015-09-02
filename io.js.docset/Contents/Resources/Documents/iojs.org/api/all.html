@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>About this Documentation io.js v3.2.0 Manual &amp; Documentation</title>
+  <title>About this Documentation io.js v3.3.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -61,7 +61,7 @@
 
     <div id="column1" data-id="all" class="interior">
       <header>
-        <h1>io.js v3.2.0 Documentation</h1>
+        <h1>io.js v3.3.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -394,7 +394,7 @@
 <li><a href="#all_event_close_1">Event: &#39;close&#39;</a></li>
 <li><a href="#all_event_error_2">Event: &#39;error&#39;</a></li>
 <li><a href="#all_socket_send_buf_offset_length_port_address_callback">socket.send(buf, offset, length, port, address[, callback])</a></li>
-<li><a href="#all_socket_bind_port_address_callback">socket.bind(port[, address][, callback])</a></li>
+<li><a href="#all_socket_bind_port_address_callback">socket.bind([port][, address][, callback])</a></li>
 <li><a href="#all_socket_bind_options_callback">socket.bind(options[, callback])</a></li>
 <li><a href="#all_socket_close_callback">socket.close([callback])</a></li>
 <li><a href="#all_socket_address">socket.address()</a></li>
@@ -789,8 +789,8 @@
 </li>
 <li><a href="#all_net">net</a><ul>
 <li><a href="#all_net_createserver_options_connectionlistener">net.createServer([options][, connectionListener])</a></li>
-<li><a href="#all_net_connect_options_connectionlistener">net.connect(options[, connectionListener])</a></li>
-<li><a href="#all_net_createconnection_options_connectionlistener">net.createConnection(options[, connectionListener])</a></li>
+<li><a href="#all_net_connect_options_connectlistener">net.connect(options[, connectListener])</a></li>
+<li><a href="#all_net_createconnection_options_connectlistener">net.createConnection(options[, connectListener])</a></li>
 <li><a href="#all_net_connect_port_host_connectlistener">net.connect(port[, host][, connectListener])</a></li>
 <li><a href="#all_net_createconnection_port_host_connectlistener">net.createConnection(port[, host][, connectListener])</a></li>
 <li><a href="#all_net_connect_path_connectlistener">net.connect(path[, connectListener])</a></li>
@@ -2421,8 +2421,8 @@ otherwise a <code>RangeError</code> is thrown.
 
 </p>
 <p>Unlike <code>ArrayBuffers</code>, the underlying memory for buffers is not initialized. So
-the contents of a newly created <code>Buffer</code> is unknown. Use <code>buf.fill(0)</code>to
-initialize a buffer to zeroes.
+the contents of a newly created <code>Buffer</code> are unknown and could contain
+sensitive data. Use <code>buf.fill(0)</code> to initialize a buffer to zeroes.
 
 </p>
 <h3>new Buffer(array)<span><a class="mark" href="#all_new_buffer_array" id="all_new_buffer_array">#</a></span></h3>
@@ -3390,7 +3390,7 @@ and the <code>.connected</code> property is false.
 <li><code>message</code> <span class="type">Object</span> a parsed JSON object or primitive value</li>
 <li><code>sendHandle</code> <span class="type">Handle object</span> a Socket or Server object</li>
 </div></ul>
-<p>Messages send by <code>.send(message, [sendHandle])</code> are obtained using the
+<p>Messages sent by <code>.send(message, [sendHandle])</code> are obtained using the
 <code>message</code> event.
 
 </p>
@@ -3639,7 +3639,7 @@ server.on(&#39;connection&#39;, function (socket) {
     special.send(&#39;socket&#39;, socket);
     return;
   }
-  // just the usual dudes
+  // just the usual...
   normal.send(&#39;socket&#39;, socket);
 });
 server.listen(1337);</code></pre>
@@ -4156,7 +4156,7 @@ if (cluster.isMaster) {
   });
 } else {
   // Workers can share any TCP connection
-  // In this case its a HTTP server
+  // In this case it is an HTTP server
   http.createServer(function(req, res) {
     res.writeHead(200);
     res.end(&quot;hello world\n&quot;);
@@ -4239,9 +4239,10 @@ for things like sessions and login.
 <p>Because workers are all separate processes, they can be killed or
 re-spawned depending on your program&#39;s needs, without affecting other
 workers.  As long as there are some workers still alive, the server will
-continue to accept connections.  io.js does not automatically manage the
-number of workers for you, however.  It is your responsibility to manage
-the worker pool for your application&#39;s needs.
+continue to accept connections.  If no workers are alive, existing connections
+will be dropped and new connections will be refused.  io.js does not
+automatically manage the number of workers for you, however.  It is your
+responsibility to manage the worker pool for your application&#39;s needs.
 
 </p>
 <h2>cluster.schedulingPolicy<span><a class="mark" href="#all_cluster_schedulingpolicy" id="all_cluster_schedulingpolicy">#</a></span></h2>
@@ -4558,7 +4559,7 @@ it can be obtained using <code>cluster.worker</code>.
 </p>
 <h3>worker.id<span><a class="mark" href="#all_worker_id" id="all_worker_id">#</a></span></h3>
 <div class="signature"><ul>
-<li><span class="type">String</span></li>
+<li><span class="type">Number</span></li>
 </div></ul>
 <p>Each new worker is given its own unique id, this id is stored in the
 <code>id</code>.
@@ -5122,7 +5123,7 @@ digest.  The legacy <code>update</code> and <code>digest</code> methods are also
 <h3>hash.update(data[, input_encoding])<span><a class="mark" href="#all_hash_update_data_input_encoding" id="all_hash_update_data_input_encoding">#</a></span></h3>
 <p>Updates the hash content with the given <code>data</code>, the encoding of which
 is given in <code>input_encoding</code> and can be <code>&#39;utf8&#39;</code>, <code>&#39;ascii&#39;</code> or
-<code>&#39;binary&#39;</code>.  If no encoding is provided and the input is a string an
+<code>&#39;binary&#39;</code>.  If no encoding is provided, and the input is a string, an
 encoding of <code>&#39;binary&#39;</code> is enforced. If <code>data</code> is a <code>Buffer</code> then
 <code>input_encoding</code> is ignored.
 
@@ -5331,7 +5332,7 @@ called.
 <h3>decipher.setAutoPadding(auto_padding=true)<span><a class="mark" href="#all_decipher_setautopadding_auto_padding_true" id="all_decipher_setautopadding_auto_padding_true">#</a></span></h3>
 <p>You can disable auto padding if the data has been encrypted without
 standard block padding to prevent <code>decipher.final</code> from checking and
-removing it. Can only work if the input data&#39;s length is a multiple of
+removing it. This will only work if the input data&#39;s length is a multiple of
 the ciphers block size. You must call this before streaming data to
 <code>decipher.update</code>.
 
@@ -6168,15 +6169,16 @@ the (receiver) <code>MTU</code> won&#39;t work (the packet gets silently dropped
 informing the source that the data did not reach its intended recipient).
 
 </p>
-<h3>socket.bind(port[, address][, callback])<span><a class="mark" href="#all_socket_bind_port_address_callback" id="all_socket_bind_port_address_callback">#</a></span></h3>
+<h3>socket.bind([port][, address][, callback])<span><a class="mark" href="#all_socket_bind_port_address_callback" id="all_socket_bind_port_address_callback">#</a></span></h3>
 <div class="signature"><ul>
-<li><code>port</code> Integer</li>
+<li><code>port</code> Integer, Optional</li>
 <li><code>address</code> String, Optional</li>
 <li><code>callback</code> Function with no parameters, Optional. Callback when
 binding is done.</li>
 </div></ul>
 <p>For UDP sockets, listen for datagrams on a named <code>port</code> and optional
-<code>address</code>. If <code>address</code> is not specified, the OS will try to listen on
+<code>address</code>. If <code>port</code> is not specified, the OS will try to bind to a random
+port. If <code>address</code> is not specified, the OS will try to listen on
 all addresses.  After binding is done, a &quot;listening&quot; event is emitted
 and the <code>callback</code>(if specified) is called. Specifying both a
 &quot;listening&quot; event listener and <code>callback</code> is not harmful but not very
@@ -6715,7 +6717,7 @@ connections open, and it is not reasonable to abruptly shut those down
 because an error was triggered by someone else.
 
 </p>
-<p>The better approach is send an error response to the request that
+<p>The better approach is to send an error response to the request that
 triggered the error, while letting the others finish in their normal
 time, and stop listening for new requests in that worker.
 
@@ -7790,7 +7792,7 @@ use this module do <code>require(&#39;fs&#39;)</code>. All the methods have asyn
 synchronous forms.
 
 </p>
-<p>The asynchronous form always take a completion callback as its last argument.
+<p>The asynchronous form always takes a completion callback as its last argument.
 The arguments passed to the completion callback depend on the method, but the
 first argument is always reserved for an exception. If the operation was
 completed successfully, then the first argument will be <code>null</code> or <code>undefined</code>.
@@ -7844,8 +7846,8 @@ asynchronous versions of these calls. The synchronous versions will block
 the entire process until they complete--halting all connections.
 
 </p>
-<p>Relative path to filename can be used, remember however that this path will be
-relative to <code>process.cwd()</code>.
+<p>The relative path to a filename can be used. Remember, however, that this path
+will be relative to <code>process.cwd()</code>.
 
 </p>
 <p>Most fs functions let you omit the callback argument. If you do, a default
@@ -8392,7 +8394,7 @@ stat object:
 <p>These stat objects are instances of <code>fs.Stat</code>.
 
 </p>
-<p>If you want to be notified when the file was modified, not just accessed
+<p>If you want to be notified when the file was modified, not just accessed,
 you need to compare <code>curr.mtime</code> and <code>prev.mtime</code>.
 
 </p>
@@ -8506,16 +8508,11 @@ Then call the <code>callback</code> argument with either true or false.  Example
 <pre><code>fs.exists(&#39;/etc/passwd&#39;, function (exists) {
   console.log(exists ? &quot;it&#39;s there&quot; : &#39;no passwd!&#39;);
 });</code></pre>
-<p><code>fs.exists()</code> is an anachronism and exists only for historical reasons.
-There should almost never be a reason to use it in your own code.
-
-</p>
-<p>In particular, checking if a file exists before opening it is an anti-pattern
-that leaves you vulnerable to race conditions: another process may remove the
-file between the calls to <code>fs.exists()</code> and <code>fs.open()</code>.  Just open the file
-and handle the error when it&#39;s not there.
-
-
+<p><code>fs.exists()</code> should not be used to check if a file exists before calling
+<code>fs.open()</code>. Doing so introduces a race condition since other processes may
+change the file&#39;s state between the two calls. Instead, user code should
+call <code>fs.open()</code> directly and handle the error raised if the file is
+non-existent.
 
 </p>
 <h2>fs.existsSync(path)<span><a class="mark" href="#all_fs_existssync_path" id="all_fs_existssync_path">#</a></span></h2>
@@ -8905,9 +8902,6 @@ when to use <code>module.exports</code>.
 
 </p>
 <p>See the <a href="modules.html">module system documentation</a> for more information.
-
-</p>
-<p>See the <a href="modules.html">module section</a> for more information.
 
 </p>
 <h2>setTimeout(cb, ms)<span><a class="mark" href="#all_settimeout_cb_ms" id="all_settimeout_cb_ms">#</a></span></h2>
@@ -10483,7 +10477,8 @@ plan accordingly.
 described in greater detail elsewhere in this documentation.
 
 </p>
-<p>The core modules are defined in io.js&#39;s source in the <code>lib/</code> folder.
+<p>The core modules are defined within io.js&#39;s source and are located in the
+<code>lib/</code> folder.
 
 </p>
 <p>Core modules are always preferentially loaded if their identifier is
@@ -10495,7 +10490,8 @@ return the built in HTTP module, even if there is a file by that name.
 <!--type=misc-->
 
 <p>If the exact filename is not found, then io.js will attempt to load the
-required filename with the added extension of <code>.js</code>, <code>.json</code>, and then <code>.node</code>.
+required filename with the added extensions: <code>.js</code>, <code>.json</code>, and finally
+<code>.node</code>.
 
 </p>
 <p><code>.js</code> files are interpreted as JavaScript text files, and <code>.json</code> files are
@@ -10503,18 +10499,18 @@ parsed as JSON text files. <code>.node</code> files are interpreted as compiled 
 modules loaded with <code>dlopen</code>.
 
 </p>
-<p>A module prefixed with <code>&#39;/&#39;</code> is an absolute path to the file.  For
+<p>A required module prefixed with <code>&#39;/&#39;</code> is an absolute path to the file.  For
 example, <code>require(&#39;/home/marco/foo.js&#39;)</code> will load the file at
 <code>/home/marco/foo.js</code>.
 
 </p>
-<p>A module prefixed with <code>&#39;./&#39;</code> is relative to the file calling <code>require()</code>.
-That is, <code>circle.js</code> must be in the same directory as <code>foo.js</code> for
+<p>A required module prefixed with <code>&#39;./&#39;</code> is relative to the file calling
+<code>require()</code>. That is, <code>circle.js</code> must be in the same directory as <code>foo.js</code> for
 <code>require(&#39;./circle&#39;)</code> to find it.
 
 </p>
-<p>Without a leading &#39;/&#39;, &#39;./&#39;, or &#39;../&#39; to indicate a file, the module is either a
-core module or is loaded from a <code>node_modules</code> folder.
+<p>Without a leading &#39;/&#39;, &#39;./&#39;, or &#39;../&#39; to indicate a file, the module must
+either be a core module or is loaded from a <code>node_modules</code> folder.
 
 </p>
 <p>If the given path does not exist, <code>require()</code> will throw an Error with its
@@ -10746,8 +10742,7 @@ loading.
 <div class="signature"><ul>
 <li><span class="type">Module Object</span></li>
 </div></ul>
-<p>The module that required this one.
-
+<p>The module that first required this one.
 
 </p>
 <h3>module.children<span><a class="mark" href="#all_module_children" id="all_module_children">#</a></span></h3>
@@ -10991,8 +10986,8 @@ just be changed to
 
 </p>
 <pre><code>nc -U /tmp/echo.sock</code></pre>
-<h2>net.connect(options[, connectionListener])<span><a class="mark" href="#all_net_connect_options_connectionlistener" id="all_net_connect_options_connectionlistener">#</a></span></h2>
-<h2>net.createConnection(options[, connectionListener])<span><a class="mark" href="#all_net_createconnection_options_connectionlistener" id="all_net_createconnection_options_connectionlistener">#</a></span></h2>
+<h2>net.connect(options[, connectListener])<span><a class="mark" href="#all_net_connect_options_connectlistener" id="all_net_connect_options_connectlistener">#</a></span></h2>
+<h2>net.createConnection(options[, connectListener])<span><a class="mark" href="#all_net_createconnection_options_connectlistener" id="all_net_createconnection_options_connectlistener">#</a></span></h2>
 <p>A factory function, which returns a new <a href="#net_class_net_socket">&#39;net.Socket&#39;</a>
 and automatically connects with the supplied <code>options</code>.
 
@@ -11294,7 +11289,7 @@ and passed to the user through the <code>&#39;connection&#39;</code> event of a 
 <p><code>options</code> is an object with the following defaults:
 
 </p>
-<pre><code>{ fd: null
+<pre><code>{ fd: null,
   allowHalfOpen: false,
   readable: false,
   writable: false
@@ -11981,6 +11976,10 @@ path.extname(&#39;index.&#39;)
 &#39;.&#39;
 
 path.extname(&#39;index&#39;)
+// returns
+&#39;&#39;
+
+path.extname(&#39;.index&#39;)
 // returns
 &#39;&#39;</code></pre>
 <h2>path.sep<span><a class="mark" href="#all_path_sep" id="all_path_sep">#</a></span></h2>
@@ -13602,10 +13601,9 @@ will share the same global object but will have unique I/O.
 <p>Here is an example that starts a REPL on stdin, a Unix socket, and a TCP socket:
 
 </p>
-<pre><code>var net = require(&quot;net&quot;),
-    repl = require(&quot;repl&quot;);
-
-connections = 0;
+<pre><code>var net = require(&#39;net&#39;),
+    repl = require(&#39;repl&#39;),
+    connections = 0;
 
 repl.start({
   prompt: &quot;io.js via stdin&gt; &quot;,
@@ -13681,7 +13679,7 @@ be emitted.
 
 </p>
 <pre><code>// Extend the initial repl context.
-r = repl.start({ options ... });
+var r = repl.start({ options ... });
 someExtension.extend(r.context);
 
 // When a new context is created extend it as well.
@@ -13703,7 +13701,7 @@ accessing <code>fs</code> will <code>require()</code> the <code>fs</code> module
 <p>The special variable <code>_</code> (underscore) contains the result of the last expression.
 
 </p>
-<pre><code>&gt; [ &quot;a&quot;, &quot;b&quot;, &quot;c&quot; ]
+<pre><code>&gt; [ &#39;a&#39;, &#39;b&#39;, &#39;c&#39; ]
 [ &#39;a&#39;, &#39;b&#39;, &#39;c&#39; ]
 &gt; _.length
 3
@@ -13715,10 +13713,10 @@ associated with each <code>REPLServer</code>.  For example:
 
 </p>
 <pre><code>// repl_test.js
-var repl = require(&quot;repl&quot;),
-    msg = &quot;message&quot;;
+var repl = require(&#39;repl&#39;),
+    msg = &#39;message&#39;;
 
-repl.start(&quot;&gt; &quot;).context.m = msg;</code></pre>
+repl.start(&#39;&gt; &#39;).context.m = msg;</code></pre>
 <p>Things in the <code>context</code> object appear as local within the REPL:
 
 </p>
@@ -14011,8 +14009,12 @@ readable.on(&#39;end&#39;, function() {
   console.log(&#39;there will be no more data.&#39;);
 });</code></pre>
 <h4>Event: &#39;close&#39;<span><a class="mark" href="#all_event_close_8" id="all_event_close_8">#</a></span></h4>
-<p>Emitted when the underlying resource (for example, the backing file
-descriptor) has been closed. Not all streams will emit this.
+<p>Emitted when the stream and any of its underlying resources (a file
+descriptor, for example) have been closed. The event indicates that
+no more events will be emitted, and no further computation will occur.
+
+</p>
+<p>Not all streams will emit the &#39;close&#39; event.
 
 </p>
 <h4>Event: &#39;error&#39;<span><a class="mark" href="#all_event_error_6" id="all_event_error_6">#</a></span></h4>
@@ -15022,19 +15024,19 @@ as a result of this chunk.
 </p>
 <p>Call the callback function only when the current chunk is completely
 consumed.  Note that there may or may not be output as a result of any
-particular input chunk. If you supply output as the second argument to the
-callback, it will be passed to push method, in other words the following are
+particular input chunk. If you supply a second argument to the callback
+it will be passed to the push method. In other words the following are
 equivalent:
 
 </p>
 <pre><code class="javascript">transform.prototype._transform = function (data, encoding, callback) {
   this.push(data);
   callback();
-}
+};
 
 transform.prototype._transform = function (data, encoding, callback) {
   callback(null, data);
-}</code></pre>
+};</code></pre>
 <p>This method is prefixed with an underscore because it is internal to
 the class that defines it, and should not be called directly by user
 programs.  However, you <strong>are</strong> expected to override this method in

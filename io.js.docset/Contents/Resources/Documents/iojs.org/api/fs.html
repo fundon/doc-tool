@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>File System io.js v3.2.0 Manual &amp; Documentation</title>
+  <title>File System io.js v3.3.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -61,7 +61,7 @@
 
     <div id="column1" data-id="fs" class="interior">
       <header>
-        <h1>io.js v3.2.0 Documentation</h1>
+        <h1>io.js v3.3.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -188,7 +188,7 @@ use this module do <code>require(&#39;fs&#39;)</code>. All the methods have asyn
 synchronous forms.
 
 </p>
-<p>The asynchronous form always take a completion callback as its last argument.
+<p>The asynchronous form always takes a completion callback as its last argument.
 The arguments passed to the completion callback depend on the method, but the
 first argument is always reserved for an exception. If the operation was
 completed successfully, then the first argument will be <code>null</code> or <code>undefined</code>.
@@ -242,8 +242,8 @@ asynchronous versions of these calls. The synchronous versions will block
 the entire process until they complete--halting all connections.
 
 </p>
-<p>Relative path to filename can be used, remember however that this path will be
-relative to <code>process.cwd()</code>.
+<p>The relative path to a filename can be used. Remember, however, that this path
+will be relative to <code>process.cwd()</code>.
 
 </p>
 <p>Most fs functions let you omit the callback argument. If you do, a default
@@ -790,7 +790,7 @@ stat object:
 <p>These stat objects are instances of <code>fs.Stat</code>.
 
 </p>
-<p>If you want to be notified when the file was modified, not just accessed
+<p>If you want to be notified when the file was modified, not just accessed,
 you need to compare <code>curr.mtime</code> and <code>prev.mtime</code>.
 
 </p>
@@ -904,16 +904,11 @@ Then call the <code>callback</code> argument with either true or false.  Example
 <pre><code>fs.exists(&#39;/etc/passwd&#39;, function (exists) {
   console.log(exists ? &quot;it&#39;s there&quot; : &#39;no passwd!&#39;);
 });</code></pre>
-<p><code>fs.exists()</code> is an anachronism and exists only for historical reasons.
-There should almost never be a reason to use it in your own code.
-
-</p>
-<p>In particular, checking if a file exists before opening it is an anti-pattern
-that leaves you vulnerable to race conditions: another process may remove the
-file between the calls to <code>fs.exists()</code> and <code>fs.open()</code>.  Just open the file
-and handle the error when it&#39;s not there.
-
-
+<p><code>fs.exists()</code> should not be used to check if a file exists before calling
+<code>fs.open()</code>. Doing so introduces a race condition since other processes may
+change the file&#39;s state between the two calls. Instead, user code should
+call <code>fs.open()</code> directly and handle the error raised if the file is
+non-existent.
 
 </p>
 <h2>fs.existsSync(path)<span><a class="mark" href="#fs_fs_existssync_path" id="fs_fs_existssync_path">#</a></span></h2>

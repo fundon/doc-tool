@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>REPL io.js v3.2.0 Manual &amp; Documentation</title>
+  <title>REPL io.js v3.3.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -61,7 +61,7 @@
 
     <div id="column1" data-id="repl" class="interior">
       <header>
-        <h1>io.js v3.2.0 Documentation</h1>
+        <h1>io.js v3.3.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -221,10 +221,9 @@ will share the same global object but will have unique I/O.
 <p>Here is an example that starts a REPL on stdin, a Unix socket, and a TCP socket:
 
 </p>
-<pre><code>var net = require(&quot;net&quot;),
-    repl = require(&quot;repl&quot;);
-
-connections = 0;
+<pre><code>var net = require(&#39;net&#39;),
+    repl = require(&#39;repl&#39;),
+    connections = 0;
 
 repl.start({
   prompt: &quot;io.js via stdin&gt; &quot;,
@@ -300,7 +299,7 @@ be emitted.
 
 </p>
 <pre><code>// Extend the initial repl context.
-r = repl.start({ options ... });
+var r = repl.start({ options ... });
 someExtension.extend(r.context);
 
 // When a new context is created extend it as well.
@@ -322,7 +321,7 @@ accessing <code>fs</code> will <code>require()</code> the <code>fs</code> module
 <p>The special variable <code>_</code> (underscore) contains the result of the last expression.
 
 </p>
-<pre><code>&gt; [ &quot;a&quot;, &quot;b&quot;, &quot;c&quot; ]
+<pre><code>&gt; [ &#39;a&#39;, &#39;b&#39;, &#39;c&#39; ]
 [ &#39;a&#39;, &#39;b&#39;, &#39;c&#39; ]
 &gt; _.length
 3
@@ -334,10 +333,10 @@ associated with each <code>REPLServer</code>.  For example:
 
 </p>
 <pre><code>// repl_test.js
-var repl = require(&quot;repl&quot;),
-    msg = &quot;message&quot;;
+var repl = require(&#39;repl&#39;),
+    msg = &#39;message&#39;;
 
-repl.start(&quot;&gt; &quot;).context.m = msg;</code></pre>
+repl.start(&#39;&gt; &#39;).context.m = msg;</code></pre>
 <p>Things in the <code>context</code> object appear as local within the REPL:
 
 </p>

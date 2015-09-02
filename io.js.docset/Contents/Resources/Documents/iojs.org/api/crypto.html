@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Crypto io.js v3.2.0 Manual &amp; Documentation</title>
+  <title>Crypto io.js v3.3.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -61,7 +61,7 @@
 
     <div id="column1" data-id="crypto" class="interior">
       <header>
-        <h1>io.js v3.2.0 Documentation</h1>
+        <h1>io.js v3.3.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -311,7 +311,7 @@ digest.  The legacy <code>update</code> and <code>digest</code> methods are also
 <h3>hash.update(data[, input_encoding])<span><a class="mark" href="#crypto_hash_update_data_input_encoding" id="crypto_hash_update_data_input_encoding">#</a></span></h3>
 <p>Updates the hash content with the given <code>data</code>, the encoding of which
 is given in <code>input_encoding</code> and can be <code>&#39;utf8&#39;</code>, <code>&#39;ascii&#39;</code> or
-<code>&#39;binary&#39;</code>.  If no encoding is provided and the input is a string an
+<code>&#39;binary&#39;</code>.  If no encoding is provided, and the input is a string, an
 encoding of <code>&#39;binary&#39;</code> is enforced. If <code>data</code> is a <code>Buffer</code> then
 <code>input_encoding</code> is ignored.
 
@@ -520,7 +520,7 @@ called.
 <h3>decipher.setAutoPadding(auto_padding=true)<span><a class="mark" href="#crypto_decipher_setautopadding_auto_padding_true" id="crypto_decipher_setautopadding_auto_padding_true">#</a></span></h3>
 <p>You can disable auto padding if the data has been encrypted without
 standard block padding to prevent <code>decipher.final</code> from checking and
-removing it. Can only work if the input data&#39;s length is a multiple of
+removing it. This will only work if the input data&#39;s length is a multiple of
 the ciphers block size. You must call this before streaming data to
 <code>decipher.update</code>.
 

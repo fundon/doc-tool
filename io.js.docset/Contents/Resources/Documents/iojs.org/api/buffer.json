@@ -2097,7 +2097,7 @@
                   "desc": "Number"
                 }
               ],
-              "desc": "<p>Allocates a new buffer of <code>size</code> bytes.  <code>size</code> must be less than\n1,073,741,824 bytes (1 GB) on 32 bits architectures or\n2,147,483,648 bytes (2 GB) on 64 bits architectures,\notherwise a <code>RangeError</code> is thrown.\n\n</p>\n<p>Unlike <code>ArrayBuffers</code>, the underlying memory for buffers is not initialized. So\nthe contents of a newly created <code>Buffer</code> is unknown. Use <code>buf.fill(0)</code>to\ninitialize a buffer to zeroes.\n\n</p>\n"
+              "desc": "<p>Allocates a new buffer of <code>size</code> bytes.  <code>size</code> must be less than\n1,073,741,824 bytes (1 GB) on 32 bits architectures or\n2,147,483,648 bytes (2 GB) on 64 bits architectures,\notherwise a <code>RangeError</code> is thrown.\n\n</p>\n<p>Unlike <code>ArrayBuffers</code>, the underlying memory for buffers is not initialized. So\nthe contents of a newly created <code>Buffer</code> are unknown and could contain\nsensitive data. Use <code>buf.fill(0)</code> to initialize a buffer to zeroes.\n\n</p>\n"
             },
             {
               "params": [
@@ -2105,7 +2105,7 @@
                   "name": "size"
                 }
               ],
-              "desc": "<p>Allocates a new buffer of <code>size</code> bytes.  <code>size</code> must be less than\n1,073,741,824 bytes (1 GB) on 32 bits architectures or\n2,147,483,648 bytes (2 GB) on 64 bits architectures,\notherwise a <code>RangeError</code> is thrown.\n\n</p>\n<p>Unlike <code>ArrayBuffers</code>, the underlying memory for buffers is not initialized. So\nthe contents of a newly created <code>Buffer</code> is unknown. Use <code>buf.fill(0)</code>to\ninitialize a buffer to zeroes.\n\n</p>\n"
+              "desc": "<p>Allocates a new buffer of <code>size</code> bytes.  <code>size</code> must be less than\n1,073,741,824 bytes (1 GB) on 32 bits architectures or\n2,147,483,648 bytes (2 GB) on 64 bits architectures,\notherwise a <code>RangeError</code> is thrown.\n\n</p>\n<p>Unlike <code>ArrayBuffers</code>, the underlying memory for buffers is not initialized. So\nthe contents of a newly created <code>Buffer</code> are unknown and could contain\nsensitive data. Use <code>buf.fill(0)</code> to initialize a buffer to zeroes.\n\n</p>\n"
             },
             {
               "params": [

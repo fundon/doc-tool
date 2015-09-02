@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>net io.js v3.2.0 Manual &amp; Documentation</title>
+  <title>net io.js v3.3.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -61,7 +61,7 @@
 
     <div id="column1" data-id="net" class="interior">
       <header>
-        <h1>io.js v3.2.0 Documentation</h1>
+        <h1>io.js v3.3.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -77,8 +77,8 @@
         <ul>
 <li><a href="#net_net">net</a><ul>
 <li><a href="#net_net_createserver_options_connectionlistener">net.createServer([options][, connectionListener])</a></li>
-<li><a href="#net_net_connect_options_connectionlistener">net.connect(options[, connectionListener])</a></li>
-<li><a href="#net_net_createconnection_options_connectionlistener">net.createConnection(options[, connectionListener])</a></li>
+<li><a href="#net_net_connect_options_connectlistener">net.connect(options[, connectListener])</a></li>
+<li><a href="#net_net_createconnection_options_connectlistener">net.createConnection(options[, connectListener])</a></li>
 <li><a href="#net_net_connect_port_host_connectlistener">net.connect(port[, host][, connectListener])</a></li>
 <li><a href="#net_net_createconnection_port_host_connectlistener">net.createConnection(port[, host][, connectListener])</a></li>
 <li><a href="#net_net_connect_path_connectlistener">net.connect(path[, connectListener])</a></li>
@@ -205,8 +205,8 @@ just be changed to
 
 </p>
 <pre><code>nc -U /tmp/echo.sock</code></pre>
-<h2>net.connect(options[, connectionListener])<span><a class="mark" href="#net_net_connect_options_connectionlistener" id="net_net_connect_options_connectionlistener">#</a></span></h2>
-<h2>net.createConnection(options[, connectionListener])<span><a class="mark" href="#net_net_createconnection_options_connectionlistener" id="net_net_createconnection_options_connectionlistener">#</a></span></h2>
+<h2>net.connect(options[, connectListener])<span><a class="mark" href="#net_net_connect_options_connectlistener" id="net_net_connect_options_connectlistener">#</a></span></h2>
+<h2>net.createConnection(options[, connectListener])<span><a class="mark" href="#net_net_createconnection_options_connectlistener" id="net_net_createconnection_options_connectlistener">#</a></span></h2>
 <p>A factory function, which returns a new <a href="#net_class_net_socket">&#39;net.Socket&#39;</a>
 and automatically connects with the supplied <code>options</code>.
 
@@ -508,7 +508,7 @@ and passed to the user through the <code>&#39;connection&#39;</code> event of a 
 <p><code>options</code> is an object with the following defaults:
 
 </p>
-<pre><code>{ fd: null
+<pre><code>{ fd: null,
   allowHalfOpen: false,
   readable: false,
   writable: false

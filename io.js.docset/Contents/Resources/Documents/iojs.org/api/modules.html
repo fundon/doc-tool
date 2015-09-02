@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Modules io.js v3.2.0 Manual &amp; Documentation</title>
+  <title>Modules io.js v3.3.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -61,7 +61,7 @@
 
     <div id="column1" data-id="modules" class="interior">
       <header>
-        <h1>io.js v3.2.0 Documentation</h1>
+        <h1>io.js v3.3.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -236,7 +236,8 @@ plan accordingly.
 described in greater detail elsewhere in this documentation.
 
 </p>
-<p>The core modules are defined in io.js&#39;s source in the <code>lib/</code> folder.
+<p>The core modules are defined within io.js&#39;s source and are located in the
+<code>lib/</code> folder.
 
 </p>
 <p>Core modules are always preferentially loaded if their identifier is
@@ -248,7 +249,8 @@ return the built in HTTP module, even if there is a file by that name.
 <!--type=misc-->
 
 <p>If the exact filename is not found, then io.js will attempt to load the
-required filename with the added extension of <code>.js</code>, <code>.json</code>, and then <code>.node</code>.
+required filename with the added extensions: <code>.js</code>, <code>.json</code>, and finally
+<code>.node</code>.
 
 </p>
 <p><code>.js</code> files are interpreted as JavaScript text files, and <code>.json</code> files are
@@ -256,18 +258,18 @@ parsed as JSON text files. <code>.node</code> files are interpreted as compiled 
 modules loaded with <code>dlopen</code>.
 
 </p>
-<p>A module prefixed with <code>&#39;/&#39;</code> is an absolute path to the file.  For
+<p>A required module prefixed with <code>&#39;/&#39;</code> is an absolute path to the file.  For
 example, <code>require(&#39;/home/marco/foo.js&#39;)</code> will load the file at
 <code>/home/marco/foo.js</code>.
 
 </p>
-<p>A module prefixed with <code>&#39;./&#39;</code> is relative to the file calling <code>require()</code>.
-That is, <code>circle.js</code> must be in the same directory as <code>foo.js</code> for
+<p>A required module prefixed with <code>&#39;./&#39;</code> is relative to the file calling
+<code>require()</code>. That is, <code>circle.js</code> must be in the same directory as <code>foo.js</code> for
 <code>require(&#39;./circle&#39;)</code> to find it.
 
 </p>
-<p>Without a leading &#39;/&#39;, &#39;./&#39;, or &#39;../&#39; to indicate a file, the module is either a
-core module or is loaded from a <code>node_modules</code> folder.
+<p>Without a leading &#39;/&#39;, &#39;./&#39;, or &#39;../&#39; to indicate a file, the module must
+either be a core module or is loaded from a <code>node_modules</code> folder.
 
 </p>
 <p>If the given path does not exist, <code>require()</code> will throw an Error with its
@@ -499,8 +501,7 @@ loading.
 <div class="signature"><ul>
 <li><span class="type">Module Object</span></li>
 </div></ul>
-<p>The module that required this one.
-
+<p>The module that first required this one.
 
 </p>
 <h3>module.children<span><a class="mark" href="#modules_module_children" id="modules_module_children">#</a></span></h3>

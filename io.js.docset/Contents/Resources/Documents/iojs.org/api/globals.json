@@ -88,7 +88,7 @@
       "textRaw": "exports",
       "name": "exports",
       "type": "var",
-      "desc": "<p>A reference to the <code>module.exports</code> that is shorter to type.\nSee [module system documentation][] for details on when to use <code>exports</code> and\nwhen to use <code>module.exports</code>.\n\n</p>\n<p><code>exports</code> isn&#39;t actually a global but rather local to each module.\n\n</p>\n<p>See the [module system documentation][] for more information.\n\n</p>\n<p>See the [module section][] for more information.\n\n</p>\n"
+      "desc": "<p>A reference to the <code>module.exports</code> that is shorter to type.\nSee [module system documentation][] for details on when to use <code>exports</code> and\nwhen to use <code>module.exports</code>.\n\n</p>\n<p><code>exports</code> isn&#39;t actually a global but rather local to each module.\n\n</p>\n<p>See the [module system documentation][] for more information.\n\n</p>\n"
     }
   ],
   "methods": [
@@ -238,7 +238,7 @@
           "textRaw": "exports",
           "name": "exports",
           "type": "var",
-          "desc": "<p>A reference to the <code>module.exports</code> that is shorter to type.\nSee [module system documentation][] for details on when to use <code>exports</code> and\nwhen to use <code>module.exports</code>.\n\n</p>\n<p><code>exports</code> isn&#39;t actually a global but rather local to each module.\n\n</p>\n<p>See the [module system documentation][] for more information.\n\n</p>\n<p>See the [module section][] for more information.\n\n</p>\n"
+          "desc": "<p>A reference to the <code>module.exports</code> that is shorter to type.\nSee [module system documentation][] for details on when to use <code>exports</code> and\nwhen to use <code>module.exports</code>.\n\n</p>\n<p><code>exports</code> isn&#39;t actually a global but rather local to each module.\n\n</p>\n<p>See the [module system documentation][] for more information.\n\n</p>\n"
         }
       ],
       "methods": [

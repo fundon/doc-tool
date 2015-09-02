@@ -456,7 +456,7 @@
               "textRaw": "hash.update(data[, input_encoding])",
               "type": "method",
               "name": "update",
-              "desc": "<p>Updates the hash content with the given <code>data</code>, the encoding of which\nis given in <code>input_encoding</code> and can be <code>&#39;utf8&#39;</code>, <code>&#39;ascii&#39;</code> or\n<code>&#39;binary&#39;</code>.  If no encoding is provided and the input is a string an\nencoding of <code>&#39;binary&#39;</code> is enforced. If <code>data</code> is a <code>Buffer</code> then\n<code>input_encoding</code> is ignored.\n\n</p>\n<p>This can be called many times with new data as it is streamed.\n\n</p>\n",
+              "desc": "<p>Updates the hash content with the given <code>data</code>, the encoding of which\nis given in <code>input_encoding</code> and can be <code>&#39;utf8&#39;</code>, <code>&#39;ascii&#39;</code> or\n<code>&#39;binary&#39;</code>.  If no encoding is provided, and the input is a string, an\nencoding of <code>&#39;binary&#39;</code> is enforced. If <code>data</code> is a <code>Buffer</code> then\n<code>input_encoding</code> is ignored.\n\n</p>\n<p>This can be called many times with new data as it is streamed.\n\n</p>\n",
               "signatures": [
                 {
                   "params": [
@@ -666,7 +666,7 @@
               "textRaw": "decipher.setAutoPadding(auto_padding=true)",
               "type": "method",
               "name": "setAutoPadding",
-              "desc": "<p>You can disable auto padding if the data has been encrypted without\nstandard block padding to prevent <code>decipher.final</code> from checking and\nremoving it. Can only work if the input data&#39;s length is a multiple of\nthe ciphers block size. You must call this before streaming data to\n<code>decipher.update</code>.\n\n</p>\n",
+              "desc": "<p>You can disable auto padding if the data has been encrypted without\nstandard block padding to prevent <code>decipher.final</code> from checking and\nremoving it. This will only work if the input data&#39;s length is a multiple of\nthe ciphers block size. You must call this before streaming data to\n<code>decipher.update</code>.\n\n</p>\n",
               "signatures": [
                 {
                   "params": [

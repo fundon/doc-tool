@@ -39,7 +39,7 @@
               "textRaw": "Event: 'close'",
               "type": "event",
               "name": "close",
-              "desc": "<p>Emitted when the underlying resource (for example, the backing file\ndescriptor) has been closed. Not all streams will emit this.\n\n</p>\n",
+              "desc": "<p>Emitted when the stream and any of its underlying resources (a file\ndescriptor, for example) have been closed. The event indicates that\nno more events will be emitted, and no further computation will occur.\n\n</p>\n<p>Not all streams will emit the &#39;close&#39; event.\n\n</p>\n",
               "params": []
             },
             {
@@ -538,7 +538,7 @@
                   "textRaw": "Event: 'close'",
                   "type": "event",
                   "name": "close",
-                  "desc": "<p>Emitted when the underlying resource (for example, the backing file\ndescriptor) has been closed. Not all streams will emit this.\n\n</p>\n",
+                  "desc": "<p>Emitted when the stream and any of its underlying resources (a file\ndescriptor, for example) have been closed. The event indicates that\nno more events will be emitted, and no further computation will occur.\n\n</p>\n<p>Not all streams will emit the &#39;close&#39; event.\n\n</p>\n",
                   "params": []
                 },
                 {
@@ -1387,7 +1387,7 @@
                       ]
                     }
                   ],
-                  "desc": "<p>Note: <strong>This function MUST NOT be called directly.</strong>  It should be\nimplemented by child classes, and called by the internal Transform\nclass methods only.\n\n</p>\n<p>All Transform stream implementations must provide a <code>_transform</code>\nmethod to accept input and produce output.\n\n</p>\n<p><code>_transform</code> should do whatever has to be done in this specific\nTransform class, to handle the bytes being written, and pass them off\nto the readable portion of the interface.  Do asynchronous I/O,\nprocess things, and so on.\n\n</p>\n<p>Call <code>transform.push(outputChunk)</code> 0 or more times to generate output\nfrom this input chunk, depending on how much data you want to output\nas a result of this chunk.\n\n</p>\n<p>Call the callback function only when the current chunk is completely\nconsumed.  Note that there may or may not be output as a result of any\nparticular input chunk. If you supply output as the second argument to the\ncallback, it will be passed to push method, in other words the following are\nequivalent:\n\n</p>\n<pre><code class=\"javascript\">transform.prototype._transform = function (data, encoding, callback) {\n  this.push(data);\n  callback();\n}\n\ntransform.prototype._transform = function (data, encoding, callback) {\n  callback(null, data);\n}</code></pre>\n<p>This method is prefixed with an underscore because it is internal to\nthe class that defines it, and should not be called directly by user\nprograms.  However, you <strong>are</strong> expected to override this method in\nyour own extension classes.\n\n</p>\n"
+                  "desc": "<p>Note: <strong>This function MUST NOT be called directly.</strong>  It should be\nimplemented by child classes, and called by the internal Transform\nclass methods only.\n\n</p>\n<p>All Transform stream implementations must provide a <code>_transform</code>\nmethod to accept input and produce output.\n\n</p>\n<p><code>_transform</code> should do whatever has to be done in this specific\nTransform class, to handle the bytes being written, and pass them off\nto the readable portion of the interface.  Do asynchronous I/O,\nprocess things, and so on.\n\n</p>\n<p>Call <code>transform.push(outputChunk)</code> 0 or more times to generate output\nfrom this input chunk, depending on how much data you want to output\nas a result of this chunk.\n\n</p>\n<p>Call the callback function only when the current chunk is completely\nconsumed.  Note that there may or may not be output as a result of any\nparticular input chunk. If you supply a second argument to the callback\nit will be passed to the push method. In other words the following are\nequivalent:\n\n</p>\n<pre><code class=\"javascript\">transform.prototype._transform = function (data, encoding, callback) {\n  this.push(data);\n  callback();\n};\n\ntransform.prototype._transform = function (data, encoding, callback) {\n  callback(null, data);\n};</code></pre>\n<p>This method is prefixed with an underscore because it is internal to\nthe class that defines it, and should not be called directly by user\nprograms.  However, you <strong>are</strong> expected to override this method in\nyour own extension classes.\n\n</p>\n"
                 },
                 {
                   "textRaw": "transform.\\_flush(callback)",

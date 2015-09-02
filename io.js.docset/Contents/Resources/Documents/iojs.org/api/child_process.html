@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Child Process io.js v3.2.0 Manual &amp; Documentation</title>
+  <title>Child Process io.js v3.3.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -61,7 +61,7 @@
 
     <div id="column1" data-id="child_process" class="interior">
       <header>
-        <h1>io.js v3.2.0 Documentation</h1>
+        <h1>io.js v3.3.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -223,7 +223,7 @@ and the <code>.connected</code> property is false.
 <li><code>message</code> <span class="type">Object</span> a parsed JSON object or primitive value</li>
 <li><code>sendHandle</code> <span class="type">Handle object</span> a Socket or Server object</li>
 </div></ul>
-<p>Messages send by <code>.send(message, [sendHandle])</code> are obtained using the
+<p>Messages sent by <code>.send(message, [sendHandle])</code> are obtained using the
 <code>message</code> event.
 
 </p>
@@ -472,7 +472,7 @@ server.on(&#39;connection&#39;, function (socket) {
     special.send(&#39;socket&#39;, socket);
     return;
   }
-  // just the usual dudes
+  // just the usual...
   normal.send(&#39;socket&#39;, socket);
 });
 server.listen(1337);</code></pre>

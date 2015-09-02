@@ -18,13 +18,13 @@
           "textRaw": "Core Modules",
           "name": "Core Modules",
           "type": "misc",
-          "desc": "<p>io.js has several modules compiled into the binary.  These modules are\ndescribed in greater detail elsewhere in this documentation.\n\n</p>\n<p>The core modules are defined in io.js&#39;s source in the <code>lib/</code> folder.\n\n</p>\n<p>Core modules are always preferentially loaded if their identifier is\npassed to <code>require()</code>.  For instance, <code>require(&#39;http&#39;)</code> will always\nreturn the built in HTTP module, even if there is a file by that name.\n\n</p>\n"
+          "desc": "<p>io.js has several modules compiled into the binary.  These modules are\ndescribed in greater detail elsewhere in this documentation.\n\n</p>\n<p>The core modules are defined within io.js&#39;s source and are located in the\n<code>lib/</code> folder.\n\n</p>\n<p>Core modules are always preferentially loaded if their identifier is\npassed to <code>require()</code>.  For instance, <code>require(&#39;http&#39;)</code> will always\nreturn the built in HTTP module, even if there is a file by that name.\n\n</p>\n"
         },
         {
           "textRaw": "File Modules",
           "name": "File Modules",
           "type": "misc",
-          "desc": "<p>If the exact filename is not found, then io.js will attempt to load the\nrequired filename with the added extension of <code>.js</code>, <code>.json</code>, and then <code>.node</code>.\n\n</p>\n<p><code>.js</code> files are interpreted as JavaScript text files, and <code>.json</code> files are\nparsed as JSON text files. <code>.node</code> files are interpreted as compiled addon\nmodules loaded with <code>dlopen</code>.\n\n</p>\n<p>A module prefixed with <code>&#39;/&#39;</code> is an absolute path to the file.  For\nexample, <code>require(&#39;/home/marco/foo.js&#39;)</code> will load the file at\n<code>/home/marco/foo.js</code>.\n\n</p>\n<p>A module prefixed with <code>&#39;./&#39;</code> is relative to the file calling <code>require()</code>.\nThat is, <code>circle.js</code> must be in the same directory as <code>foo.js</code> for\n<code>require(&#39;./circle&#39;)</code> to find it.\n\n</p>\n<p>Without a leading &#39;/&#39;, &#39;./&#39;, or &#39;../&#39; to indicate a file, the module is either a\ncore module or is loaded from a <code>node_modules</code> folder.\n\n</p>\n<p>If the given path does not exist, <code>require()</code> will throw an Error with its\n<code>code</code> property set to <code>&#39;MODULE_NOT_FOUND&#39;</code>.\n\n</p>\n"
+          "desc": "<p>If the exact filename is not found, then io.js will attempt to load the\nrequired filename with the added extensions: <code>.js</code>, <code>.json</code>, and finally\n<code>.node</code>.\n\n</p>\n<p><code>.js</code> files are interpreted as JavaScript text files, and <code>.json</code> files are\nparsed as JSON text files. <code>.node</code> files are interpreted as compiled addon\nmodules loaded with <code>dlopen</code>.\n\n</p>\n<p>A required module prefixed with <code>&#39;/&#39;</code> is an absolute path to the file.  For\nexample, <code>require(&#39;/home/marco/foo.js&#39;)</code> will load the file at\n<code>/home/marco/foo.js</code>.\n\n</p>\n<p>A required module prefixed with <code>&#39;./&#39;</code> is relative to the file calling\n<code>require()</code>. That is, <code>circle.js</code> must be in the same directory as <code>foo.js</code> for\n<code>require(&#39;./circle&#39;)</code> to find it.\n\n</p>\n<p>Without a leading &#39;/&#39;, &#39;./&#39;, or &#39;../&#39; to indicate a file, the module must\neither be a core module or is loaded from a <code>node_modules</code> folder.\n\n</p>\n<p>If the given path does not exist, <code>require()</code> will throw an Error with its\n<code>code</code> property set to <code>&#39;MODULE_NOT_FOUND&#39;</code>.\n\n</p>\n"
         },
         {
           "textRaw": "Loading from `node_modules` Folders",
@@ -116,7 +116,7 @@
             {
               "textRaw": "`parent` {Module Object} ",
               "name": "parent",
-              "desc": "<p>The module that required this one.\n\n\n</p>\n"
+              "desc": "<p>The module that first required this one.\n\n</p>\n"
             },
             {
               "textRaw": "`children` {Array} ",

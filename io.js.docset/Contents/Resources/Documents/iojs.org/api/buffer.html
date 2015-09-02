@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Buffer io.js v3.2.0 Manual &amp; Documentation</title>
+  <title>Buffer io.js v3.3.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -61,7 +61,7 @@
 
     <div id="column1" data-id="buffer" class="interior">
       <header>
-        <h1>io.js v3.2.0 Documentation</h1>
+        <h1>io.js v3.3.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -227,8 +227,8 @@ otherwise a <code>RangeError</code> is thrown.
 
 </p>
 <p>Unlike <code>ArrayBuffers</code>, the underlying memory for buffers is not initialized. So
-the contents of a newly created <code>Buffer</code> is unknown. Use <code>buf.fill(0)</code>to
-initialize a buffer to zeroes.
+the contents of a newly created <code>Buffer</code> are unknown and could contain
+sensitive data. Use <code>buf.fill(0)</code> to initialize a buffer to zeroes.
 
 </p>
 <h3>new Buffer(array)<span><a class="mark" href="#buffer_new_buffer_array" id="buffer_new_buffer_array">#</a></span></h3>

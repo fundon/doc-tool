@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>UDP / Datagram Sockets io.js v3.2.0 Manual &amp; Documentation</title>
+  <title>UDP / Datagram Sockets io.js v3.3.0 Manual &amp; Documentation</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/sh.css">
@@ -61,7 +61,7 @@
 
     <div id="column1" data-id="dgram" class="interior">
       <header>
-        <h1>io.js v3.2.0 Documentation</h1>
+        <h1>io.js v3.3.0 Documentation</h1>
         <div id="gtoc">
           <p>
             <a href="index.html" name="toc">Index</a> |
@@ -84,7 +84,7 @@
 <li><a href="#dgram_event_close">Event: &#39;close&#39;</a></li>
 <li><a href="#dgram_event_error">Event: &#39;error&#39;</a></li>
 <li><a href="#dgram_socket_send_buf_offset_length_port_address_callback">socket.send(buf, offset, length, port, address[, callback])</a></li>
-<li><a href="#dgram_socket_bind_port_address_callback">socket.bind(port[, address][, callback])</a></li>
+<li><a href="#dgram_socket_bind_port_address_callback">socket.bind([port][, address][, callback])</a></li>
 <li><a href="#dgram_socket_bind_options_callback">socket.bind(options[, callback])</a></li>
 <li><a href="#dgram_socket_close_callback">socket.close([callback])</a></li>
 <li><a href="#dgram_socket_address">socket.address()</a></li>
@@ -280,15 +280,16 @@ the (receiver) <code>MTU</code> won&#39;t work (the packet gets silently dropped
 informing the source that the data did not reach its intended recipient).
 
 </p>
-<h3>socket.bind(port[, address][, callback])<span><a class="mark" href="#dgram_socket_bind_port_address_callback" id="dgram_socket_bind_port_address_callback">#</a></span></h3>
+<h3>socket.bind([port][, address][, callback])<span><a class="mark" href="#dgram_socket_bind_port_address_callback" id="dgram_socket_bind_port_address_callback">#</a></span></h3>
 <div class="signature"><ul>
-<li><code>port</code> Integer</li>
+<li><code>port</code> Integer, Optional</li>
 <li><code>address</code> String, Optional</li>
 <li><code>callback</code> Function with no parameters, Optional. Callback when
 binding is done.</li>
 </div></ul>
 <p>For UDP sockets, listen for datagrams on a named <code>port</code> and optional
-<code>address</code>. If <code>address</code> is not specified, the OS will try to listen on
+<code>address</code>. If <code>port</code> is not specified, the OS will try to bind to a random
+port. If <code>address</code> is not specified, the OS will try to listen on
 all addresses.  After binding is done, a &quot;listening&quot; event is emitted
 and the <code>callback</code>(if specified) is called. Specifying both a
 &quot;listening&quot; event listener and <code>callback</code> is not harmful but not very
